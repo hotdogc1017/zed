@@ -1,13 +1,13 @@
 # Lua
 
-Lua support is available through the [Lua extension](https://github.com/zed-extensions/lua).
+可以通过 [Lua 扩展](https://github.com/zed-extensions/lua) 在 Zed 中使用 Lua。
 
-- Tree-sitter: [tree-sitter-grammars/tree-sitter-lua](https://github.com/tree-sitter-grammars/tree-sitter-lua)
-- Language server: [LuaLS/lua-language-server](https://github.com/LuaLS/lua-language-server)
+- Tree-sitter：[tree-sitter-grammars/tree-sitter-lua](https://github.com/tree-sitter-grammars/tree-sitter-lua)
+- 语言服务器：[LuaLS/lua-language-server](https://github.com/LuaLS/lua-language-server)
 
 ## luarc.json
 
-To configure LuaLS you can create a `.luarc.json` file in the root of your workspace.
+可以在工作区根目录创建 `.luarc.json` 来配置 LuaLS。
 
 ```json [settings]
 {
@@ -18,21 +18,21 @@ To configure LuaLS you can create a `.luarc.json` file in the root of your works
 }
 ```
 
-See [LuaLS Settings Documentation](https://luals.github.io/wiki/settings/) for all available configuration options, or when editing this file in Zed available settings options will autocomplete, (e.g `runtime.version` will show `"Lua 5.1"`, `"Lua 5.2"`, `"Lua 5.3"`, `"Lua 5.4"` and `"LuaJIT"` as allowed values). Note when importing settings options from VS Code, remove the `Lua.` prefix. (e.g. `runtime.version` instead of `Lua.runtime.version`).
+完整配置选项请参阅 [LuaLS 设置文档](https://luals.github.io/wiki/settings/)。在 Zed 中编辑该文件时，会自动补全各项可用值（例如 `runtime.version` 可选 "Lua 5.1"、"Lua 5.2"、"Lua 5.3"、"Lua 5.4"、"LuaJIT" 等）。注意如果从 VS Code 设置迁移，需要移除 `Lua.` 前缀（使用 `runtime.version` 而非 `Lua.runtime.version`）。
 
-### LuaCATS Definitions
+### LuaCATS 定义
 
-LuaLS can provide enhanced LSP autocompletion suggestions and type validation with the help of LuaCATS (Lua Comment and Type System) definitions. These definitions are available for many common Lua libraries, and local paths containing them can be specified via `workspace.library` in `luarc.json`. You can do this via relative paths if you checkout your definitions into the same partent directory of your project (`../playdate-luacats`, `../love2d`, etc). Alternatively you can create submodule(s) inside your project for each LuaCATS definition repo.
+借助 LuaCATS（Lua Comment and Type System）定义，LuaLS 可以提供更丰富的补全建议与类型校验。多种常用库已有相应定义，可通过在 `luarc.json` 的 `workspace.library` 中指定本地路径来使用。若将这些定义仓库检出到项目的父目录（如 `../playdate-luacats`、`../love2d`），即可使用相对路径；也可以将各个 LuaCATS 仓库作为子模块引入项目。
 
-### LÖVE (Love2D) {#love2d}
+### LÖVE（Love2D）{#love2d}
 
-To use [LÖVE (Love2D)](https://love2d.org/) in Zed, checkout [LuaCATS/love2d](https://github.com/LuaCATS/love2d) into a folder called `love2d-luacats` into the parent folder of your project:
+若要在 Zed 中使用 [LÖVE（Love2D）](https://love2d.org/)，可以将 [LuaCATS/love2d](https://github.com/LuaCATS/love2d) 克隆到项目父目录中的 `love2d-luacats`：
 
 ```sh
 cd .. && git clone https://github.com/LuaCATS/love2d love2d-luacats
 ```
 
-Then in your `.luarc.json`:
+然后在 `.luarc.json` 中添加：
 
 ```
 {
@@ -47,13 +47,13 @@ Then in your `.luarc.json`:
 
 ### PlaydateSDK
 
-To use [Playdate Lua SDK](https://play.date/dev/) in Zed, checkout [playdate-luacats](https://github.com/notpeter/playdate-luacats) into the parent folder of your project:
+若要在 Zed 中使用 [Playdate Lua SDK](https://play.date/dev/)，可以将 [playdate-luacats](https://github.com/notpeter/playdate-luacats) 克隆到项目父目录：
 
 ```sh
 cd .. && git clone https://github.com/notpeter/playdate-luacats
 ```
 
-Then in your `.luarc.json`:
+然后在 `.luarc.json` 中配置：
 
 ```json [settings]
 {
@@ -84,11 +84,11 @@ Then in your `.luarc.json`:
 }
 ```
 
-### Inlay Hints
+### 内联提示
 
-To enable [Inlay Hints](../configuring-languages.md#inlay-hints) for LuaLS in Zed
+要在 Zed 中为 LuaLS 启用[内联提示](../configuring-languages.md#inlay-hints)：
 
-1. Add the following to your Zed settings.json:
+1. 在 Zed 的 `settings.json` 中添加：
 
 ```json [settings]
   "languages": {
@@ -103,13 +103,13 @@ To enable [Inlay Hints](../configuring-languages.md#inlay-hints) for LuaLS in Ze
   }
 ```
 
-2. Add `"hint.enable": true` to your `.luarc.json`.
+2. 在 `.luarc.json` 中加入 `"hint.enable": true`。
 
-## Formatting
+## 格式化
 
-### LuaLS Formatting
+### LuaLS 格式化
 
-To enable auto-formatting with your LuaLS (provided by [CppCXY/EmmyLuaCodeStyle](https://github.com/CppCXY/EmmyLuaCodeStyle)) make sure you have `"format.enable": true,` in your .luarc.json:
+若要使用 LuaLS（基于 [CppCXY/EmmyLuaCodeStyle](https://github.com/CppCXY/EmmyLuaCodeStyle)）进行自动格式化，确保 `.luarc.json` 中包含 `"format.enable": true`：
 
 ```json [settings]
 {
@@ -118,7 +118,7 @@ To enable auto-formatting with your LuaLS (provided by [CppCXY/EmmyLuaCodeStyle]
 }
 ```
 
-Then add the following to your Zed `settings.json`:
+然后在 Zed 的 `settings.json` 中添加：
 
 ```json [settings]
 {
@@ -131,14 +131,14 @@ Then add the following to your Zed `settings.json`:
 }
 ```
 
-You can customize various EmmyLuaCodeStyle style options via `.editorconfig`, see [lua.template.editorconfig](https://github.com/CppCXY/EmmyLuaCodeStyle/blob/master/lua.template.editorconfig) for all available options.
+你可以通过 `.editorconfig` 自定义 EmmyLuaCodeStyle 的格式选项，参见 [lua.template.editorconfig](https://github.com/CppCXY/EmmyLuaCodeStyle/blob/master/lua.template.editorconfig)。
 
-### StyLua Formatting
+### StyLua 格式化
 
-Alternatively to use [StyLua](https://github.com/JohnnyMorganz/StyLua) for auto-formatting:
+若想改用 [StyLua](https://github.com/JohnnyMorganz/StyLua) 进行自动格式化：
 
-1. Install [StyLua](https://github.com/JohnnyMorganz/StyLua): `brew install stylua` or `cargo install stylua --features lua52,lua53,lua54,luau,luajit` (feel free to remove any Lua versions you don't need).
-2. Add the following to your `settings.json`:
+1. 安装 [StyLua](https://github.com/JohnnyMorganz/StyLua)：`brew install stylua` 或 `cargo install stylua --features lua52,lua53,lua54,luau,luajit`（可根据需要删除不必要的 Lua 版本）。
+2. 在 `settings.json` 中添加：
 
 ```json [settings]
 {
@@ -162,7 +162,7 @@ Alternatively to use [StyLua](https://github.com/JohnnyMorganz/StyLua) for auto-
 }
 ```
 
-You can specify various options to StyLua either on the command line above (like `--syntax=Lua54`) or in a `stylua.toml` in your workspace:
+可在命令行参数（如 `--syntax=Lua54`）或项目根目录的 `stylua.toml` 中设置 StyLua 的各种选项：
 
 ```toml
 syntax = "Lua54"
@@ -178,4 +178,4 @@ collapse_simple_statement = "All"
 enabled = true
 ```
 
-For a complete list of available options, see: [StyLua Options](https://github.com/JohnnyMorganz/StyLua?tab=readme-ov-file#options).
+更多可配置选项详见 [StyLua Options](https://github.com/JohnnyMorganz/StyLua?tab=readme-ov-file#options)。

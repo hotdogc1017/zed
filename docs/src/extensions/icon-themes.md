@@ -1,30 +1,30 @@
-# Icon Themes
+# 图标主题
 
-Extensions may provide icon themes in order to change the icons Zed uses for folders and files.
+扩展可以提供图标主题，以更改 Zed 用于文件夹和文件的图标。
 
-## Example extension
+## 示例扩展
 
-The [Material Icon Theme](https://github.com/zed-extensions/material-icon-theme) serves as an example for the structure of an extension containing an icon theme.
+[Material Icon Theme](https://github.com/zed-extensions/material-icon-theme) 作为包含图标主题的扩展结构示例。
 
-## Directory structure
+## 目录结构
 
-There are two important directories for an icon theme extension:
+图标主题扩展有两个重要的目录：
 
-- `icon_themes`: This directory will contain one or more JSON files containing the icon theme definitions.
-- `icons`: This directory contains the icons assets that will be distributed with the extension. You can created subdirectories in this directory, if so desired.
+- `icon_themes`：此目录将包含一个或多个包含图标主题定义的 JSON 文件。
+- `icons`：此目录包含将随扩展分发的图标资源。如果需要，您可以在此目录中创建子目录。
 
-Each icon theme file should adhere to the JSON schema specified at [`https://zed.dev/schema/icon_themes/v0.3.0.json`](https://zed.dev/schema/icon_themes/v0.3.0.json).
+每个图标主题文件都应遵循在 [`https://zed.dev/schema/icon_themes/v0.3.0.json`](https://zed.dev/schema/icon_themes/v0.3.0.json) 指定的 JSON 模式。
 
-Here is an example of the structure of an icon theme:
+以下是图标主题结构的示例：
 
 ```json [icon-theme]
 {
   "$schema": "https://zed.dev/schema/icon_themes/v0.3.0.json",
-  "name": "My Icon Theme",
-  "author": "Your Name",
+  "name": "我的图标主题",
+  "author": "您的姓名",
   "themes": [
     {
-      "name": "My Icon Theme",
+      "name": "我的图标主题",
       "appearance": "dark",
       "directory_icons": {
         "collapsed": "./icons/folder.svg",
@@ -59,9 +59,9 @@ Here is an example of the structure of an icon theme:
 }
 ```
 
-Each icon path is resolved relative to the root of the extension directory.
+每个图标路径都相对于扩展目录的根目录解析。
 
-In this example, the extension would have a structure like so:
+在此示例中，扩展将具有如下结构：
 
 ```
 extension.toml

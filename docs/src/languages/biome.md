@@ -1,13 +1,13 @@
 # Biome
 
-[Biome](https://biomejs.dev/) support in Zed is provided by the community-maintained [Biome extension](https://github.com/biomejs/biome-zed).
-Report issues to: [https://github.com/biomejs/biome-zed/issues](https://github.com/biomejs/biome-zed/issues)
+Zed 对 [Biome](https://biomejs.dev/) 的支持由社区维护的 [Biome 扩展](https://github.com/biomejs/biome-zed) 提供。
+如需反馈问题，请访问：[https://github.com/biomejs/biome-zed/issues](https://github.com/biomejs/biome-zed/issues)
 
-- Language Server: [biomejs/biome](https://github.com/biomejs/biome)
+- 语言服务器：[biomejs/biome](https://github.com/biomejs/biome)
 
-## Biome Language Support
+## Biome 语言支持
 
-The Biome extension includes support for the following languages:
+Biome 扩展支持以下语言：
 
 - JavaScript
 - TypeScript
@@ -20,9 +20,9 @@ The Biome extension includes support for the following languages:
 - Svelte
 - CSS
 
-## Configuration
+## 配置
 
-By default, the `biome.json` file is required to be in the root of the workspace.
+默认情况下，`biome.json` 文件需要位于工作区根目录。
 
 ```json [settings]
 {
@@ -30,6 +30,6 @@ By default, the `biome.json` file is required to be in the root of the workspace
 }
 ```
 
-For a full list of `biome.json` options see [Biome Configuration](https://biomejs.dev/reference/configuration/) documentation.
+完整的 `biome.json` 配置项请参阅 [Biome 配置文档](https://biomejs.dev/reference/configuration/)。
 
-See the [Biome Zed Extension README](https://github.com/biomejs/biome-zed) for a complete list of features and configuration options.
+关于功能和配置的完整说明，参见 [Biome Zed 扩展 README](https://github.com/biomejs/biome-zed)。

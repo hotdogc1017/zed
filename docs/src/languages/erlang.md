@@ -1,19 +1,19 @@
 # Erlang
 
-Erlang support is available through the [Erlang extension](https://github.com/zed-extensions/erlang).
+可以通过 [Erlang 扩展](https://github.com/zed-extensions/erlang) 在 Zed 中启用 Erlang 支持。
 
-- Tree-sitter: [WhatsApp/tree-sitter-erlang](https://github.com/WhatsApp/tree-sitter-erlang)
-- Language Servers:
+- Tree-sitter：[WhatsApp/tree-sitter-erlang](https://github.com/WhatsApp/tree-sitter-erlang)
+- 语言服务器：
   - [erlang-ls/erlang_ls](https://github.com/erlang-ls/erlang_ls)
   - [WhatsApp/erlang-language-platform](https://github.com/WhatsApp/erlang-language-platform)
 
-## Choosing a language server
+## 选择语言服务器
 
-The Erlang extension offers language server support for `erlang_ls` and `erlang-language-platform`.
+Erlang 扩展支持 `erlang_ls` 与 `erlang-language-platform` 两种语言服务器。
 
-`erlang_ls` is enabled by default.
+默认启用 `erlang_ls`。
 
-To switch to `erlang-language-platform`, add the following to your `settings.json`:
+若要切换到 `erlang-language-platform`，在 `settings.json` 中加入：
 
 ```json [settings]
 {
@@ -25,7 +25,7 @@ To switch to `erlang-language-platform`, add the following to your `settings.jso
 }
 ```
 
-## See also:
+## 另请参阅
 
 - [Elixir](./elixir.md)
 - [Gleam](./gleam.md)

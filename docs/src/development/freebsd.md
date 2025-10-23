@@ -1,51 +1,51 @@
-# Building Zed for FreeBSD
+# 为 FreeBSD 构建 Zed
 
-Note, FreeBSD is not currently a supported platform, and so this is a work-in-progress.
+注意，FreeBSD 目前不是受支持的平台，因此这是一个正在进行中的工作。
 
-## Repository
+## 存储库
 
-Clone the [Zed repository](https://github.com/zed-industries/zed).
+克隆 [Zed 存储库](https://github.com/zed-industries/zed)。
 
-## Dependencies
+## 依赖项
 
-- Install the necessary system packages and rustup:
+- 安装必要的系统包和 rustup：
 
   ```sh
   script/freebsd
   ```
 
-  If preferred, you can inspect [`script/freebsd`](https://github.com/zed-industries/zed/blob/main/script/freebsd) and perform the steps manually.
+  如果愿意，您可以检查 [`script/freebsd`](https://github.com/zed-industries/zed/blob/main/script/freebsd) 并手动执行步骤。
 
-## Building from source
+## 从源代码构建
 
-Once the dependencies are installed, you can build Zed using [Cargo](https://doc.rust-lang.org/cargo/).
+一旦安装了依赖项，您可以使用 [Cargo](https://doc.rust-lang.org/cargo/) 构建 Zed。
 
-For a debug build of the editor:
+对于编辑器的调试构建：
 
 ```sh
 cargo run
 ```
 
-And to run the tests:
+要运行测试：
 
 ```sh
 cargo test --workspace
 ```
 
-In release mode, the primary user interface is the `cli` crate. You can run it in development with:
+在发布模式下，主要用户界面是 `cli` crate。您可以在开发中使用以下命令运行它：
 
 ```sh
 cargo run -p cli
 ```
 
-### WebRTC Notice
+### WebRTC 注意事项
 
-Currently, building `webrtc-sys` on FreeBSD fails due to missing upstream support and unavailable prebuilt binaries. As a result, some collaboration features (audio calls and screensharing) that depend on WebRTC are temporarily disabled.
+目前，在 FreeBSD 上构建 `webrtc-sys` 失败，原因是缺少上游支持和不可用的预构建二进制文件。因此，一些依赖 WebRTC 的协作功能（音频通话和屏幕共享）暂时被禁用。
 
-See [Issue #15309: FreeBSD Support] and [Discussion #29550: Unofficial FreeBSD port for Zed] for more.
+有关更多信息，请参阅 [Issue #15309: FreeBSD Support] 和 [Discussion #29550: Unofficial FreeBSD port for Zed]。
 
-## Troubleshooting
+## 故障排除
 
-### Cargo errors claiming that a dependency is using unstable features
+### Cargo 错误声称依赖项使用了不稳定功能
 
-Try `cargo clean` and `cargo build`.
+尝试 `cargo clean` 和 `cargo build`。

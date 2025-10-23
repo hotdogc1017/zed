@@ -1,169 +1,169 @@
-# Text Threads
+# 文本线程
 
-## Overview {#overview}
+## 概述 {#overview}
 
-Text threads in the [Agent Panel](./agent-panel.md) function similarly to any other editor. You can use custom key bindings and work with multiple cursors, allowing for seamless transitions between coding and engaging in discussions with the language models.
+[代理面板](./agent-panel.md) 中的文本线程功能类似于任何其他编辑器。您可以使用自定义键绑定并使用多个光标，允许在编码和与语言模型进行讨论之间无缝切换。
 
-However, the text threads differ with the inclusion of message blocks. These blocks serve as containers for text that correspond to different roles within the context. These roles include:
+然而，文本线程的不同之处在于包含了消息块。这些块充当文本的容器，对应于上下文中的不同角色。这些角色包括：
 
 - `You`
 - `Assistant`
 - `System`
 
-To begin, type a message in a `You` block.
+要开始，请在 `You` 块中输入消息。
 
-![Asking a question](https://zed.dev/img/assistant/ask-a-question.png)
+![提问](https://zed.dev/img/assistant/ask-a-question.png)
 
-As you type, the remaining tokens count for the selected model is updated.
+当您输入时，所选模型的剩余令牌计数会更新。
 
-Inserting text from an editor is as simple as highlighting the text and running `agent: quote selection` ({#kb agent::QuoteSelection}); Zed will wrap it in a fenced code block if it is code.
+从编辑器中插入文本就像高亮显示文本并运行 `agent: quote selection` ({#kb agent::QuoteSelection}) 一样简单；如果它是代码，Zed 会将其包装在围栏代码块中。
 
-![Quoting a selection](https://zed.dev/img/assistant/quoting-a-selection.png)
+![引用选择](https://zed.dev/img/assistant/quoting-a-selection.png)
 
-To submit a message, use {#kb assistant::Assist}(`assistant: assist`). Unlike normal threads, where pressing <kbd>enter</kbd> would submit the message, in text threads, our goal is to make it feel as close to a regular editor as possible. So, pressing {#kb editor::Newline} simply inserts a new line.
+要提交消息，请使用 {#kb assistant::Assist}(`assistant: assist`)。与普通线程不同，在普通线程中按 <kbd>enter</kbd> 会提交消息，而在文本线程中，我们的目标是使其感觉尽可能接近常规编辑器。因此，按 {#kb editor::Newline} 只会插入一个新行。
 
-After submitting a message, the response will be streamed below, in an `Assistant` message block.
+提交消息后，响应将在下面的 `Assistant` 消息块中流式传输。
 
-![Receiving an answer](https://zed.dev/img/assistant/receiving-an-answer.png)
+![接收答案](https://zed.dev/img/assistant/receiving-an-answer.png)
 
-The stream can be canceled at any point with <kbd>escape</kbd>. This is useful if you realize early on that the response is not what you were looking for.
+可以在任何时候使用 <kbd>escape</kbd> 取消流。如果您早期意识到响应不是您想要的，这很有用。
 
-If you want to start a new conversation at any time, you can hit <kbd>cmd-n|ctrl-n</kbd> or use the `New Chat` menu option in the hamburger menu at the top left of the panel.
+如果您想随时开始新对话，可以按 <kbd>cmd-n|ctrl-n</kbd> 或使用面板左上角汉堡菜单中的 `New Chat` 菜单选项。
 
-Simple back-and-forth conversations work well with the text threads. However, there may come a time when you want to modify the previous text in the conversation and steer it in a different direction.
+简单的来回对话在文本线程中效果很好。但是，可能会有时候您想要修改对话中的先前文本并将其引导到不同的方向。
 
-## Editing a Text Thread {#edit-text-thread}
+## 编辑文本线程 {#edit-text-thread}
 
-Text threads give you the flexibility to have control over the context.
-You can freely edit any previous text, including the responses from the LLM.
-If you want to remove a message block entirely, simply place your cursor at the beginning of the block and use the `delete` key.
-A typical workflow might involve making edits and adjustments throughout the context to refine your inquiry or provide additional information. Here's an example:
+文本线程让您灵活地控制上下文。
+您可以自由编辑任何先前的文本，包括来自 LLM 的响应。
+如果您想完全删除消息块，只需将光标放在块的开头并使用 `delete` 键。
+典型的工作流程可能涉及在整个上下文中进行编辑和调整，以完善您的查询或提供额外信息。以下是一个示例：
 
-1. Write text in a `You` block.
-2. Submit the message with {#kb assistant::Assist}.
-3. Receive an `Assistant` response that doesn't meet your expectations.
-4. Cancel the response with <kbd>escape</kbd>.
-5. Erase the content of the `Assistant` message block and remove the block entirely.
-6. Add additional context to your original message.
-7. Submit the message with {#kb assistant::Assist}.
+1. 在 `You` 块中写入文本。
+2. 使用 {#kb assistant::Assist} 提交消息。
+3. 收到不符合您期望的 `Assistant` 响应。
+4. 使用 <kbd>escape</kbd> 取消响应。
+5. 擦除 `Assistant` 消息块的内容并完全删除该块。
+6. 向您的原始消息添加额外上下文。
+7. 使用 {#kb assistant::Assist} 提交消息。
 
-Being able to edit previous messages gives you control over how tokens are used. You don't need to start up a new chat to correct a mistake or to add additional information, and you don't have to waste tokens by submitting follow-up corrections.
+能够编辑先前的消息让您可以控制令牌的使用方式。您不需要启动新聊天来纠正错误或添加额外信息，也不必通过提交后续更正来浪费令牌。
 
-> **Note**: The act of editing past messages is often referred to as "Rewriting History" in the context of the language models.
+> **注意**：编辑过去消息的行为在语言模型上下文中通常被称为"重写历史"。
 
-Some additional points to keep in mind:
+需要记住的一些额外要点：
 
-- You can cycle the role of a message block by clicking on the role, which is useful when you receive a response in an `Assistant` block that you want to edit and send back up as a `You` block.
+- 您可以通过单击角色来循环消息块的角色，当您在 `Assistant` 块中收到想要编辑并作为 `You` 块发送回去的响应时，这很有用。
 
-## Commands Overview {#commands}
+## 命令概述 {#commands}
 
-Slash commands enhance the assistant's capabilities. Begin by typing a `/` at the beginning of the line to see a list of available commands:
+斜杠命令增强了助手的功能。在行首输入 `/` 以查看可用命令列表：
 
-- `/default`: Inserts the default rule
-- `/diagnostics`: Injects errors reported by the project's language server
-- `/fetch`: Fetches the content of a webpage and inserts it
-- `/file`: Inserts a single file or a directory of files
-- `/now`: Inserts the current date and time
-- `/prompt`: Adds a custom-configured prompt to the context ([see Rules Library](./rules.md#rules-library))
-- `/symbols`: Inserts the current tab's active symbols
-- `/tab`: Inserts the content of the active tab or all open tabs
-- `/terminal`: Inserts a select number of lines of output from the terminal
-- `/selection`: Inserts the selected text
+- `/default`: 插入默认规则
+- `/diagnostics`: 注入项目语言服务器报告的错误
+- `/fetch`: 获取网页内容并插入
+- `/file`: 插入单个文件或文件目录
+- `/now`: 插入当前日期和时间
+- `/prompt`: 向上下文添加自定义配置的提示（[参见规则库](./rules.md#rules-library)）
+- `/symbols`: 插入当前标签页的活动符号
+- `/tab`: 插入活动标签页或所有打开标签页的内容
+- `/terminal`: 插入终端输出的选定行数
+- `/selection`: 插入选定的文本
 
-> **Note:** Remember, commands are only evaluated when the text thread is created or when the command is inserted, so a command like `/now` won't continuously update, or `/file` commands won't keep their contents up to date.
+> **注意：** 请记住，命令仅在创建文本线程或插入命令时进行评估，因此像 `/now` 这样的命令不会持续更新，或者 `/file` 命令不会保持其内容最新。
 
 ### `/default`
 
-Read more about `/default` in the [Rules: Editing the Default Rules](./rules.md#default-rules) section.
+有关 `/default` 的更多信息，请参阅 [规则：编辑默认规则](./rules.md#default-rules) 部分。
 
-Usage: `/default`
+用法：`/default`
 
 ### `/diagnostics`
 
-The `/diagnostics` command injects errors reported by the project's language server into the context. This is useful for getting an overview of current issues in your project.
+`/diagnostics` 命令将项目语言服务器报告的错误注入到上下文中。这对于获取项目中当前问题的概述很有用。
 
-Usage: `/diagnostics [--include-warnings] [path]`
+用法：`/diagnostics [--include-warnings] [path]`
 
-- `--include-warnings`: Optional flag to include warnings in addition to errors.
-- `path`: Optional path to limit diagnostics to a specific file or directory.
+- `--include-warnings`：可选标志，除了错误外还包括警告。
+- `path`：可选路径，将诊断限制到特定文件或目录。
 
 ### `/file`
 
-The `/file` command inserts the content of a single file or a directory of files into the context. This allows you to reference specific parts of your project in your conversation with the assistant.
+`/file` 命令将单个文件或文件目录的内容插入到上下文中。这允许您在与助手的对话中引用项目的特定部分。
 
-Usage: `/file <path>`
+用法：`/file <path>`
 
-You can use glob patterns to match multiple files or directories.
+您可以使用 glob 模式匹配多个文件或目录。
 
-Examples:
+示例：
 
-- `/file src/index.js` - Inserts the content of `src/index.js` into the context.
-- `/file src/*.js` - Inserts the content of all `.js` files in the `src` directory.
-- `/file src` - Inserts the content of all files in the `src` directory.
+- `/file src/index.js` - 将 `src/index.js` 的内容插入到上下文中。
+- `/file src/*.js` - 将 `src` 目录中所有 `.js` 文件的内容插入到上下文中。
+- `/file src` - 将 `src` 目录中所有文件的内容插入到上下文中。
 
 ### `/now`
 
-The `/now` command inserts the current date and time into the context. This can be useful letting the language model know the current time (and by extension, how old their current knowledge base is).
+`/now` 命令将当前日期和时间插入到上下文中。这对于让语言模型知道当前时间（进而知道其当前知识库的年龄）很有用。
 
-Usage: `/now`
+用法：`/now`
 
 ### `/prompt`
 
-The `/prompt` command inserts a prompt from the prompt library into the context. It can also be used to nest prompts within prompts.
+`/prompt` 命令从提示库中插入一个提示到上下文中。它也可以用于在提示中嵌套提示。
 
-Usage: `/prompt <prompt_name>`
+用法：`/prompt <prompt_name>`
 
-Related: `/default`
+相关：`/default`
 
 ### `/symbols`
 
-The `/symbols` command inserts the active symbols (functions, classes, etc.) from the current tab into the context. This is useful for getting an overview of the structure of the current file.
+`/symbols` 命令将当前标签页中的活动符号（函数、类等）插入到上下文中。这对于获取当前文件结构的概述很有用。
 
-Usage: `/symbols`
+用法：`/symbols`
 
 ### `/tab`
 
-The `/tab` command inserts the content of the active tab or all open tabs into the context. This allows you to reference the content you're currently working on.
+`/tab` 命令将活动标签页或所有打开标签页的内容插入到上下文中。这允许您引用当前正在处理的内容。
 
-Usage: `/tab [tab_name|all]`
+用法：`/tab [tab_name|all]`
 
-- `tab_name`: Optional name of a specific tab to insert.
-- `all`: Insert content from all open tabs.
+- `tab_name`：要插入的特定标签页的可选名称。
+- `all`：插入所有打开标签页的内容。
 
-Examples:
+示例：
 
-- `/tab` - Inserts the content of the active tab.
-- `/tab "index.js"` - Inserts the content of the tab named "index.js".
-- `/tab all` - Inserts the content of all open tabs.
+- `/tab` - 插入活动标签页的内容。
+- `/tab "index.js"` - 插入名为 "index.js" 的标签页的内容。
+- `/tab all` - 插入所有打开标签页的内容。
 
 ### `/terminal`
 
-The `/terminal` command inserts a select number of lines of output from the terminal into the context. This is useful for referencing recent command outputs or logs.
+`/terminal` 命令将终端输出的选定行数插入到上下文中。这对于引用最近的命令输出或日志很有用。
 
-Usage: `/terminal [<number>]`
+用法：`/terminal [<number>]`
 
-- `<number>`: Optional parameter to specify the number of lines to insert (default is a 50).
+- `<number>`：指定要插入的行数的可选参数（默认为 50）。
 
 ### `/selection`
 
-The `/selection` command inserts the selected text in the editor into the context. This is useful for referencing specific parts of your code.
+`/selection` 命令将编辑器中选择的文本插入到上下文中。这对于引用代码的特定部分很有用。
 
-This is equivalent to the `agent: quote selection` command ({#kb agent::QuoteSelection}).
+这等同于 `agent: quote selection` 命令 ({#kb agent::QuoteSelection})。
 
-Usage: `/selection`
+用法：`/selection`
 
-## Commands in the Rules Library {#slash-commands-in-rules}
+## 规则库中的命令 {#slash-commands-in-rules}
 
-[Commands](#commands) can be used in rules, in the Rules Library (previously known as Prompt Library), to insert dynamic content or perform actions.
-For example, if you want to create a rule where it is important for the model to know the date, you can use the `/now` command to insert the current date.
+[命令](#commands) 可以在规则库（以前称为提示库）中的规则中使用，以插入动态内容或执行操作。
+例如，如果您想创建一个规则，其中模型知道日期很重要，您可以使用 `/now` 命令插入当前日期。
 
-> **Warn:** Slash commands in rules **only** work when they are used in text threads. Using them in non-text threads is not supported.
+> **警告：** 规则中的斜杠命令**仅**在文本线程中使用时有效。不支持在非文本线程中使用它们。
 
-> **Note:** Slash commands in rules **must** be on their own line.
+> **注意：** 规则中的斜杠命令**必须**在自己的行上。
 
-See the [list of commands](#commands) above for more information on commands, and what slash commands are available.
+有关命令的更多信息以及可用的斜杠命令，请参阅上面的[命令列表](#commands)。
 
-### Example
+### 示例
 
 ```plaintext
 You are an expert Rust engineer. The user has asked you to review their project and answer some questions.
@@ -173,19 +173,19 @@ Here is some information about their project:
 /file Cargo.toml
 ```
 
-In the above example, the `@file` command is used to insert the contents of the `Cargo.toml` file (or all `Cargo.toml` files present in the project) into the rule.
+在上面的示例中，`@file` 命令用于将 `Cargo.toml` 文件（或项目中存在的所有 `Cargo.toml` 文件）的内容插入到规则中。
 
-## Nesting Rules
+## 嵌套规则
 
-Similar to adding rules to the default rules, you can nest rules within other rules with the `/prompt` command (only supported in Text Threads currently).
+类似于向默认规则添加规则，您可以使用 `/prompt` 命令在其他规则中嵌套规则（目前仅在文本线程中支持）。
 
-You might want to nest rules to:
+您可能想要嵌套规则以：
 
-- Create templates on the fly
-- Break collections like docs or references into smaller, mix-and-matchable parts
-- Create variants of a similar rule (e.g., `Async Rust - Tokio` vs. `Async Rust - Async-std`)
+- 动态创建模板
+- 将文档或引用等集合分解为更小、可混合搭配的部分
+- 创建类似规则的变体（例如，`Async Rust - Tokio` 与 `Async Rust - Async-std`）
 
-### Example:
+### 示例：
 
 ```plaintext
 Title: Zed-Flavored Rust
@@ -201,59 +201,59 @@ Title: Zed-Flavored Rust
 /prompt Rust - Workspace deps (bias towards reusing deps from the workspace)
 ```
 
-_The text in parentheses above are comments and are not part of the rule._
+_上面括号中的文本是注释，不是规则的一部分。_
 
-> **Note:** While you technically _can_ nest a rule within itself, we wouldn't recommend it (in the strongest of terms.) Use at your own risk!
+> **注意：** 虽然从技术上讲您_可以_将规则嵌套在自身中，但我们不建议这样做（强烈不建议）。风险自负！
 
-By using nested rules, you can create modular and reusable rule components that can be combined in various ways to suit different scenarios.
+通过使用嵌套规则，您可以创建模块化和可重用的规则组件，这些组件可以以各种方式组合以适应不同的场景。
 
-> **Note:** When using slash commands to bring in additional context, the injected content can be edited directly inline in the text thread—edits here will not propagate to the saved rules.
+> **注意：** 当使用斜杠命令引入额外上下文时，注入的内容可以直接在文本线程中内联编辑——此处的编辑不会传播到保存的规则。
 
-## Extensibility
+## 可扩展性
 
-Additional slash commands can be provided by extensions.
+额外的斜杠命令可以由扩展提供。
 
-See [Extension: Slash Commands](../extensions/slash-commands.md) to learn how to create your own.
+请参阅 [扩展：斜杠命令](../extensions/slash-commands.md) 了解如何创建自己的命令。
 
-## Advanced Concepts
+## 高级概念
 
-### Rule Templates {#rule-templates}
+### 规则模板 {#rule-templates}
 
-Zed uses rule templates to power internal assistant features, like the terminal assistant, or the content rules used in the inline assistant.
+Zed 使用规则模板来驱动内部助手功能，如终端助手或内联助手中使用的内容规则。
 
-Zed has the following internal rule templates:
+Zed 有以下内部规则模板：
 
-- `content_prompt.hbs`: Used for generating content in the editor.
-- `terminal_assistant_prompt.hbs`: Used for the terminal assistant feature.
+- `content_prompt.hbs`：用于在编辑器中生成内容。
+- `terminal_assistant_prompt.hbs`：用于终端助手功能。
 
-At this point it is unknown if we will expand templates further to be user-creatable.
+目前尚不清楚我们是否会进一步扩展模板以允许用户创建。
 
-### Overriding Templates
+### 覆盖模板
 
-> **Note:** It is not recommended to override templates unless you know what you are doing. Editing templates will break your assistant if done incorrectly.
+> **注意：** 除非您知道自己在做什么，否则不建议覆盖模板。如果操作不当，编辑模板会破坏您的助手。
 
-Zed allows you to override the default rules used for various assistant features by placing custom Handlebars (.hbs) templates in your `~/.config/zed/prompt_overrides` directory.
+Zed 允许您通过在 `~/.config/zed/prompt_overrides` 目录中放置自定义 Handlebars (.hbs) 模板来覆盖用于各种助手功能的默认规则。
 
-The following templates can be overridden:
+可以覆盖以下模板：
 
-1. [`content_prompt.hbs`](https://github.com/zed-industries/zed/tree/main/assets/prompts/content_prompt.hbs): Used for generating content in the editor.
+1. [`content_prompt.hbs`](https://github.com/zed-industries/zed/tree/main/assets/prompts/content_prompt.hbs)：用于在编辑器中生成内容。
 
-2. [`terminal_assistant_prompt.hbs`](https://github.com/zed-industries/zed/tree/main/assets/prompts/terminal_assistant_prompt.hbs): Used for the terminal assistant feature.
+2. [`terminal_assistant_prompt.hbs`](https://github.com/zed-industries/zed/tree/main/assets/prompts/terminal_assistant_prompt.hbs)：用于终端助手功能。
 
-> **Note:** Be sure you want to override these, as you'll miss out on iteration on our built-in features. This should be primarily used when developing Zed.
+> **注意：** 请确保您想要覆盖这些模板，因为您将错过我们内置功能的迭代。这应该主要在开发 Zed 时使用。
 
-You can customize these templates to better suit your needs while maintaining the core structure and variables used by Zed. Zed will automatically reload your prompt overrides when they change on disk.
+您可以自定义这些模板以更好地满足您的需求，同时保持 Zed 使用的核心结构和变量。当您的提示覆盖在磁盘上更改时，Zed 会自动重新加载它们。
 
-Consult Zed's [assets/prompts](https://github.com/zed-industries/zed/tree/main/assets/prompts) directory for current versions you can play with.
+请查阅 Zed 的 [assets/prompts](https://github.com/zed-industries/zed/tree/main/assets/prompts) 目录以获取您可以使用的当前版本。
 
-### History {#history}
+### 历史 {#history}
 
-After you submit your first message in a text thread, a name for your context is generated by the language model, and the context is automatically saved to your file system in
+在文本线程中提交第一条消息后，语言模型会为您的上下文生成一个名称，并且上下文会自动保存到您的文件系统中：
 
 - `~/.config/zed/conversations` (macOS)
 - `~/.local/share/zed/conversations` (Linux)
 - `%LocalAppData%\Zed\conversations` (Windows)
 
-You can access and load previous contexts by clicking on the history button in the top-left corner of the agent panel.
+您可以通过单击代理面板左上角的历史按钮来访问和加载先前的上下文。
 
-![Viewing assistant history](https://zed.dev/img/assistant/assistant-history.png)
+![查看助手历史](https://zed.dev/img/assistant/assistant-history.png)

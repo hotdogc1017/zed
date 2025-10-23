@@ -1,26 +1,26 @@
-# Model Context Protocol
+# 模型上下文协议
 
-Zed uses the [Model Context Protocol](https://modelcontextprotocol.io/) to interact with context servers.
+Zed 使用[模型上下文协议](https://modelcontextprotocol.io/)与上下文服务器交互。
 
-> The Model Context Protocol (MCP) is an open protocol that enables seamless integration between LLM applications and external data sources and tools. Whether you're building an AI-powered IDE, enhancing a chat interface, or creating custom AI workflows, MCP provides a standardized way to connect LLMs with the context they need.
+> 模型上下文协议（MCP）是一个开放协议，可实现 LLM 应用程序与外部数据源和工具之间的无缝集成。无论您是构建 AI 驱动的 IDE、增强聊天界面还是创建自定义 AI 工作流，MCP 都提供了一种标准化方式来将 LLM 与它们所需的上下文连接起来。
 
-Check out the [Anthropic news post](https://www.anthropic.com/news/model-context-protocol) and the [Zed blog post](https://zed.dev/blog/mcp) for a general intro to MCP.
+查看 [Anthropic 新闻文章](https://www.anthropic.com/news/model-context-protocol) 和 [Zed 博客文章](https://zed.dev/blog/mcp) 了解 MCP 的一般介绍。
 
-## Installing MCP Servers
+## 安装 MCP 服务器
 
-### As Extensions
+### 作为扩展
 
-One of the ways you can use MCP servers in Zed is by exposing them as an extension.
-Check out the [MCP Server Extensions](../extensions/mcp-extensions.md) page to learn how to create your own.
+在 Zed 中使用 MCP 服务器的一种方式是将它们公开为扩展。
+查看 [MCP 服务器扩展](../extensions/mcp-extensions.md) 页面了解如何创建您自己的扩展。
 
-Thanks to our awesome community, many MCP servers have already been added as extensions.
-You can check which ones are available via any of these routes:
+感谢我们出色的社区，许多 MCP 服务器已经作为扩展添加。
+您可以通过以下任何途径检查哪些可用：
 
-1. [the Zed website](https://zed.dev/extensions?filter=context-servers)
-2. in the app, open the Command Palette and run the `zed: extensions` action
-3. in the app, go to the Agent Panel's top-right menu and look for the "View Server Extensions" menu item
+1. [Zed 网站](https://zed.dev/extensions?filter=context-servers)
+2. 在应用程序中，打开命令面板并运行 `zed: extensions` 操作
+3. 在应用程序中，转到代理面板的右上角菜单并查找"查看服务器扩展"菜单项
 
-In any case, here are some popular available servers:
+无论如何，以下是一些流行的可用服务器：
 
 - [Context7](https://zed.dev/extensions/context7-mcp-server)
 - [GitHub](https://zed.dev/extensions/github-mcp-server)
@@ -32,10 +32,10 @@ In any case, here are some popular available servers:
 - [Linear](https://zed.dev/extensions/linear-mcp-server)
 - [Resend](https://zed.dev/extensions/resend-mcp-server)
 
-### As Custom Servers
+### 作为自定义服务器
 
-Creating an extension is not the only way to use MCP servers in Zed.
-You can connect them by adding their commands directly to your `settings.json`, like so:
+创建扩展并不是在 Zed 中使用 MCP 服务器的唯一方式。
+您可以通过将它们的命令直接添加到您的 `settings.json` 中来连接它们，如下所示：
 
 ```json [settings]
 {
@@ -50,40 +50,40 @@ You can connect them by adding their commands directly to your `settings.json`, 
 }
 ```
 
-Alternatively, you can also add a custom server by accessing the Agent Panel's Settings view (also accessible via the `agent: open settings` action).
-From there, you can add it through the modal that appears when you click the "Add Custom Server" button.
+或者，您也可以通过访问代理面板的设置视图（也可以通过 `agent: open settings` 操作访问）来添加自定义服务器。
+从那里，您可以通过点击"添加自定义服务器"按钮时出现的模态框来添加它。
 
-## Using MCP Servers
+## 使用 MCP 服务器
 
-### Configuration Check
+### 配置检查
 
-Regardless of how you've installed MCP servers, whether as an extension or adding them directly, most servers out there still require some sort of configuration as part of the setup process.
+无论您如何安装 MCP 服务器，无论是作为扩展还是直接添加它们，大多数服务器仍然需要某种配置作为设置过程的一部分。
 
-In the case of extensions, after installing it, Zed will pop up a modal displaying what is required for you to properly set it up.
-For example, the GitHub MCP extension requires you to add a [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
+对于扩展，安装后，Zed 将弹出一个模态框，显示您需要正确设置的内容。
+例如，GitHub MCP 扩展要求您添加[个人访问令牌](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)。
 
-In the case of custom servers, make sure you check the provider documentation to determine what type of command, arguments, and environment variables need to be added to the JSON.
+对于自定义服务器，请确保检查提供程序文档以确定需要向 JSON 添加什么类型的命令、参数和环境变量。
 
-To check if your MCP server is properly configured, go to the Agent Panel's settings view and watch the indicator dot next to its name.
-If they're running correctly, the indicator will be green and its tooltip will say "Server is active".
-If not, other colors and tooltip messages will indicate what is happening.
+要检查您的 MCP 服务器是否正确配置，请转到代理面板的设置视图并观察其名称旁边的指示器点。
+如果它们运行正确，指示器将为绿色，其工具提示将显示"服务器处于活动状态"。
+如果没有，其他颜色和工具提示消息将指示正在发生的情况。
 
-### Agent Panel Usage
+### 代理面板使用
 
-Once installation is complete, you can return to the Agent Panel and start prompting.
+安装完成后，您可以返回代理面板并开始提示。
 
-Some models are better than others when it comes to picking up tools from MCP servers.
-Mentioning your server by name always helps the model to pick it up.
+在从 MCP 服务器获取工具方面，某些模型比其他模型更好。
+提及您的服务器名称总是有助于模型获取它。
 
-However, if you want to _ensure_ a given MCP server will be used, you can create [a custom profile](./agent-panel.md#custom-profiles) where all built-in tools (or the ones that could cause conflicts with the server's tools) are turned off and only the tools coming from the MCP server are turned on.
+但是，如果您想_确保_使用给定的 MCP 服务器，您可以创建一个[自定义配置文件](./agent-panel.md#custom-profiles)，其中所有内置工具（或可能与服务器工具冲突的工具）都关闭，只有来自 MCP 服务器的工具才打开。
 
-As an example, [the Dagger team suggests](https://container-use.com/agent-integrations#zed) doing that with their [Container Use MCP server](https://zed.dev/extensions/mcp-server-container-use):
+例如，[Dagger 团队建议](https://container-use.com/agent-integrations#zed)使用他们的 [Container Use MCP 服务器](https://zed.dev/extensions/mcp-server-container-use)这样做：
 
 ```json [settings]
 "agent": {
   "profiles": {
     "container-use": {
-      "name": "Container Use",
+      "name": "容器使用",
       "tools": {
         "fetch": true,
         "thinking": true,
@@ -122,15 +122,15 @@ As an example, [the Dagger team suggests](https://container-use.com/agent-integr
 }
 ```
 
-### Tool Approval
+### 工具批准
 
-Zed's Agent Panel includes the `agent.always_allow_tool_actions` setting that, if set to `false`, will require you to give permission for any editing attempt as well as tool calls coming from MCP servers.
+Zed 的代理面板包括 `agent.always_allow_tool_actions` 设置，如果设置为 `false`，将要求您对任何编辑尝试以及来自 MCP 服务器的工具调用给予许可。
 
-You can change this by setting this key to `true` in either your `settings.json` or through the Agent Panel's settings view.
+您可以通过在 `settings.json` 中或通过代理面板的设置视图将此键设置为 `true` 来更改此设置。
 
-### External Agents
+### 外部代理
 
-Note that for [external agents](./external-agents.md) connected through the [Agent Client Protocol](https://agentclientprotocol.com/), access to MCP servers installed from Zed may vary depending on the ACP agent implementation.
+请注意，对于通过[代理客户端协议](https://agentclientprotocol.com/)连接的[外部代理](./external-agents.md)，从 Zed 安装的 MCP 服务器的访问权限可能因 ACP 代理实现而异。
 
-Regarding the built-in ones, Claude Code and Codex both support it, and Gemini CLI does not yet.
-In the meantime, learn how to add MCP server support to Gemini CLI through [their documentation](https://github.com/google-gemini/gemini-cli?tab=readme-ov-file#using-mcp-servers).
+关于内置代理，Claude Code 和 Codex 都支持它，而 Gemini CLI 尚不支持。
+同时，通过[他们的文档](https://github.com/google-gemini/gemini-cli?tab=readme-ov-file#using-mcp-servers)了解如何向 Gemini CLI 添加 MCP 服务器支持。

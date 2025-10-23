@@ -1,12 +1,12 @@
-# Shell Scripts
+# Shell 脚本
 
-Shell Scripts (bash, zsh, dash, sh) are supported natively by Zed.
+Zed 原生支持 Shell 脚本（bash、zsh、dash、sh）。
 
-- Tree-sitter: [tree-sitter/tree-sitter-bash](https://github.com/tree-sitter/tree-sitter-bash)
+- Tree-sitter：[tree-sitter/tree-sitter-bash](https://github.com/tree-sitter/tree-sitter-bash)
 
-## Settings
+## 设置
 
-You can configure various settings for Shell Scripts in your Zed User Settings (`~/.config/zed/settings.json`) or Zed Project Settings (`.zed/settings.json`):
+可在用户设置（`~/.config/zed/settings.json`）或项目设置（`.zed/settings.json`）中配置 Shell Script：
 
 ```json [settings]
   "languages": {
@@ -17,29 +17,29 @@ You can configure various settings for Shell Scripts in your Zed User Settings (
   }
 ```
 
-### Formatting
+### 格式化
 
-Zed supports auto-formatting Shell Scripts using external tools like [`shfmt`](https://github.com/mvdan/sh).
+Zed 支持使用外部工具（如 [`shfmt`](https://github.com/mvdan/sh)）对 Shell 脚本自动格式化。
 
-1. Install `shfmt`:
+1. 安装 `shfmt`：
 
 ```sh
-brew install shfmt            # macos (homebrew)
-sudo apt-get install shfmt    # debian/ubuntu
-dnf install shfmt             # fedora
-yum install shfmt             # redhat
-pacman -Sy shfmt              # archlinux
-choco install shfmt           # windows (chocolatey)
+brew install shfmt            # macOS（Homebrew）
+sudo apt-get install shfmt    # Debian/Ubuntu
+dnf install shfmt             # Fedora
+yum install shfmt             # Red Hat
+pacman -Sy shfmt              # Arch Linux
+choco install shfmt           # Windows（Chocolatey）
 ```
 
-2. Ensure `shfmt` is available in your path and check the version:
+2. 确认 `shfmt` 已加入 PATH 并检查版本：
 
 ```sh
 which shfmt
 shfmt --version
 ```
 
-3. Configure Zed to automatically format Shell Scripts with `shfmt` on save:
+3. 在 Zed 中配置保存时自动使用 `shfmt`：
 
 ```json [settings]
   "languages": {
@@ -48,7 +48,7 @@ shfmt --version
       "formatter": {
         "external": {
           "command": "shfmt",
-          // Change `--indent 2` to match your preferred tab_size
+          // 根据偏好调整缩进宽度
           "arguments": ["--filename", "{buffer_path}", "--indent", "2"]
         }
       }
@@ -56,7 +56,7 @@ shfmt --version
   }
 ```
 
-## See also:
+## 另请参阅
 
-- [Zed Docs: Language Support: Bash](./bash.md)
-- [Zed Docs: Language Support: Fish](./fish.md)
+- [Zed 文档：语言支持：Bash](./bash.md)
+- [Zed 文档：语言支持：Fish](./fish.md)

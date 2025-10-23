@@ -1,60 +1,60 @@
-# Zed on Windows
+# Windows 上的 Zed
 
-## Installing Zed
+## 安装 Zed
 
-Get the latest stable builds via [the download page](https://zed.dev/download). If you want to download our preview build, you can find it on its [releases page](https://zed.dev/releases/preview). After the first manual installation, Zed will periodically check for install updates.
+通过[下载页面](https://zed.dev/download)获取最新的稳定版本。如果你想下载我们的预览版本，可以在其[发布页面](https://zed.dev/releases/preview)上找到。在第一次手动安装后，Zed 会定期检查安装更新。
 
-You can also build zed from source, see [these docs](https://zed.dev/docs/development/windows) for instructions.
+你也可以从源代码构建 zed，请参阅[这些文档](https://zed.dev/docs/development/windows)获取说明。
 
-## Uninstall
+## 卸载
 
-- Installed via installer: Use `Settings` → `Apps` → `Installed apps`, search for Zed, and click Uninstall.
-- Built from source: Remove the build output directory you created (e.g., your target/install folder).
+- 通过安装程序安装：使用 `设置` → `应用` → `已安装的应用`，搜索 Zed，然后点击卸载。
+- 从源代码构建：删除你创建的构建输出目录（例如，你的 target/install 文件夹）。
 
-Your settings and extensions live in your user profile. When uninstalling, you can choose to keep or remove them.
+你的设置和扩展位于你的用户配置文件中。卸载时，你可以选择保留或删除它们。
 
-## Remote Development (SSH)
+## 远程开发 (SSH)
 
-Zed supports SSH remoting on Windows and will prompt for credentials when needed.
+Zed 在 Windows 上支持 SSH 远程连接，并在需要时提示输入凭据。
 
-If you encounter authentication issues, confirm that your SSH key agent is running (e.g., ssh-agent or your Git client’s agent) and that ssh.exe is on PATH.
+如果遇到身份验证问题，请确认你的 SSH 密钥代理正在运行（例如，ssh-agent 或你的 Git 客户端的代理）并且 ssh.exe 在 PATH 中。
 
-## WSL Support
+## WSL 支持
 
-Zed supports opening folders inside of WSL natively.
+Zed 原生支持在 WSL 内打开文件夹。
 
-To open a local folder inside a WSL container use the `projects: open in wsl` action and select the folder you want to open, after which you will be presented with a list of available WSL distributions to open the folder in.
+要在 WSL 容器内打开本地文件夹，请使用 `projects: open in wsl` 操作并选择要打开的文件夹，之后你将看到一个可用的 WSL 发行版列表，用于在该发行版中打开文件夹。
 
-To open a folder that's already located inside of a WSL container use the `projects: open wsl` action and select the WSL distribution, after which you the distro will be added to the `Remote Projects` window where you will be able to open the folder, see [Remote Development](./remote-development.md)
+要打开已位于 WSL 容器内的文件夹，请使用 `projects: open wsl` 操作并选择 WSL 发行版，之后该发行版将被添加到 `远程项目` 窗口中，你可以在其中打开文件夹，请参阅[远程开发](./remote-development.md)
 
-## Troubleshooting
+## 故障排除
 
-### Zed fails to start or shows a blank window
+### Zed 无法启动或显示空白窗口
 
-- Update your GPU drivers from your GPU vendor (Intel/AMD/NVIDIA).
-- Ensure hardware acceleration is enabled in Windows and not blocked by third‑party software.
-- Try launching Zed with no extensions or custom settings to isolate conflicts.
+- 从你的 GPU 供应商（Intel/AMD/NVIDIA）更新 GPU 驱动程序。
+- 确保在 Windows 中启用了硬件加速，并且没有被第三方软件阻止。
+- 尝试在没有扩展或自定义设置的情况下启动 Zed，以隔离冲突。
 
-### Terminal issues
+### 终端问题
 
-If activation scripts don’t run, update to the latest version and verify your shell profile files are not exiting early. For Git operations, confirm Git Bash or PowerShell is available and on PATH.
+如果激活脚本没有运行，请更新到最新版本，并验证你的 shell 配置文件没有提前退出。对于 Git 操作，请确认 Git Bash 或 PowerShell 可用且在 PATH 中。
 
-### SSH remoting problems
+### SSH 远程连接问题
 
-When prompted for credentials, use the graphical askpass dialog. If it doesn’t appear, check for credential manager conflicts and that GUI prompts aren’t blocked by your terminal.
+当提示输入凭据时，使用图形化 askpass 对话框。如果它没有出现，请检查凭据管理器冲突，并确保 GUI 提示没有被你的终端阻止。
 
-### Graphics issues
+### 图形问题
 
-#### Zed fails to open / degraded performance
+#### Zed 无法打开 / 性能下降
 
-Zed requires a DX11 compatible GPU to run, if Zed doesn't open for you it is possible that your GPU does not meet the minimum requirements.
+Zed 需要兼容 DX11 的 GPU 才能运行，如果 Zed 无法为你打开，可能是因为你的 GPU 不满足最低要求。
 
-To check if your GPU supports DX11, you can use the following command:
+要检查你的 GPU 是否支持 DX11，可以使用以下命令：
 
 ```
 dxdiag
 ```
 
-Which will open the diagnostic tool that will show the minimum DirectX version your GPU supports under `System` → `System Information` → `DirectX Version`.
+这将打开诊断工具，在 `系统` → `系统信息` → `DirectX 版本` 下显示你的 GPU 支持的最低 DirectX 版本。
 
-You might also be trying to run Zed inside a virtual machine in which case it will use the emulated adapter that your VM provides, while Zed will work the performance will be degraded.
+你可能也尝试在虚拟机内运行 Zed，在这种情况下它将使用你的 VM 提供的模拟适配器，虽然 Zed 可以工作，但性能会下降。

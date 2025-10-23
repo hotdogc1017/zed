@@ -1,123 +1,123 @@
 ---
-description: Zed is a text editor that supports lots of Git features
-title: Zed Editor Git integration documentation
+description: Zed 是一个支持大量 Git 功能的文本编辑器
+title: Zed 编辑器 Git 集成文档
 ---
 
 # Git
 
-Zed currently offers a set of fundamental Git features, with support coming in the future for more advanced ones, like conflict resolution tools, line by line staging, and more.
+Zed 目前提供了一套基础的 Git 功能，未来将支持更高级的功能，如冲突解决工具、逐行暂存等。
 
-Here's an overview of all currently supported features:
+以下是当前支持的所有功能概述：
 
-- Committing
-- Staging, pushing, pulling, and fetching
-- Project Diff: A multibuffer view of all changes
-- Diff indicators in buffers and editor scrollbars
-- Inline diff toggle and reverts in the editor for unstaged changes
-- Git status in the Project Panel
-- Branch creating and switching
-- Git blame viewing
-- Git stash pop, apply, drop and view
+- 提交
+- 暂存、推送、拉取和获取
+- 项目差异：所有更改的多缓冲区视图
+- 缓冲区和编辑器滚动条中的差异指示器
+- 编辑器中未暂存更改的内联差异切换和恢复
+- 项目面板中的 Git 状态
+- 分支创建和切换
+- Git 追溯查看
+- Git 存储的弹出、应用、删除和查看
 
-## Git Panel
+## Git 面板
 
-The Git Panel gives you a birds-eye view of the state of your working tree and of Git's staging area.
+Git 面板让你可以鸟瞰工作树和 Git 暂存区的状态。
 
-You can open the Git Panel using {#action git_panel::ToggleFocus}, or by clicking the Git icon in the status bar.
+你可以使用 {#action git_panel::ToggleFocus} 或点击状态栏中的 Git 图标来打开 Git 面板。
 
-In the panel you can see the state of your project at a glance—which repository and branch are active, what files have changed and the current staging state of each file.
+在面板中，你可以一目了然地看到项目的状态——哪个仓库和分支处于活动状态，哪些文件已更改以及每个文件的当前暂存状态。
 
-Zed monitors your repository so that changes you make on the command line are instantly reflected.
+Zed 会监控你的仓库，以便你在命令行上所做的更改会立即反映出来。
 
-## Project Diff
+## 项目差异
 
-You can see all of the changes captured by Git in Zed by opening the Project Diff ({#kb git::Diff}), accessible via the {#action git::Diff} action in the Command Palette or the Git Panel.
+你可以通过打开项目差异 ({#kb git::Diff}) 来查看 Git 在 Zed 中捕获的所有更改，可通过命令面板或 Git 面板中的 {#action git::Diff} 操作访问。
 
-All of the changes displayed in the Project Diff behave exactly the same as any other multibuffer: they are all editable excerpts of files.
+项目差异中显示的所有更改的行为与任何其他多缓冲区完全相同：它们都是文件的可编辑摘录。
 
-You can stage or unstage each hunk as well as a whole file by hitting the buttons on the tab bar or their corresponding keybindings.
+你可以通过点击标签栏上的按钮或相应的键绑定来暂存或取消暂存每个代码块以及整个文件。
 
-<!-- Add media -->
+<!-- 添加媒体 -->
 
-## Fetch, push, and pull
+## 获取、推送和拉取
 
-Fetch, push, or pull from your Git repository in Zed via the buttons available on the Git Panel or via the Command Palette by looking at the respective actions: {#action git::Fetch}, {#action git::Push}, and {#action git::Pull}.
+通过 Git 面板上可用的按钮或通过命令面板查找相应的操作：{#action git::Fetch}、{#action git::Push} 和 {#action git::Pull}，在 Zed 中获取、推送或拉取你的 Git 仓库。
 
-## Staging Workflow
+## 暂存工作流
 
-Zed has two primary staging workflows, using either the Project Diff or the panel directly.
+Zed 有两种主要的暂存工作流，使用项目差异或直接使用面板。
 
-### Using the Project Diff
+### 使用项目差异
 
-In the Project Diff view, you can focus on each hunk and stage them individually by clicking on the tab bar buttons or via the keybindings {#action git::StageAndNext} ({#kb git::StageAndNext}).
+在项目差异视图中，你可以专注于每个代码块，并通过点击标签栏按钮或通过键绑定 {#action git::StageAndNext} ({#kb git::StageAndNext}) 单独暂存它们。
 
-Similarly, stage all hunks at the same time with the {#action git::StageAll} ({#kb git::StageAll}) keybinding and then immediately commit with {#action git::Commit} ({#kb git::Commit}).
+类似地，使用 {#action git::StageAll} ({#kb git::StageAll}) 键绑定同时暂存所有代码块，然后立即使用 {#action git::Commit} ({#kb git::Commit}) 提交。
 
-### Using the Git Panel
+### 使用 Git 面板
 
-From the panel, you can simply type a commit message and hit the commit button, or {#action git::Commit}. This will automatically stage all tracked files (indicated by a `[·]` in the entry's checkbox) and commit them.
+从面板中，你可以简单地输入提交消息并点击提交按钮，或使用 {#action git::Commit}。这将自动暂存所有跟踪的文件（在条目的复选框中用 `[·]` 表示）并提交它们。
 
-<!-- Show a set of changes with default staged -->
+<!-- 显示默认暂存的更改集 -->
 
-Entries can be staged using each individual entry's checkbox. All changes can be staged using the button at the top of the panel, or {#action git::StageAll}.
+可以使用每个单独条目的复选框来暂存条目。可以使用面板顶部的按钮或 {#action git::StageAll} 来暂存所有更改。
 
-<!-- Add media -->
+<!-- 添加媒体 -->
 
-## Committing
+## 提交
 
-Zed offers two commit textareas:
+Zed 提供两个提交文本区域：
 
-1. The first one is available right at the bottom of the Git Panel. Hitting {#kb git::Commit} immediately commits all of your staged changes.
-2. The second is available via the action {#action git::ExpandCommitEditor} or via hitting the {#kb git::ExpandCommitEditor} while focused in the Git Panel commit textarea.
+1. 第一个直接在 Git 面板底部可用。点击 {#kb git::Commit} 立即提交所有暂存的更改。
+2. 第二个可通过操作 {#action git::ExpandCommitEditor} 或在 Git 面板提交文本区域中获得焦点时点击 {#kb git::ExpandCommitEditor} 来使用。
 
-### Undoing a Commit
+### 撤销提交
 
-As soon as you commit in Zed, in the Git Panel, you'll see a bar right under the commit textarea, which will show the recently submitted commit.
-In there, you can use the "Uncommit" button, which performs the `git reset HEADˆ--soft` command.
+一旦你在 Zed 中提交，在 Git 面板中，你会在提交文本区域下方看到一个栏，显示最近提交的提交。
+在那里，你可以使用 "Uncommit" 按钮，它执行 `git reset HEADˆ--soft` 命令。
 
-## Stashing
+## 存储
 
-Git stash allows you to temporarily save your uncommitted changes and revert your working directory to a clean state. This is particularly useful when you need to quickly switch branches or pull updates without committing incomplete work.
+Git 存储允许你临时保存未提交的更改并将工作目录恢复到干净状态。当你需要快速切换分支或拉取更新而不提交不完整的工作时，这特别有用。
 
-### Creating Stashes
+### 创建存储
 
-To stash all your current changes, use the {#action git::StashAll} action. This will save both staged and unstaged changes to a new stash entry and clean your working directory.
+要存储所有当前更改，请使用 {#action git::StashAll} 操作。这将保存暂存和未暂存的更改到新的存储条目并清理你的工作目录。
 
-### Managing Stashes
+### 管理存储
 
-Zed provides a comprehensive stash picker accessible via {#action git::ViewStash}. From the stash picker, you can:
+Zed 提供了一个全面的存储选择器，可通过 {#action git::ViewStash} 访问。从存储选择器中，你可以：
 
-- **View stash list**: Browse all your saved stashes with their descriptions and timestamps
-- **Open diffs**: See exactly what changes are stored in each stash
-- **Apply stashes**: Apply stash changes to your working directory while keeping the stash entry
-- **Pop stashes**: Apply stash changes and remove the stash entry from the list
-- **Drop stashes**: Delete unwanted stash entries without applying them
+- **查看存储列表**：浏览所有保存的存储及其描述和时间戳
+- **打开差异**：查看每个存储中存储的确切更改
+- **应用存储**：将存储更改应用到工作目录，同时保留存储条目
+- **弹出存储**：应用存储更改并从列表中删除存储条目
+- **删除存储**：删除不需要的存储条目而不应用它们
 
-### Quick Stash Operations
+### 快速存储操作
 
-For faster workflows, Zed provides direct actions to work with the most recent stash:
+为了更快的工作流，Zed 提供了直接操作来处理最近的存储：
 
-- **Apply latest stash**: Use {#action git::StashApply} to apply the most recent stash without removing it
-- **Pop latest stash**: Use {#action git::StashPop} to apply and remove the most recent stash
+- **应用最新存储**：使用 {#action git::StashApply} 应用最近的存储而不删除它
+- **弹出最新存储**：使用 {#action git::StashPop} 应用并删除最近的存储
 
-### Stash Diff View
+### 存储差异视图
 
-When viewing a specific stash in the diff view, you have additional options available through the interface:
+在差异视图中查看特定存储时，你可以通过界面获得其他选项：
 
-- Apply the current stash to your working directory
-- Pop the current stash (apply and remove)
-- Remove the stash without applying changes
+- 将当前存储应用到工作目录
+- 弹出当前存储（应用并删除）
+- 删除存储而不应用更改
 
-To open the stash diff view, select a stash from the stash picker and use the {#action stash_picker::ShowStashItem} ({#kb stash_picker::ShowStashItem}) keybinding.
+要打开存储差异视图，从存储选择器中选择一个存储，并使用 {#action stash_picker::ShowStashItem} ({#kb stash_picker::ShowStashItem}) 键绑定。
 
-## AI Support in Git
+## Git 中的 AI 支持
 
-Zed currently supports LLM-powered commit message generation.
-You can ask AI to generate a commit message by focusing on the message editor within the Git Panel and either clicking on the pencil icon in the bottom left, or reaching for the {#action git::GenerateCommitMessage} ({#kb git::GenerateCommitMessage}) keybinding.
+Zed 目前支持基于 LLM 的提交消息生成。
+你可以通过聚焦 Git 面板内的消息编辑器并点击左下角的铅笔图标，或使用 {#action git::GenerateCommitMessage} ({#kb git::GenerateCommitMessage}) 键绑定来要求 AI 生成提交消息。
 
-> Note that you need to have an LLM provider configured for billing purposes, either via your own API keys or trialing/paying for Zed's hosted AI models. Visit [the AI configuration page](./ai/configuration.md) to learn how to do so.
+> 注意，你需要为计费目的配置 LLM 提供者，无论是通过你自己的 API 密钥还是试用/支付 Zed 的托管 AI 模型。访问 [AI 配置页面](./ai/configuration.md) 了解如何操作。
 
-You can specify your preferred model to use by providing a `commit_message_model` agent setting. See [Feature-specific models](./ai/agent-settings.md#feature-specific-models) for more information.
+你可以通过提供 `commit_message_model` 代理设置来指定你喜欢的模型。有关更多信息，请参阅 [功能特定模型](./ai/agent-settings.md#feature-specific-models)。
 
 ```json [settings]
 {
@@ -131,42 +131,42 @@ You can specify your preferred model to use by providing a `commit_message_model
 }
 ```
 
-<!-- Add media -->
+<!-- 添加媒体 -->
 
-More advanced AI integration with Git features may come in the future.
+未来可能会推出更高级的 AI 与 Git 功能集成。
 
-## Git Integrations
+## Git 集成
 
-Zed integrates with popular Git hosting services to ensure that Git commit hashes and references to Issues, Pull Requests, and Merge Requests become clickable links.
+Zed 与流行的 Git 托管服务集成，以确保 Git 提交哈希以及对 Issues、Pull Requests 和 Merge Requests 的引用成为可点击的链接。
 
-Zed currently supports links to the hosted versions of
-[GitHub](https://github.com),
-[GitLab](https://gitlab.com),
-[Bitbucket](https://bitbucket.org),
-[SourceHut](https://sr.ht) and
-[Codeberg](https://codeberg.org).
+Zed 目前支持以下托管版本的链接：
+[GitHub](https://github.com)、
+[GitLab](https://gitlab.com)、
+[Bitbucket](https://bitbucket.org)、
+[SourceHut](https://sr.ht) 和
+[Codeberg](https://codeberg.org)。
 
-Zed also has a Copy Permalink feature to create a permanent link to a code snippet on your Git hosting service.
-These links are useful for sharing a specific line or range of lines in a file at a specific commit.
-Trigger this action via the [Command Palette](./getting-started.md#command-palette) (search for `permalink`),
-by creating a [custom key bindings](key-bindings.md#custom-key-bindings) to the
-`editor::CopyPermalinkToLine` or `editor::OpenPermalinkToLine` actions
-or by simply right clicking and selecting `Copy Permalink` with line(s) selected in your editor.
+Zed 还有一个复制永久链接功能，用于在你的 Git 托管服务上创建代码片段的永久链接。
+这些链接对于在特定提交中共享文件中的特定行或行范围很有用。
+通过 [命令面板](./getting-started.md#command-palette)（搜索 `permalink`）、
+创建到 `editor::CopyPermalinkToLine` 或 `editor::OpenPermalinkToLine` 操作的
+[自定义键绑定](key-bindings.md#custom-key-bindings)
+或简单地在编辑器中右键单击并选择 `Copy Permalink` 来触发此操作。
 
-## Diff Hunk Keyboard Shortcuts
+## 差异代码块键盘快捷键
 
-When viewing files with changes, Zed displays diff hunks that can be expanded or collapsed for detailed review:
+当查看有更改的文件时，Zed 显示可以展开或折叠以进行详细审查的差异代码块：
 
-- **Expand all diff hunks**: {#action editor::ExpandAllDiffHunks} ({#kb editor::ExpandAllDiffHunks})
-- **Collapse all diff hunks**: Press `Escape` (bound to {#action editor::Cancel})
-- **Toggle selected diff hunks**: {#action editor::ToggleSelectedDiffHunks} ({#kb editor::ToggleSelectedDiffHunks})
-- **Navigate between hunks**: {#action editor::GoToHunk} and {#action editor::GoToPreviousHunk}
+- **展开所有差异代码块**：{#action editor::ExpandAllDiffHunks} ({#kb editor::ExpandAllDiffHunks})
+- **折叠所有差异代码块**：按 `Escape`（绑定到 {#action editor::Cancel}）
+- **切换选定的差异代码块**：{#action editor::ToggleSelectedDiffHunks} ({#kb editor::ToggleSelectedDiffHunks})
+- **在代码块之间导航**：{#action editor::GoToHunk} 和 {#action editor::GoToPreviousHunk}
 
-> **Tip:** The `Escape` key is the quickest way to collapse all expanded diff hunks and return to an overview of your changes.
+> **提示：** `Escape` 键是折叠所有展开的差异代码块并返回到更改概述的最快方式。
 
-## Action Reference
+## 操作参考
 
-| Action                                    | Keybinding                            |
+| 操作                                    | 键绑定                            |
 | ----------------------------------------- | ------------------------------------- |
 | {#action git::Add}                        | {#kb git::Add}                        |
 | {#action git::StageAll}                   | {#kb git::StageAll}                   |
@@ -195,17 +195,17 @@ When viewing files with changes, Zed displays diff hunks that can be expanded or
 | {#action editor::ExpandAllDiffHunks}      | {#kb editor::ExpandAllDiffHunks}      |
 | {#action editor::ToggleSelectedDiffHunks} | {#kb editor::ToggleSelectedDiffHunks} |
 
-> Not all actions have default keybindings, but can be bound by [customizing your keymap](./key-bindings.md#user-keymaps).
+> 并非所有操作都有默认键绑定，但可以通过[自定义键映射](./key-bindings.md#user-keymaps)来绑定。
 
-## Git CLI Configuration
+## Git CLI 配置
 
-If you would like to also use Zed for your [git commit message editor](https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration#_core_editor) when committing from the command line you can use `zed --wait`:
+如果你还想在从命令行提交时使用 Zed 作为你的 [git 提交消息编辑器](https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration#_core_editor)，你可以使用 `zed --wait`：
 
 ```sh
 git config --global core.editor "zed --wait"
 ```
 
-Or add the following to your shell environment (in `~/.zshrc`, `~/.bashrc`, etc):
+或者将以下内容添加到你的 shell 环境（在 `~/.zshrc`、`~/.bashrc` 等中）：
 
 ```sh
 export GIT_EDITOR="zed --wait"

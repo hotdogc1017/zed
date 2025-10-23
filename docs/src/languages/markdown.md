@@ -1,13 +1,13 @@
 # Markdown
 
-Markdown support is available natively in Zed.
+Zed 原生支持 Markdown。
 
-- Tree-sitter: [tree-sitter-markdown](https://github.com/tree-sitter-grammars/tree-sitter-markdown)
-- Language Server: N/A
+- Tree-sitter：[tree-sitter-markdown](https://github.com/tree-sitter-grammars/tree-sitter-markdown)
+- 语言服务器：无
 
-## Syntax Highlighting Code Blocks
+## 代码块语法高亮
 
-Zed supports language-specific syntax highlighting of markdown code blocks by leveraging [tree-sitter language grammars](../extensions/languages.md#grammar). All [Zed supported languages](../languages.md), including those provided by official or community extensions, are available for use in markdown code blocks. All you need to do is provide a language name after the opening <kbd>```</kbd> code fence like so:
+Zed 会使用各语言的 [tree-sitter 语法](../extensions/languages.md#grammar) 来高亮 Markdown 中的代码块。所有 [Zed 支持的语言](../languages.md)，包括官方与社区扩展提供的语言，都可以在 Markdown 代码块中使用。只需在开头的 <kbd>```</kbd> 后指定语言名称，例如：
 
 ````python
 ```python
@@ -19,11 +19,11 @@ def fib(n):
 ```
 ````
 
-## Configuration
+## 配置
 
-### Format
+### 格式化
 
-Zed supports using Prettier to automatically re-format Markdown documents. You can trigger this manually via the {#action editor::Format} action or via the {#kb editor::Format} keyboard shortcut. Alternately, you can automatically format by enabling [`format_on_save`](../configuring-zed.md#format-on-save) in your settings.json:
+Zed 支持使用 Prettier 自动格式化 Markdown 文档。可以通过 {#action editor::Format} 动作或 {#kb editor::Format} 快捷键手动触发。若希望自动格式化，可在 `settings.json` 中启用 [`format_on_save`](../configuring-zed.md#format-on-save)：
 
 ```json [settings]
   "languages": {
@@ -33,9 +33,9 @@ Zed supports using Prettier to automatically re-format Markdown documents. You c
   },
 ```
 
-### Trailing Whitespace
+### 行尾空白
 
-By default Zed will remove trailing whitespace on save. If you rely on invisible trailing whitespace being converted to `<br />` in Markdown files you can disable this behavior with:
+默认情况下 Zed 会在保存时移除行尾空白。如果你依赖 Markdown 中的不可见空格（例如用于转换成 `<br />`），可以这样关闭该行为：
 
 ```json [settings]
   "languages": {

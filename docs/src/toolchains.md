@@ -1,31 +1,29 @@
-# Toolchains
+# 工具链（Toolchains）
 
-Zed projects offer a dedicated UI for toolchain selection, which lets you pick a set of tools for working with a given language in a current project.
+Zed 提供专门的工具链选择界面，允许你为当前项目的特定语言挑选合适的工具组合。
 
-Imagine you're working with Python project, which has virtual environments that encapsulate a set of dependencies of your project along with a suitable interpreter to run it with. The language server has to know which virtual environment you're working with, as it uses it to understand your project's code.
-With toolchain selector, you don't need to spend time configuring your language server to point it at the right virtual environment directory—you can just select the right virtual environment (toolchain) from a dropdown.
+设想一个 Python 项目，它使用虚拟环境来封装依赖与解释器。语言服务器必须知道你正在使用哪一个虚拟环境，才能正确理解项目代码。有了工具链选择器，就无需手动配置语言服务器指向合适的虚拟环境目录，只需在下拉菜单中选择对应的虚拟环境（即工具链）即可。
 
-You can even select different toolchains for different subprojects within your Zed project. A definition of a subproject is language-specific.
-In collaborative scenarios, only the project owner can see and modify an active toolchain.
+你甚至可以为同一 Zed 项目中的不同子项目挑选不同的工具链。子项目的划分因语言而异。在协作场景中，只有项目所有者可以查看和修改当前激活的工具链。
 
-In [remote projects](./remote-development.md), you can use the toolchain selector to control the active toolchain on the SSH host. When [sharing your project](./collaboration.md), the toolchain selector is not available to guests.
+在[远程开发](./remote-development.md)场景中，你可以使用工具链选择器来控制 SSH 主机上的活动工具链。若你[分享项目](./collaboration.md)，受邀访客无法操作工具链。
 
-## Why do we need toolchains?
+## 为什么需要工具链？
 
-The active toolchain is relevant for launching language servers, which may need it to function properly—it may not be able to resolve dependencies, which in turn may make functionalities like "Go to definition" or "Code completions" unavailable.
+语言服务器在启动时通常依赖活动工具链：如果无法解析依赖，诸如“跳转定义”“代码补全”等功能就可能失效。
 
-The active toolchain is also relevant when launching a shell in the terminal panel: some toolchains provide "activation scripts" for shells, which make those toolchains available in the shell environment for your convenience. Zed will run these activation scripts automatically when you create a new terminal.
+当你在终端面板中开启新的 shell 时，活动工具链同样会生效。很多工具链都提供“激活脚本”，用于在 shell 环境中注入依赖。Zed 在新建终端时会自动运行这些脚本。
 
-This also applies to [tasks](./tasks.md)—Zed tasks behave "as if" you opened a new terminal tab and ran a given task invocation yourself, which in turn means that Zed task execution is affected by the active toolchain and its activation script.
+这一行为同样适用于 [任务系统](./tasks.md)。Zed 在执行任务时相当于“打开一个新终端并执行命令”，因此任务运行也会受到活动工具链及其激活脚本的影响。
 
-## Selecting toolchains
+## 选择工具链
 
-The active toolchain (if there is one) is displayed in the status bar (on the right hand side). Click on it to access the toolchain selector—you can also use an action from a command palette ({#action toolchain::Select}).
+如果当前子项目存在活动工具链，状态栏右侧会显示其名称。点击即可打开工具链选择器，或通过命令面板执行 {#action toolchain::Select}。
 
-Zed will automatically infer a set of toolchains to choose from based on the project you're working with. A default will also be selected on your behalf on a best-effort basis when you open a project for the first time.
+Zed 会依据项目结构自动推断可用工具链，并在首次打开项目时尽力为你选好一个默认工具链。
 
-The toolchain selection applies to a current subproject, which—depending on the structure of your Zed project—might be your whole project or just a subset of it. For example, if you have a monorepo with multiple subprojects, you might want to select a different toolchain for each subproject.
+工具链的选择范围仅作用于当前子项目。根据项目结构，这个子项目可能是整个仓库，也可能只是其中的一部分。比如在包含多个子项目的 monorepo 中，你可以为每个子项目挑选不同的工具链。
 
-## Adding toolchains manually
+## 手动添加工具链
 
-If automatic detection does not suffice for you, you can add toolchains manually. To do that, click on the "Add toolchain" button in the toolchain selector. From there you can provide a path to a toolchain and set a name of your liking for it.
+若自动检测无法满足需求，可以手动添加。点击工具链选择器中的“Add toolchain”按钮，填写工具链路径并为其指定一个名称即可。

@@ -1,43 +1,43 @@
-# Slash Commands
+# 斜杠命令
 
-Extensions may provide slash commands for use in the Assistant.
+扩展可以提供斜杠命令，供助手使用。
 
-## Example extension
+## 示例扩展
 
-To see a working example of an extension that provides slash commands, check out the [`slash-commands-example` extension](https://github.com/zed-industries/zed/tree/main/extensions/slash-commands-example).
+要查看提供斜杠命令的扩展的工作示例，请查看 [`slash-commands-example` 扩展](https://github.com/zed-industries/zed/tree/main/extensions/slash-commands-example)。
 
-This extension can be [installed as a dev extension](./developing-extensions.md#developing-an-extension-locally) if you want to try it out for yourself.
+如果您想亲自试用，可以将此扩展[安装为开发扩展](./developing-extensions.md#developing-an-extension-locally)。
 
-## Defining slash commands
+## 定义斜杠命令
 
-A given extension may provide one or more slash commands. Each slash command must be registered in the `extension.toml`.
+给定的扩展可以提供一个或多个斜杠命令。每个斜杠命令必须在 `extension.toml` 中注册。
 
-For example, here is an extension that provides two slash commands: `/echo` and `/pick-one`:
+例如，这是一个提供两个斜杠命令的扩展：`/echo` 和 `/pick-one`：
 
 ```toml
 [slash_commands.echo]
-description = "echoes the provided input"
+description = "回显提供的输入"
 requires_argument = true
 
 [slash_commands.pick-one]
-description = "pick one of three options"
+description = "从三个选项中选择一个"
 requires_argument = true
 ```
 
-Each slash command may define the following properties:
+每个斜杠命令可以定义以下属性：
 
-- `description`: A description of the slash command that will be shown when completing available commands.
-- `requires_argument`: Indicates whether a slash command requires at least one argument to run.
+- `description`：斜杠命令的描述，将在完成可用命令时显示。
+- `requires_argument`：指示斜杠命令是否需要至少一个参数才能运行。
 
-## Implementing slash command behavior
+## 实现斜杠命令行为
 
-To implement behavior for your slash commands, implement `run_slash_command` for your extension.
+要为您的斜杠命令实现行为，请为您的扩展实现 `run_slash_command`。
 
-This method accepts the slash command that will be run, the list of arguments passed to it, and an optional `Worktree`.
+此方法接受将要运行的斜杠命令、传递给它的参数列表以及可选的 `Worktree`。
 
-This method returns `SlashCommandOutput`, which contains the textual output of the command in the `text` field. The output may also define `SlashCommandOutputSection`s that contain ranges into the output. These sections are then rendered as creases in the Assistant's context editor.
+此方法返回 `SlashCommandOutput`，其中包含命令的文本输出在 `text` 字段中。输出还可以定义包含输出范围的 `SlashCommandOutputSection`。这些部分随后在助手的上下文编辑器中渲染为折叠区域。
 
-Your extension should `match` on the command name (without the leading `/`) and then execute behavior accordingly:
+您的扩展应该 `match` 命令名称（不带前导 `/`），然后相应地执行行为：
 
 ```rs
 impl zed::Extension for MyExtension {
@@ -50,7 +50,7 @@ impl zed::Extension for MyExtension {
         match command.name.as_str() {
             "echo" => {
                 if args.is_empty() {
-                    return Err("nothing to echo".to_string());
+                    return Err("没有要回显的内容".to_string());
                 }
 
                 let text = args.join(" ");
@@ -58,52 +58,52 @@ impl zed::Extension for MyExtension {
                 Ok(SlashCommandOutput {
                     sections: vec![SlashCommandOutputSection {
                         range: (0..text.len()).into(),
-                        label: "Echo".to_string(),
+                        label: "回显".to_string(),
                     }],
                     text,
                 })
             }
             "pick-one" => {
                 let Some(selection) = args.first() else {
-                    return Err("no option selected".to_string());
+                    return Err("未选择选项".to_string());
                 };
 
                 match selection.as_str() {
                     "option-1" | "option-2" | "option-3" => {}
                     invalid_option => {
-                        return Err(format!("{invalid_option} is not a valid option"));
+                        return Err(format!("{invalid_option} 不是有效选项"));
                     }
                 }
 
-                let text = format!("You chose {selection}.");
+                let text = format!("您选择了 {selection}。");
 
                 Ok(SlashCommandOutput {
                     sections: vec![SlashCommandOutputSection {
                         range: (0..text.len()).into(),
-                        label: format!("Pick One: {selection}"),
+                        label: format!("选择一个: {selection}"),
                     }],
                     text,
                 })
             }
-            command => Err(format!("unknown slash command: \"{command}\"")),
+            command => Err(format!("未知的斜杠命令: \"{command}\"")),
         }
     }
 }
 ```
 
-## Auto-completing slash command arguments
+## 自动完成斜杠命令参数
 
-For slash commands that have arguments, you may also choose to implement `complete_slash_command_argument` to provide completions for your slash commands.
+对于有参数的斜杠命令，您还可以选择实现 `complete_slash_command_argument` 来为您的斜杠命令提供补全。
 
-This method accepts the slash command that will be run and the list of arguments passed to it. It returns a list of `SlashCommandArgumentCompletion`s that will be shown in the completion menu.
+此方法接受将要运行的斜杠命令和传递给它的参数列表。它返回一个 `SlashCommandArgumentCompletion` 列表，这些将在补全菜单中显示。
 
-A `SlashCommandArgumentCompletion` consists of the following properties:
+`SlashCommandArgumentCompletion` 包含以下属性：
 
-- `label`: The label that will be shown in the completion menu.
-- `new_text`: The text that will be inserted when the completion is accepted.
-- `run_command`: Whether the slash command will be run when the completion is accepted.
+- `label`：将在补全菜单中显示的标签。
+- `new_text`：接受补全时将插入的文本。
+- `run_command`：接受补全时是否运行斜杠命令。
 
-Once again, your extension should `match` on the command name (without the leading `/`) and return the desired argument completions:
+再次，您的扩展应该 `match` 命令名称（不带前导 `/`）并返回所需的参数补全：
 
 ```rs
 impl zed::Extension for MyExtension {
@@ -116,22 +116,22 @@ impl zed::Extension for MyExtension {
             "echo" => Ok(vec![]),
             "pick-one" => Ok(vec![
                 SlashCommandArgumentCompletion {
-                    label: "Option One".to_string(),
+                    label: "选项一".to_string(),
                     new_text: "option-1".to_string(),
                     run_command: true,
                 },
                 SlashCommandArgumentCompletion {
-                    label: "Option Two".to_string(),
+                    label: "选项二".to_string(),
                     new_text: "option-2".to_string(),
                     run_command: true,
                 },
                 SlashCommandArgumentCompletion {
-                    label: "Option Three".to_string(),
+                    label: "选项三".to_string(),
                     new_text: "option-3".to_string(),
                     run_command: true,
                 },
             ]),
-            command => Err(format!("unknown slash command: \"{command}\"")),
+            command => Err(format!("未知的斜杠命令: \"{command}\"")),
         }
     }
 }

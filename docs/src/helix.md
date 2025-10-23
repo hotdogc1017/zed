@@ -1,15 +1,13 @@
-# Helix Mode
+# Helix 模式
 
-_Work in progress! Not all Helix keybindings are implemented yet._
+> **注意：** 功能仍在完善中，暂未覆盖 Helix 的全部键绑定。
 
-Zed's Helix mode is an emulation layer that brings Helix-style keybindings and modal editing to Zed. It builds upon Zed's [Vim mode](./vim.md), so much of the core functionality is shared. Enabling `helix_mode` will also enable `vim_mode`.
+Helix 模式是 Zed 中的仿真层，引入了 Helix 风格的键位与模态编辑。它建立在 Zed 的 [Vim 模式](./vim.md) 之上，启用 `helix_mode` 时会自动开启 `vim_mode`，两者共享大部分核心功能。若想了解 Vim 模式的基础能力，请先阅读 [Vim 模式文档](./vim.md)。
 
-For a guide on Vim-related features that are also available in Helix mode, please refer to our [Vim mode documentation](./vim.md).
+想查看 Helix 模式的最新进展或反馈缺失功能，可访问社区讨论：[“Are we Helix yet?”](https://github.com/zed-industries/zed/discussions/33580)。Helix 默认键位的完整列表见[官方文档](https://docs.helix-editor.com/keymap.html)。
 
-To check the current status of Helix mode, or to request a missing Helix feature, checkout out the ["Are we Helix yet?" discussion](https://github.com/zed-industries/zed/discussions/33580).
+## 核心差异
 
-For a detailed list of Helix's default keybindings, please visit the [official Helix documentation](https://docs.helix-editor.com/keymap.html).
+- 所有可与 `m i` 或 `m a` 配合使用的文本对象，同样支持 `]` 或 `[` 前缀，例如 `] (` 会选择光标之后的下一对括号。
 
-## Core differences
-
-Any text object that works with `m i` or `m a` also works with `]` and `[`, so for example `] (` selects the next pair of parentheses after the cursor.
+更多 Helix 特性将持续补充，欢迎在社区提出建议。

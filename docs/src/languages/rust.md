@@ -1,20 +1,14 @@
 # Rust
 
-Rust support is available natively in Zed.
+Zed 原生支持 Rust。
 
-- Tree-sitter: [tree-sitter/tree-sitter-rust](https://github.com/tree-sitter/tree-sitter-rust)
-- Language Server: [rust-lang/rust-analyzer](https://github.com/rust-lang/rust-analyzer)
-- Debug Adapter: [CodeLLDB](https://github.com/vadimcn/codelldb) (primary), [GDB](https://sourceware.org/gdb/) (secondary, not available on Apple silicon)
+- Tree-sitter：[tree-sitter/tree-sitter-rust](https://github.com/tree-sitter/tree-sitter-rust)
+- 语言服务器：[rust-lang/rust-analyzer](https://github.com/rust-lang/rust-analyzer)
+- 调试适配器：[CodeLLDB](https://github.com/vadimcn/codelldb)（首选）、[GDB](https://sourceware.org/gdb/)（次选，Apple Silicon 不支持）
 
-<!--
-TBD: Polish Rust Docs. Zed is a good rust editor, good Rust docs make it look like we care about Rust (we do!)
-TBD: Users may not know what inlayHints, don't start there.
-TBD: Provide explicit examples not just `....`
--->
+## 内联提示
 
-## Inlay Hints
-
-The following configuration can be used to change the inlay hint settings for `rust-analyzer` in Rust:
+可通过以下配置调整 `rust-analyzer` 的内联提示：
 
 ```json [settings]
 {
@@ -37,11 +31,11 @@ The following configuration can be used to change the inlay hint settings for `r
 }
 ```
 
-See [Inlay Hints](https://rust-analyzer.github.io/book/features.html#inlay-hints) in the Rust Analyzer Manual for more information.
+更多内容请参阅 Rust Analyzer 手册中的[内联提示](https://rust-analyzer.github.io/book/features.html#inlay-hints)。
 
-## Target directory
+## target 目录
 
-The `rust-analyzer` target directory can be set in `initialization_options`:
+可在 `initialization_options` 中设置 rust-analyzer 的 target 目录：
 
 ```json [settings]
 {
@@ -57,15 +51,15 @@ The `rust-analyzer` target directory can be set in `initialization_options`:
 }
 ```
 
-A `true` setting will set the target directory to `target/rust-analyzer`. You can set a custom directory with a string like `"target/analyzer"` instead of `true`.
+当值为 `true` 时，target 目录为 `target/rust-analyzer`；也可直接指定字符串（如 `"target/analyzer"`）。
 
-## Binary
+## 可执行文件
 
-You can configure which `rust-analyzer` binary Zed should use.
+可以控制 Zed 使用哪个 `rust-analyzer` 可执行文件。
 
-By default, Zed will try to find a `rust-analyzer` in your `$PATH` and try to use that. If that binary successfully executes `rust-analyzer --help`, it's used. Otherwise, Zed will fall back to installing its own stable `rust-analyzer` version and use that.
+默认情况下 Zed 会在 `$PATH` 查找 `rust-analyzer` 并尝试执行 `rust-analyzer --help`。若执行成功即使用该版本，否则回退到 Zed 自动安装的稳定版。
 
-If you want to install pre-release `rust-analyzer` version instead you can instruct Zed to do so by setting `pre_release` to `true` in your `settings.json`:
+若想使用预发布版本，可在 `settings.json` 中设置 `pre_release`：
 
 ```json [settings]
 {
@@ -79,7 +73,7 @@ If you want to install pre-release `rust-analyzer` version instead you can instr
 }
 ```
 
-If you want to disable Zed looking for a `rust-analyzer` binary, you can set `ignore_system_version` to `true` in your `settings.json`:
+若想禁止搜索系统版本，可将 `ignore_system_version` 设为 `true`：
 
 ```json [settings]
 {
@@ -93,7 +87,7 @@ If you want to disable Zed looking for a `rust-analyzer` binary, you can set `ig
 }
 ```
 
-If you want to use a binary in a custom location, you can specify a `path` and optional `arguments`:
+需要指定自定义位置时，可提供绝对路径及可选参数：
 
 ```json [settings]
 {
@@ -108,11 +102,9 @@ If you want to use a binary in a custom location, you can specify a `path` and o
 }
 ```
 
-This `"path"` has to be an absolute path.
+## 切换编译目标
 
-## Alternate Targets
-
-If you want rust-analyzer to provide diagnostics for a target other than your current platform (e.g. for windows when running on macOS) you can use the following Zed lsp settings:
+若希望 rust-analyzer 在非当前平台（例如 macOS 开发时针对 Windows）生成诊断，可在设置中指定目标三元组：
 
 ```json [settings]
 {
@@ -128,89 +120,64 @@ If you want rust-analyzer to provide diagnostics for a target other than your cu
 }
 ```
 
-If you are using `rustup`, you can find a list of available target triples (`aarch64-apple-darwin`, `x86_64-unknown-linux-gnu`, etc) by running:
+使用 `rustup target list --installed` 可查看可用的目标三元组。
 
-```sh
-rustup target list --installed
-```
+## LSP 任务
 
-## LSP tasks
-
-Zed provides tasks using tree-sitter, but rust-analyzer has an LSP extension method for querying file-related tasks via LSP.
-This is enabled by default and can be configured as
+rust-analyzer 提供 LSP 扩展来查询文件相关任务，Zed 默认启用，可通过以下配置调整：
 
 ```json [settings]
 "lsp": {
   "rust-analyzer": {
-    "enable_lsp_tasks": true,
+    "enable_lsp_tasks": true
   }
 }
 ```
 
-## Manual Cargo Diagnostics fetch
+## 手动获取 Cargo 诊断
 
-By default, rust-analyzer has `checkOnSave: true` enabled, which causes every buffer save to trigger a `cargo check --workspace --all-targets` command.
-If disabled with `checkOnSave: false` (see the example of the server configuration json above), it's still possible to fetch the diagnostics manually, with the `editor: run/clear/cancel flycheck` commands in Rust files to refresh cargo diagnostics; the project diagnostics editor will also refresh cargo diagnostics with `editor: run flycheck` command when the setting is enabled.
+默认情况下，rust-analyzer 会在保存时执行 `cargo check --workspace --all-targets`（`checkOnSave: true`）。如果将 `checkOnSave` 设为 `false`，仍可通过 Rust 文件中的 `editor: run flycheck` 等命令手动刷新诊断，或者在项目诊断面板运行该命令。
 
-## More server configuration
+## 进一步配置
 
-<!--
-TBD: Is it possible to specify RUSTFLAGS? https://github.com/zed-industries/zed/issues/14334
--->
+Rust Analyzer [手册](https://rust-analyzer.github.io/book/) 详细介绍了各项功能与设置。
 
-Rust-analyzer [manual](https://rust-analyzer.github.io/book/) describes various features and configuration options for rust-analyzer language server.
-Rust-analyzer in Zed runs with the default parameters.
+### 大型项目与性能
 
-### Large projects and performance
+在大型项目中，以下配置的组合可能导致资源消耗过大：
 
-One of the main caveats that might cause extensive resource usage on large projects, is the combination of the following features:
+- `rust-analyzer.checkOnSave`（默认 true）
+- `rust-analyzer.check.workspace`（默认 true）
+- `rust-analyzer.cargo.allTargets`（默认 true）
 
-```
-rust-analyzer.checkOnSave (default: true)
-    Run the check command for diagnostics on save.
-```
+这意味着每次保存都会执行 `cargo check --workspace --all-targets`，对所有目标（lib、doc、test、bin、bench 等）进行检查。对于大型项目可能较慢。
 
-```
-rust-analyzer.check.workspace (default: true)
-    Whether --workspace should be passed to cargo check. If false, -p <package> will be passed instead.
-```
+替代方案：
 
-```
-rust-analyzer.cargo.allTargets (default: true)
-    Pass --all-targets to cargo invocation
-```
+- 使用 [tasks](../tasks.md)，例如内置的 `cargo check --workspace --all-targets` 任务，并通过终端输出跳转到错误位置。
+- 限制或关闭保存时检查。
 
-Which would mean that every time Zed saves, a `cargo check --workspace --all-targets` command is run, checking the entire project (workspace), lib, doc, test, bin, bench and [other targets](https://doc.rust-lang.org/cargo/reference/cargo-targets.html).
+关闭保存检查后，rust-analyzer 仅返回自身的[内置诊断](https://rust-analyzer.github.io/book/diagnostics.html)。可以参考更多 `rust-analyzer.cargo.*`、`rust-analyzer.check.*`、`rust-analyzer.diagnostics.*` 设置实现更细粒度的控制。
 
-While that works fine on small projects, it does not scale well.
-
-The alternatives would be to use [tasks](../tasks.md), as Zed already provides a `cargo check --workspace --all-targets` task and the ability to cmd/ctrl-click on the terminal output to navigate to the error, and limit or turn off the check on save feature entirely.
-
-Check on save feature is responsible for returning part of the diagnostics based on cargo check output, so turning it off will limit rust-analyzer with its own [diagnostics](https://rust-analyzer.github.io/book/diagnostics.html).
-
-Consider more `rust-analyzer.cargo.` and `rust-analyzer.check.` and `rust-analyzer.diagnostics.` settings from the manual for more fine-grained configuration.
-Here's a snippet for Zed settings.json (the language server will restart automatically after the `lsp.rust-analyzer` section is edited and saved):
+示例配置：
 
 ```json [settings]
 {
   "lsp": {
     "rust-analyzer": {
       "initialization_options": {
-        // get more cargo-less diagnostics from rust-analyzer,
-        // which might include false-positives (those can be turned off by their names)
         "diagnostics": {
           "experimental": {
             "enable": true
           }
         },
-        // To disable the checking entirely
-        // (ignores all cargo and check settings below)
+        // 完全禁用保存时检查
         "checkOnSave": false,
-        // To check the `lib` target only.
+        // 仅检查 lib 目标
         "cargo": {
           "allTargets": false
         },
-        // Use `-p` instead of `--workspace` for cargo check
+        // 使用 -p 而非 --workspace
         "check": {
           "workspace": false
         }
@@ -220,10 +187,9 @@ Here's a snippet for Zed settings.json (the language server will restart automat
 }
 ```
 
-### Multi-project workspaces
+### 多项目工作区
 
-If you want rust-analyzer to analyze multiple Rust projects in the same folder that are not listed in `[members]` in the Cargo workspace,
-you can list them in `linkedProjects` in the local project settings:
+若同一目录下存在多个未在 `[members]` 中声明的 Rust 项目，可通过 `linkedProjects` 指定：
 
 ```json [settings]
 {
@@ -237,9 +203,9 @@ you can list them in `linkedProjects` in the local project settings:
 }
 ```
 
-### Snippets
+### 代码片段
 
-There's a way to get custom completion items from rust-analyzer, that will transform the code according to the snippet body:
+可使用自定义片段增强补全：
 
 ```json [settings]
 {
@@ -279,7 +245,7 @@ There's a way to get custom completion items from rust-analyzer, that will trans
               },
               "vec!": {
                 "postfix": "vec",
-                "body": ["vec![${receiver}]"],
+                "body": ["vec![${receiver}]"] ,
                 "description": "vec![]",
                 "scope": "expr"
               }
@@ -292,16 +258,16 @@ There's a way to get custom completion items from rust-analyzer, that will trans
 }
 ```
 
-## Debugging
+## 调试
 
-Zed supports debugging Rust binaries and tests out of the box with `CodeLLDB` and `GDB`. Run {#action debugger::Start} ({#kb debugger::Start}) to launch one of these preconfigured debug tasks.
+Zed 开箱即用地支持使用 CodeLLDB 与 GDB 调试 Rust 二进制与测试。执行 {#action debugger::Start}（{#kb debugger::Start}）即可选择内置任务。
 
-For more control, you can add debug configurations to `.zed/debug.json`. See the examples below.
+若需更细致的控制，可在 `.zed/debug.json` 中添加自定义配置：
 
-- [CodeLLDB configuration documentation](https://github.com/vadimcn/codelldb/blob/master/MANUAL.md#starting-a-new-debug-session)
-- [GDB configuration documentation](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Debugger-Adapter-Protocol.html)
+- [CodeLLDB 配置文档](https://github.com/vadimcn/codelldb/blob/master/MANUAL.md#starting-a-new-debug-session)
+- [GDB 配置文档](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Debugger-Adapter-Protocol.html)
 
-### Build binary then debug
+### 构建后调试
 
 ```json [debug]
 [
@@ -312,7 +278,6 @@ For more control, you can add debug configurations to `.zed/debug.json`. See the
       "args": ["build"]
     },
     "program": "$ZED_WORKTREE_ROOT/target/debug/binary",
-    // sourceLanguages is required for CodeLLDB (not GDB) when using Rust
     "sourceLanguages": ["rust"],
     "request": "launch",
     "adapter": "CodeLLDB"
@@ -320,9 +285,9 @@ For more control, you can add debug configurations to `.zed/debug.json`. See the
 ]
 ```
 
-### Automatically locate a debug target based on build command
+### 自动推断调试目标
 
-When you use `cargo build` or `cargo test` as the build command, Zed can infer the path to the output binary.
+当构建命令为 `cargo build` 或 `cargo test` 时，Zed 可推断输出的可执行文件路径：
 
 ```json [debug]
 [
@@ -333,7 +298,6 @@ When you use `cargo build` or `cargo test` as the build command, Zed can infer t
       "command": "cargo",
       "args": ["build"]
     },
-    // sourceLanguages is required for CodeLLDB (not GDB) when using Rust
     "sourceLanguages": ["rust"]
   }
 ]

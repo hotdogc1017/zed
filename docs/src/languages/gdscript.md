@@ -1,29 +1,29 @@
 # GDScript
 
-Godot [GDScript](https://gdscript.com/) language support in Zed is provided by the community-maintained [GDScript extension](https://github.com/grndctrl/zed-gdscript).
-Report issues to: [https://github.com/grndctrl/zed-gdscript/issues](https://github.com/grndctrl/zed-gdscript/issues)
+Godot [GDScript](https://gdscript.com/) 的语言支持由社区维护的 [GDScript 扩展](https://github.com/grndctrl/zed-gdscript) 提供。
+如需反馈问题，请访问：[https://github.com/grndctrl/zed-gdscript/issues](https://github.com/grndctrl/zed-gdscript/issues)
 
-- Tree-sitter: [PrestonKnopp/tree-sitter-gdscript](https://github.com/PrestonKnopp/tree-sitter-gdscript) and [PrestonKnopp/tree-sitter-godot-resource](https://github.com/PrestonKnopp/tree-sitter-godot-resource)
-- Language Server: [gdscript-language-server](https://github.com/godotengine/godot)
+- Tree-sitter：[PrestonKnopp/tree-sitter-gdscript](https://github.com/PrestonKnopp/tree-sitter-gdscript) 与 [PrestonKnopp/tree-sitter-godot-resource](https://github.com/PrestonKnopp/tree-sitter-godot-resource)
+- 语言服务器：[gdscript-language-server](https://github.com/godotengine/godot)
 
-## Setup
+## 安装步骤
 
-1. Download and install [Godot for macOS](https://godotengine.org/download/macos/).
-2. Unzip the Godot.app and drag it into your /Applications folder.
-3. Open Godot.app and open your project (an example project is fine)
-4. In Godot, Editor Menu -> Editor Settings; scroll down the left sidebar to `Text Editor -> External`
-   1. Use External Editor: "✅ On"
-   2. Exec path: `/Applications/Zed.app/Contents/MacOS/zed`
-   3. Exec flags: `{project} {file}:{line}:{col}`
-   4. Close settings to save.
-5. In Godot double click on a \*.gd script and Zed will launch
+1. 下载并安装 [macOS 版 Godot](https://godotengine.org/download/macos/)。
+2. 解压 Godot.app 并拖入 /Applications 目录。
+3. 启动 Godot.app 并打开你的项目（示例项目亦可）。
+4. 在 Godot 中打开 Editor 菜单 -> Editor Settings，左侧导航滚动到 `Text Editor -> External`：
+   1. Use External Editor：勾选“✅ On”
+   2. Exec path：`/Applications/Zed.app/Contents/MacOS/zed`
+   3. Exec flags：`{project} {file}:{line}:{col}`
+   4. 关闭设置以保存。
+5. 在 Godot 中双击任意 `.gd` 脚本即可启动 Zed。
 
 <!--
-TBD: GDScript Linux setup
+待补充：GDScript 在 Linux 上的安装说明
 -->
 
-## Usage
+## 使用说明
 
-When Godot is running, the GDScript extension will connect to the language server provided by the Godot runtime and will provide `jump to definition`, hover states when you hold cmd and other language server features.
+当 Godot 正在运行时，GDScript 扩展会连接到 Godot 运行时提供的语言服务器，从而支持跳转定义、按住 Cmd 查看悬停信息等语言服务器功能。
 
-> Note: If Zed is already running with an existing workspace, spawning from Godot will fail. Quit Zed and it should work again.
+> 注意：如果 Zed 已经在其他工作区中运行，从 Godot 启动可能会失败。请先退出 Zed，再重新尝试。

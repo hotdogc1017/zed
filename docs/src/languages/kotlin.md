@@ -1,24 +1,20 @@
 # Kotlin
 
-Kotlin language support in Zed is provided by the community-maintained [Kotlin extension](https://github.com/zed-extensions/kotlin).
-Report issues to: [https://github.com/zed-extensions/kotlin/issues](https://github.com/zed-extensions/kotlin/issues)
+Zed 对 Kotlin 的语言支持由社区维护的 [Kotlin 扩展](https://github.com/zed-extensions/kotlin) 提供。
+如需反馈问题，请前往：[https://github.com/zed-extensions/kotlin/issues](https://github.com/zed-extensions/kotlin/issues)
 
-- Tree-sitter: [fwcd/tree-sitter-kotlin](https://github.com/fwcd/tree-sitter-kotlin)
-- Language Server: [fwcd/kotlin-language-server](https://github.com/fwcd/kotlin-language-server)
+- Tree-sitter：[fwcd/tree-sitter-kotlin](https://github.com/fwcd/tree-sitter-kotlin)
+- 语言服务器：[fwcd/kotlin-language-server](https://github.com/fwcd/kotlin-language-server)
 
-## Configuration
+## 配置
 
-Workspace configuration options can be passed to the language server via lsp
-settings in `settings.json`.
+可以在 `settings.json` 的 lsp 设置中向语言服务器传递工作区配置选项。
 
-The full list of lsp `settings` can be found
-[here](https://github.com/fwcd/kotlin-language-server/blob/main/server/src/main/kotlin/org/javacs/kt/Configuration.kt)
-under `class Configuration` and initialization_options under `class InitializationOptions`.
+完整的 lsp `settings` 位于 [`Configuration` 类](https://github.com/fwcd/kotlin-language-server/blob/main/server/src/main/kotlin/org/javacs/kt/Configuration.kt) 中，`initialization_options` 则在同文件的 `InitializationOptions` 类中定义。
 
-### JVM Target
+### JVM 目标版本
 
-The following example changes the JVM target from `default` (which is 1.8) to
-`17`:
+以下示例将 JVM 目标版本从默认的 `default`（即 1.8）修改为 `17`：
 
 ```json [settings]
 {
@@ -38,7 +34,7 @@ The following example changes the JVM target from `default` (which is 1.8) to
 
 ### JAVA_HOME
 
-To use a specific java installation, just specify the `JAVA_HOME` environment variable with:
+如需指定特定的 Java 安装路径，可以通过设置 `JAVA_HOME` 环境变量实现：
 
 ```json [settings]
 {

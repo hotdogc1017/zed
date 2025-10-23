@@ -1,11 +1,11 @@
-# Language Support in Zed
+# Zed 中的语言支持
 
-Zed supports hundreds of programming languages and text formats.
-Some work out-of-the box and others rely on 3rd party extensions.
+Zed 支持数百种编程语言和文本格式。
+有些开箱即用，其他则依赖第三方扩展。
 
-> The ones included out-of-the-box, natively built into Zed, are marked with \*.
+> 开箱即用、原生内置在 Zed 中的语言用 \* 标记。
 
-## Languages with Documentation
+## 有文档的语言
 
 - [Ansible](./languages/ansible.md)
 - [AsciiDoc](./languages/asciidoc.md)
@@ -57,7 +57,7 @@ Some work out-of-the box and others rely on 3rd party extensions.
 - [Racket](./languages/racket.md)
 - [Roc](./languages/roc.md)
 - [Ruby](./languages/ruby.md)
-- [Rust](./languages/rust.md) \* (Zed's written in Rust)
+- [Rust](./languages/rust.md) \* (Zed 是用 Rust 编写的)
 - [Scala](./languages/scala.md)
 - [Scheme](./languages/scheme.md)
 - [Shell Script](./languages/sh.md)
@@ -75,7 +75,7 @@ Some work out-of-the box and others rely on 3rd party extensions.
 - [Yarn](./languages/yarn.md)
 - [Zig](./languages/zig.md)
 
-## Additional Community Language Extensions
+## 额外的社区语言扩展
 
 - [Ada](https://github.com/wisn/zed-ada-language)
 - [Aiken](https://github.com/aiken-lang/zed-aiken)

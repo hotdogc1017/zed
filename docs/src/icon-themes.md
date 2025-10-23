@@ -1,22 +1,21 @@
-# Icon Themes
+# 图标主题
 
-Zed comes with a built-in icon theme, with more icon themes available as extensions.
+Zed 自带一套默认图标主题，也可以通过扩展获取更多样式。
 
-## Selecting an Icon Theme
+## 选择图标主题
 
-See what icon themes are installed and preview them via the Icon Theme Selector, which you can open from the command palette with "icon theme selector: toggle".
+使用命令面板执行 “icon theme selector: toggle” 打开图标主题选择器。上下移动即可实时预览不同主题，按 `Enter` 会将当前选择写入设置文件。
 
-Navigating through the icon theme list by moving up and down will change the icon theme in real time and hitting enter will save it to your settings file.
+## 安装额外主题
 
-## Installing more Icon Themes
+更多图标主题可在扩展页面获取：
 
-More icon themes are available from the Extensions page, which you can access via the command palette with "zed: Extensions" or the [Zed website](https://zed.dev/extensions).
+- 命令面板执行 “zed: Extensions”
+- 或访问 [Zed 扩展网站](https://zed.dev/extensions)
 
-## Configuring Icon Themes
+## 配置图标主题
 
-Your selected icon theme is stored in your settings file. You can open your settings file from the command palette with "zed: open settings" (bound to `cmd-,` on macOS and `ctrl-,` on Linux).
-
-Just like with themes, Zed allows for configuring different icon themes for light and dark mode. You can set the mode to `"light"` or `"dark"` to ignore the current system mode.
+主题配置存放在 `settings.json`。通过命令面板执行 “zed: open settings”（macOS 默认 `cmd-,`，Linux/Windows `ctrl-,`）打开文件。与界面主题类似，可为浅色/深色模式分别指定不同图标主题，并可强制使用特定模式：
 
 ```json [settings]
 {
@@ -28,6 +27,6 @@ Just like with themes, Zed allows for configuring different icon themes for ligh
 }
 ```
 
-## Icon Theme Development
+## 开发图标主题
 
-See: [Developing Zed Icon Themes](./extensions/icon-themes.md)
+详见：[开发 Zed 图标主题](./extensions/icon-themes.md)。

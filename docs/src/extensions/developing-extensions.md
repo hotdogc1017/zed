@@ -1,34 +1,33 @@
-# Developing Extensions
+# 开发扩展
 
-## Extension Capabilities
+## 扩展功能
 
-Extensions can add the following capabilities to Zed:
+扩展可以为 Zed 添加以下功能：
 
-- [Languages](./languages.md)
-- [Debuggers](./debugger-extensions.md)
-- [Themes](./themes.md)
-- [Icon Themes](./icon-themes.md)
-- [Slash Commands](./slash-commands.md)
-- [MCP Servers](./mcp-extensions.md)
+- [语言](./languages.md)
+- [调试器](./debugger-extensions.md)
+- [主题](./themes.md)
+- [图标主题](./icon-themes.md)
+- [斜杠命令](./slash-commands.md)
+- [MCP 服务器](./mcp-extensions.md)
 
-## Developing an Extension Locally
+## 本地开发扩展
 
-Before starting to develop an extension for Zed, be sure to [install Rust via rustup](https://www.rust-lang.org/tools/install).
+在开始为 Zed 开发扩展之前，请确保[通过 rustup 安装 Rust](https://www.rust-lang.org/tools/install)。
 
-> Rust must be installed via rustup. If you have Rust installed via homebrew or otherwise, installing dev extensions will not work.
+> Rust 必须通过 rustup 安装。如果您通过 homebrew 或其他方式安装了 Rust，安装开发扩展将无法工作。
 
-When developing an extension, you can use it in Zed without needing to publish it by installing it as a _dev extension_.
+在开发扩展时，您可以通过将其安装为_开发扩展_来在 Zed 中使用它，而无需发布它。
 
-From the extensions page, click the `Install Dev Extension` button (or the {#action zed::InstallDevExtension} action) and select the directory containing your extension.
+从扩展页面，点击 `Install Dev Extension` 按钮（或 {#action zed::InstallDevExtension} 操作）并选择包含您的扩展的目录。
 
-If you need to troubleshoot, you can check the Zed.log ({#action zed::OpenLog}) for additional output. For debug output, close and relaunch zed with the `zed --foreground` from the command line which show more verbose INFO level logging.
+如果需要故障排除，您可以检查 Zed.log（{#action zed::OpenLog}）以获取额外的输出。对于调试输出，请使用 `zed --foreground` 从命令行关闭并重新启动 zed，这将显示更详细的 INFO 级别日志记录。
 
-If you already have the published version of the extension installed, the published version will be uninstalled prior to the installation of the dev extension. After successful installation, the `Extensions` page will indicate that the upstream extension is "Overridden by dev extension".
+如果您已经安装了已发布的扩展版本，则在安装开发扩展之前将卸载已发布的版本。成功安装后，`Extensions` 页面将指示上游扩展被"开发扩展覆盖"。
 
-## Directory Structure of a Zed Extension
+## Zed 扩展的目录结构
 
-A Zed extension is a Git repository that contains an `extension.toml`. This file must contain some
-basic information about the extension:
+Zed 扩展是一个包含 `extension.toml` 的 Git 存储库。此文件必须包含有关扩展的一些基本信息：
 
 ```toml
 id = "my-extension"
@@ -40,7 +39,7 @@ description = "My cool extension"
 repository = "https://github.com/your-name/my-zed-extension"
 ```
 
-In addition to this, there are several other optional files and directories that can be used to add functionality to a Zed extension. An example directory structure of an extension that provides all capabilities is as follows:
+除此之外，还有几个其他可选文件和目录可用于向 Zed 扩展添加功能。提供所有功能的扩展的示例目录结构如下：
 
 ```
 my-extension/
@@ -58,7 +57,7 @@ my-extension/
 
 ## WebAssembly
 
-Procedural parts of extensions are written in Rust and compiled to WebAssembly. To develop an extension that includes custom code, include a `Cargo.toml` like this:
+扩展的过程部分用 Rust 编写并编译为 WebAssembly。要开发包含自定义代码的扩展，请包含一个像这样的 `Cargo.toml`：
 
 ```toml
 [package]
@@ -73,9 +72,9 @@ crate-type = ["cdylib"]
 zed_extension_api = "0.1.0"
 ```
 
-Use the latest version of the [`zed_extension_api`](https://crates.io/crates/zed_extension_api) available on crates.io. Make sure it's still [compatible with Zed versions](https://github.com/zed-industries/zed/blob/main/crates/extension_api#compatible-zed-versions) you want to support.
+使用 crates.io 上可用的最新版本的 [`zed_extension_api`](https://crates.io/crates/zed_extension_api)。确保它仍然与您想要支持的 [Zed 版本兼容](https://github.com/zed-industries/zed/blob/main/crates/extension_api#compatible-zed-versions)。
 
-In the `src/lib.rs` file in your Rust crate you will need to define a struct for your extension and implement the `Extension` trait, as well as use the `register_extension!` macro to register your extension:
+在您的 Rust crate 的 `src/lib.rs` 文件中，您需要为您的扩展定义一个结构体并实现 `Extension` trait，以及使用 `register_extension!` 宏来注册您的扩展：
 
 ```rs
 use zed_extension_api as zed;
@@ -91,56 +90,56 @@ impl zed::Extension for MyExtension {
 zed::register_extension!(MyExtension);
 ```
 
-> `stdout`/`stderr` is forwarded directly to the Zed process. In order to see `println!`/`dbg!` output from your extension, you can start Zed in your terminal with a `--foreground` flag.
+> `stdout`/`stderr` 直接转发到 Zed 进程。为了查看来自您的扩展的 `println!`/`dbg!` 输出，您可以在终端中使用 `--foreground` 标志启动 Zed。
 
-## Forking and cloning the repo
+## Forking 和克隆存储库
 
-1. Fork the repo
+1. Fork 存储库
 
-> Note: It is very helpful if you fork the `zed-industries/extensions` repo to a personal GitHub account instead of a GitHub organization, as this allows Zed staff to push any needed changes to your PR to expedite the publishing process.
+> 注意：如果您将 `zed-industries/extensions` 存储库 fork 到个人 GitHub 账户而不是 GitHub 组织，这将非常有帮助，因为这允许 Zed 工作人员将任何需要的更改推送到您的 PR 以加快发布过程。
 
-2. Clone the repo to your local machine
+2. 将存储库克隆到本地机器
 
 ```sh
-# Substitute the url of your fork here:
+# 在此处替换您的 fork 的 url：
 # git clone https://github.com/zed-industries/extensions
 cd extensions
 git submodule init
 git submodule update
 ```
 
-## Extension License Requirements
+## 扩展许可证要求
 
-As of October 1st, 2025, extension repositories must include one of the following licenses:
+自 2025 年 10 月 1 日起，扩展存储库必须包含以下许可证之一：
 
 - [MIT](https://opensource.org/license/mit)
 - [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
-This allows us to distribute the resulting binary produced from your extension code to our users.
-Without a valid license, the pull request to add or update your extension in the following steps will fail CI.
+这允许我们将从您的扩展代码生成的二进制文件分发给我们的用户。
+没有有效的许可证，在以下步骤中添加或更新您的扩展的拉取请求将无法通过 CI。
 
-Your license file should be at the root of your extension repository. Any filename that has `LICENCE` or `LICENSE` as a prefix (case insensitive) will be inspected to ensure it matches one of the accepted licenses. See the [license validation source code](https://github.com/zed-industries/extensions/blob/main/src/lib/license.js).
+您的许可证文件应位于扩展存储库的根目录。任何以 `LICENCE` 或 `LICENSE` 为前缀（不区分大小写）的文件名将被检查以确保它匹配其中一个接受的许可证。请参阅[许可证验证源代码](https://github.com/zed-industries/extensions/blob/main/src/lib/license.js)。
 
-> This license requirement applies only to your extension code itself (the code that gets compiled into the extension binary).
-> It does not apply to any tools your extension may download or interact with, such as language servers or other external dependencies.
-> If your repository contains both extension code and other projects (like a language server), you are not required to relicense those other projects—only the extension code needs to be one of the aforementioned accepted licenses.
+> 此许可证要求仅适用于您的扩展代码本身（编译到扩展二进制文件中的代码）。
+> 它不适用于您的扩展可能下载或与之交互的任何工具，例如语言服务器或其他外部依赖项。
+> 如果您的存储库同时包含扩展代码和其他项目（如语言服务器），您不需要重新许可这些其他项目——只有扩展代码需要是上述接受的许可证之一。
 
-## Publishing your extension
+## 发布您的扩展
 
-To publish an extension, open a PR to [the `zed-industries/extensions` repo](https://github.com/zed-industries/extensions).
+要发布扩展，请向 [the `zed-industries/extensions` repo](https://github.com/zed-industries/extensions) 打开一个 PR。
 
-In your PR, do the following:
+在您的 PR 中，执行以下操作：
 
-1. Add your extension as a Git submodule within the `extensions/` directory
+1. 将您的扩展作为 Git 子模块添加到 `extensions/` 目录中
 
 ```sh
 git submodule add https://github.com/your-username/foobar-zed.git extensions/foobar
 git add extensions/foobar
 ```
 
-> All extension submodules must use HTTPS URLs and not SSH URLS (`git@github.com`).
+> 所有扩展子模块必须使用 HTTPS URL，而不是 SSH URL（`git@github.com`）。
 
-2. Add a new entry to the top-level `extensions.toml` file containing your extension:
+2. 向顶层的 `extensions.toml` 文件添加一个新条目，包含您的扩展：
 
 ```toml
 [my-extension]
@@ -148,24 +147,24 @@ submodule = "extensions/my-extension"
 version = "0.0.1"
 ```
 
-> If your extension is in a subdirectory within the submodule you can use the `path` field to point to where the extension resides.
+> 如果您的扩展位于子模块内的子目录中，您可以使用 `path` 字段指向扩展所在的位置。
 
-3. Run `pnpm sort-extensions` to ensure `extensions.toml` and `.gitmodules` are sorted
+3. 运行 `pnpm sort-extensions` 以确保 `extensions.toml` 和 `.gitmodules` 已排序
 
-Once your PR is merged, the extension will be packaged and published to the Zed extension registry.
+一旦您的 PR 被合并，扩展将被打包并发布到 Zed 扩展注册表。
 
-> Extension IDs and names should not contain `zed` or `Zed`, since they are all Zed extensions.
+> 扩展 ID 和名称不应包含 `zed` 或 `Zed`，因为它们都是 Zed 扩展。
 
-## Updating an extension
+## 更新扩展
 
-To update an extension, open a PR to [the `zed-industries/extensions` repo](https://github.com/zed-industries/extensions).
+要更新扩展，请向 [the `zed-industries/extensions` repo](https://github.com/zed-industries/extensions) 打开一个 PR。
 
-In your PR do the following:
+在您的 PR 中执行以下操作：
 
-1. Update the extension's submodule to the commit of the new version.
-2. Update the `version` field for the extension in `extensions.toml`
-   - Make sure the `version` matches the one set in `extension.toml` at the particular commit.
+1. 将扩展的子模块更新到新版本的提交。
+2. 更新 `extensions.toml` 中扩展的 `version` 字段
+   - 确保 `version` 与特定提交中 `extension.toml` 中设置的版本匹配。
 
-If you'd like to automate this process, there is a [community GitHub Action](https://github.com/huacnlee/zed-extension-action) you can use.
+如果您想自动化此过程，可以使用[社区 GitHub Action](https://github.com/huacnlee/zed-extension-action)。
 
-> **Note:** If your extension repository has a different license, you'll need to update it to be one of the [accepted extension licenses](#extension-license-requirements) before publishing your update.
+> **注意：** 如果您的扩展存储库有不同的许可证，您需要在发布更新之前将其更新为[接受的扩展许可证](#extension-license-requirements)之一。

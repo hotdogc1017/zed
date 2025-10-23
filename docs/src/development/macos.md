@@ -1,65 +1,65 @@
-# Building Zed for macOS
+# 为 macOS 构建 Zed
 
-## Repository
+## 存储库
 
-Clone down the [Zed repository](https://github.com/zed-industries/zed).
+克隆 [Zed 存储库](https://github.com/zed-industries/zed)。
 
-## Dependencies
+## 依赖项
 
-- Install [rustup](https://www.rust-lang.org/tools/install)
+- 安装 [rustup](https://www.rust-lang.org/tools/install)
 
-- Install [Xcode](https://apps.apple.com/us/app/xcode/id497799835?mt=12) from the macOS App Store, or from the [Apple Developer](https://developer.apple.com/download/all/) website. Note this requires a developer account.
+- 从 macOS App Store 或 [Apple Developer](https://developer.apple.com/download/all/) 网站安装 [Xcode](https://apps.apple.com/us/app/xcode/id497799835?mt=12)。请注意这需要开发者账户。
 
-> Ensure you launch Xcode after installing, and install the macOS components, which is the default option.
+> 确保安装后启动 Xcode，并安装 macOS 组件，这是默认选项。
 
-- Install [Xcode command line tools](https://developer.apple.com/xcode/resources/)
+- 安装 [Xcode 命令行工具](https://developer.apple.com/xcode/resources/)
 
   ```sh
   xcode-select --install
   ```
 
-- Ensure that the Xcode command line tools are using your newly installed copy of Xcode:
+- 确保 Xcode 命令行工具使用您新安装的 Xcode 副本：
 
   ```sh
   sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
   sudo xcodebuild -license accept
   ```
 
-- Install `cmake` (required by [a dependency](https://docs.rs/wasmtime-c-api-impl/latest/wasmtime_c_api/))
+- 安装 `cmake`（由 [一个依赖项](https://docs.rs/wasmtime-c-api-impl/latest/wasmtime_c_api/) 需要）
 
   ```sh
   brew install cmake
   ```
 
-### Backend Dependencies (optional) {#backend-dependencies}
+### 后端依赖（可选） {#backend-dependencies}
 
-If you are looking to develop Zed collaboration features using a local collaboration server, please see: [Local Collaboration](./local-collaboration.md) docs.
+如果您希望使用本地协作服务器开发 Zed 协作功能，请参阅：[本地协作](./local-collaboration.md) 文档。
 
-## Building Zed from Source
+## 从源代码构建 Zed
 
-Once you have the dependencies installed, you can build Zed using [Cargo](https://doc.rust-lang.org/cargo/).
+一旦安装了依赖项，您可以使用 [Cargo](https://doc.rust-lang.org/cargo/) 构建 Zed。
 
-For a debug build:
+对于调试构建：
 
 ```sh
 cargo run
 ```
 
-For a release build:
+对于发布构建：
 
 ```sh
 cargo run --release
 ```
 
-And to run the tests:
+要运行测试：
 
 ```sh
 cargo test --workspace
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Error compiling metal shaders
+### 编译 metal 着色器错误
 
 ```sh
 error: failed to run custom build command for gpui v0.1.0 (/Users/path/to/zed)`**
@@ -67,17 +67,17 @@ error: failed to run custom build command for gpui v0.1.0 (/Users/path/to/zed)`*
 xcrun: error: unable to find utility "metal", not a developer tool or in PATH
 ```
 
-Try `sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer`
+尝试 `sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer`
 
-If you're on macOS 26, try `xcodebuild -downloadComponent MetalToolchain`
+如果您在 macOS 26 上，尝试 `xcodebuild -downloadComponent MetalToolchain`
 
-### Cargo errors claiming that a dependency is using unstable features
+### Cargo 错误声称依赖项使用不稳定功能
 
-Try `cargo clean` and `cargo build`.
+尝试 `cargo clean` 和 `cargo build`。
 
-### Error: 'dispatch/dispatch.h' file not found
+### 错误：找不到 'dispatch/dispatch.h' 文件
 
-If you encounter an error similar to:
+如果您遇到类似以下错误：
 
 ```sh
 src/platform/mac/dispatch.h:1:10: fatal error: 'dispatch/dispatch.h' file not found
@@ -94,57 +94,51 @@ Caused by:
   cargo:rerun-if-env-changed=BINDGEN_EXTRA_CLANG_ARGS
 ```
 
-This file is part of Xcode. Ensure you have installed the Xcode command line tools and set the correct path:
+此文件是 Xcode 的一部分。确保您已安装 Xcode 命令行工具并设置了正确的路径：
 
 ```sh
 xcode-select --install
 sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
 ```
 
-Additionally, set the `BINDGEN_EXTRA_CLANG_ARGS` environment variable:
+此外，设置 `BINDGEN_EXTRA_CLANG_ARGS` 环境变量：
 
 ```sh
 export BINDGEN_EXTRA_CLANG_ARGS="--sysroot=$(xcrun --show-sdk-path)"
 ```
 
-Then clean and rebuild the project:
+然后清理并重新构建项目：
 
 ```sh
 cargo clean
 cargo run
 ```
 
-### Tests failing due to `Too many open files (os error 24)`
+### 测试因 `Too many open files (os error 24)` 失败
 
-This error seems to be caused by OS resource constraints. Installing and running tests with `cargo-nextest` should resolve the issue.
+此错误似乎是由操作系统资源限制引起的。安装并使用 `cargo-nextest` 运行测试应该可以解决此问题。
 
 - `cargo install cargo-nextest --locked`
 - `cargo nextest run --workspace --no-fail-fast`
 
-## Tips & Tricks
+## 提示与技巧
 
-### Avoiding continual rebuilds
+### 避免持续重新构建
 
-If you are finding that Zed is continually rebuilding root crates, it may be because
-you are pointing your development Zed at the codebase itself.
+如果您发现 Zed 持续重新构建根 crate，可能是因为您将开发 Zed 指向了代码库本身。
 
-This causes problems because `cargo run` exports a bunch of environment
-variables which are picked up by the `rust-analyzer` that runs in the development
-build of Zed. These environment variables are in turn passed to `cargo check`, which
-invalidates the build cache of some of the crates we depend on.
+这会导致问题，因为 `cargo run` 导出了一堆环境变量，这些变量被在开发构建的 Zed 中运行的 `rust-analyzer` 拾取。这些环境变量又被传递给 `cargo check`，这会使我们依赖的一些 crate 的构建缓存失效。
 
-You can easily avoid running the built binary on the checked-out Zed codebase using `cargo run
-~/path/to/other/project` to ensure that you don't hit this.
+您可以使用 `cargo run ~/path/to/other/project` 轻松避免在检出的 Zed 代码库上运行构建的二进制文件，以确保不会遇到此问题。
 
-### Speeding up verification
+### 加速验证
 
-If you are building Zed a lot, you may find that macOS continually verifies new
-builds which can add a few seconds to your iteration cycles.
+如果您经常构建 Zed，您可能会发现 macOS 持续验证新的构建，这可能会在您的迭代周期中增加几秒钟。
 
-To fix this, you can:
+要解决此问题，您可以：
 
-- Run `sudo spctl developer-mode enable-terminal` to enable the Developer Tools panel in System Settings.
-- In System Settings, search for "Developer Tools" and add your terminal (e.g. iTerm or Ghostty) to the list under "Allow applications to use developer tools"
-- Restart your terminal.
+- 运行 `sudo spctl developer-mode enable-terminal` 以在系统设置中启用开发者工具面板。
+- 在系统设置中，搜索 "Developer Tools" 并将您的终端（例如 iTerm 或 Ghostty）添加到 "Allow applications to use developer tools" 下的列表中
+- 重新启动您的终端。
 
-Thanks to the nextest developers for publishing [this](https://nexte.st/docs/installation/macos/#gatekeeper).
+感谢 nextest 开发者发布 [此内容](https://nexte.st/docs/installation/macos/#gatekeeper)。

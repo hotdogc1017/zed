@@ -1,28 +1,28 @@
 # PowerShell
 
-PowerShell language support in Zed is provided by the community-maintained [Zed PowerShell extension](https://github.com/wingyplus/zed-powershell). Please report issues to: [github.com/wingyplus/zed-powershell/issues](https://github.com/wingyplus/zed-powershell/issues)
+Zed 对 PowerShell 的语言支持由社区维护的 [Zed PowerShell 扩展](https://github.com/wingyplus/zed-powershell) 提供。如需反馈问题，请访问：[github.com/wingyplus/zed-powershell/issues](https://github.com/wingyplus/zed-powershell/issues)
 
-- Tree-sitter: [airbus-cert/tree-sitter-powershell](https://github.com/airbus-cert/tree-sitter-powershell)
-- Language Server: [PowerShell/PowerShellEditorServices](https://github.com/PowerShell/PowerShellEditorServices)
+- Tree-sitter：[airbus-cert/tree-sitter-powershell](https://github.com/airbus-cert/tree-sitter-powershell)
+- 语言服务器：[PowerShell/PowerShellEditorServices](https://github.com/PowerShell/PowerShellEditorServices)
 
-## Setup
+## 安装
 
-### Install PowerShell 7+ {#powershell-install}
+### 安装 PowerShell 7+ {#powershell-install}
 
-- macOS: `brew install powershell/tap/powershell`
-- Alpine: [Installing PowerShell on Alpine Linux](https://learn.microsoft.com/en-us/powershell/scripting/install/install-alpine)
-- Debian: [Install PowerShell on Debian Linux](https://learn.microsoft.com/en-us/powershell/scripting/install/install-debian)
-- RedHat: [Install PowerShell on RHEL](https://learn.microsoft.com/en-us/powershell/scripting/install/install-rhel)
-- Ubuntu: [Install PowerShell on RHEL](https://learn.microsoft.com/en-us/powershell/scripting/install/install-ubuntu)
-- Windows: [Install PowerShell on Windows](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows)
+- macOS：`brew install powershell/tap/powershell`
+- Alpine：[在 Alpine Linux 上安装 PowerShell](https://learn.microsoft.com/en-us/powershell/scripting/install/install-alpine)
+- Debian：[在 Debian Linux 上安装 PowerShell](https://learn.microsoft.com/en-us/powershell/scripting/install/install-debian)
+- RedHat：[在 RHEL 上安装 PowerShell](https://learn.microsoft.com/en-us/powershell/scripting/install/install-rhel)
+- Ubuntu：[在 Ubuntu 上安装 PowerShell](https://learn.microsoft.com/en-us/powershell/scripting/install/install-ubuntu)
+- Windows：[在 Windows 上安装 PowerShell](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows)
 
-The Zed PowerShell extension will default to the `pwsh` executable found in your path.
+Zed PowerShell 扩展默认使用 PATH 中的 `pwsh` 可执行文件。
 
-### Install PowerShell Editor Services (Optional) {#powershell-editor-services}
+### 安装 PowerShell Editor Services（可选）{#powershell-editor-services}
 
-The Zed PowerShell extensions will attempt to download [PowerShell Editor Services](https://github.com/PowerShell/PowerShellEditorServices) automatically.
+扩展会尝试自动下载 [PowerShell Editor Services](https://github.com/PowerShell/PowerShellEditorServices)。
 
-If want to use a specific binary, you can specify in your that in your Zed settings.json:
+如果希望使用特定版本的可执行文件，可在 Zed 的 `settings.json` 中指定：
 
 ```json [settings]
   "lsp": {

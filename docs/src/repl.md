@@ -1,8 +1,8 @@
 # REPL
 
-## Getting started
+## 快速开始
 
-Bring the power of [Jupyter kernels](https://docs.jupyter.org/en/latest/projects/kernels.html) to your editor! The built-in REPL for Zed allows you to run code interactively in your editor similarly to a notebook with your own text files.
+将 [Jupyter kernels](https://docs.jupyter.org/en/latest/projects/kernels.html) 的能力引入编辑器！Zed 内置的 REPL 让你在普通文本文件中像 Notebook 一样交互式运行代码。
 
 <figure style="width: 100%; margin: 0; overflow: hidden; border-top-left-radius: 2px; border-top-right-radius: 2px;">
     <video loop controls playsinline>
@@ -21,34 +21,30 @@ Bring the power of [Jupyter kernels](https://docs.jupyter.org/en/latest/projects
     </video>
 </figure>
 
-## Installation
+## 安装
 
-Zed supports running code in multiple languages. To get started, you need to install a kernel for the language you want to use.
+Zed 支持多种语言的 REPL。使用前需要为目标语言安装相应的内核（kernel）。
 
-**Currently supported languages:**
+**当前支持的语言：**
 
-- [Python (ipykernel)](#python)
-- [TypeScript (Deno)](#typescript-deno)
-- [R (Ark)](#r-ark)
-- [R (Xeus)](#r-xeus)
+- [Python（ipykernel）](#python)
+- [TypeScript（Deno）](#typescript-deno)
+- [R（Ark）](#r-ark)
+- [R（Xeus）](#r-xeus)
 - [Julia](#julia)
-- [Scala (Almond)](#scala)
+- [Scala（Almond）](#scala)
 
-Once installed, you can start using the REPL in the respective language files, or other places those languages are supported, such as Markdown. If you recently added the kernels, run the `repl: refresh kernelspecs` command to make them available in the editor.
+安装完成后，即可在对应语言的文件（包括 Markdown 等）中使用 REPL。新安装的 kernel 可通过执行 `repl: refresh kernelspecs` 刷新列表。
 
-## Using the REPL
+## 使用方式
 
-To start the REPL, open a file with the language you want to use and use the `repl: run` command (defaults to `ctrl-shift-enter` on macOS) to run a block, selection, or line. You can also click on the REPL icon in the toolbar.
+打开目标语言的文件，执行 `repl: run`（macOS 默认 `ctrl-shift-enter`，Windows/Linux 可自定义）即可运行选中区域、当前块或当前行。也可以点击工具栏的 REPL 图标。
 
-The `repl: run` command will be executed on your selection(s), and the result will be displayed below the selection.
+运行结果会显示在选区下方；可通过 `repl: clear outputs` 命令或工具栏菜单清理输出。
 
-Outputs can be cleared with the `repl: clear outputs` command, or from the REPL menu in the toolbar.
+### 单元模式
 
-### Cell mode
-
-Zed supports [notebooks as scripts](https://jupytext.readthedocs.io/en/latest/formats-scripts.html) using the `# %%` cell separator in Python and `// %%` in TypeScript. This allows you to write code in a single file and run it as if it were a notebook, cell by cell.
-
-The `repl: run` command will run each block of code between the `# %%` markers as a separate cell.
+Zed 支持“脚本式 Notebook”，即在 Python 中以 `# %%`、在 TypeScript 中以 `// %%` 标记单元。`repl: run` 会按单元分块执行：
 
 ```python
 # %% Cell 1
@@ -57,31 +53,28 @@ import numpy as np
 
 # %% Cell 2
 import matplotlib.pyplot as plt
-import matplotlib.pyplot as plt
 from matplotlib import style
 style.use('ggplot')
 ```
 
-## Language specific instructions
+## 各语言安装说明
 
 ### Python {#python}
 
-#### Global environment
+#### 全局环境
 
 <div class="warning">
-
-On macOS, your system Python will _not_ work. Either set up [pyenv](https://github.com/pyenv/pyenv?tab=readme-ov-file#installation) or use a virtual environment.
-
+在 macOS 上，请勿使用系统自带的 Python。可通过 [pyenv](https://github.com/pyenv/pyenv?tab=readme-ov-file#installation) 或虚拟环境安装。
 </div>
 
-To setup your current Python to have an available kernel, run:
+安装内核：
 
 ```sh
 pip install ipykernel
 python -m ipykernel install --user
 ```
 
-#### Conda Environment
+#### Conda 环境
 
 ```sh
 source activate myenv
@@ -89,7 +82,7 @@ conda install ipykernel
 python -m ipykernel install --user --name myenv --display-name "Python (myenv)"
 ```
 
-#### Virtualenv with pip
+#### virtualenv（pip）
 
 ```sh
 source activate myenv
@@ -97,57 +90,45 @@ pip install ipykernel
 python -m ipykernel install --user --name myenv --display-name "Python (myenv)"
 ```
 
-### R (Ark Kernel) {#r-ark}
+### R（Ark Kernel）{#r-ark}
 
-Install [Ark](https://github.com/posit-dev/ark/releases) by downloading the release for your operating system. For example, for macOS just unpack `ark` binary and put it into `/usr/local/bin`. Then run:
+从 [Ark 发布页](https://github.com/posit-dev/ark/releases) 下载安装。例如在 macOS 解压 `ark` 可执行文件并放入 `/usr/local/bin`，然后执行：
 
 ```sh
 ark --install
 ```
 
-### R (Xeus Kernel) {#r-xeus}
+### R（Xeus Kernel）{#r-xeus}
 
-- Install [Xeus-R](https://github.com/jupyter-xeus/xeus-r)
-- Install the R Extension for Zed (search for `R` in Zed Extensions)
+1. 安装 [Xeus-R](https://github.com/jupyter-xeus/xeus-r)
+2. 在 Zed 扩展中搜索并安装 “R” 扩展
 
-<!--
-TBD: Improve R REPL (Ark Kernel) instructions
--->
+### TypeScript（Deno）{#typescript-deno}
 
-### TypeScript: Deno {#typescript-deno}
-
-- [Install Deno](https://docs.deno.com/runtime/manual/getting_started/installation/) and then install the Deno jupyter kernel:
+1. [安装 Deno](https://docs.deno.com/runtime/manual/getting_started/installation/)
+2. 安装 Deno 的 Jupyter 内核：
 
 ```sh
 deno jupyter --install
 ```
 
-<!--
-TBD: Improve R REPL (Ark Kernel) instructions
--->
-
 ### Julia
 
-- Download and install Julia from the [official website](https://julialang.org/downloads/).
-- Install the Julia Extension for Zed (search for `Julia` in Zed Extensions)
-
-<!--
-TBD: Improve Julia REPL instructions
--->
+1. 从 [官方站点](https://julialang.org/downloads/) 下载并安装 Julia
+2. 在 Zed 扩展中安装 “Julia” 扩展
 
 ### Scala
 
-- [Install Scala](https://www.scala-lang.org/download/) with `cs setup` (Coursier):
-  - `brew install coursier/formulas/coursier && cs setup`
-- REPL (Almond) [setup instructions](https://almond.sh/docs/quick-start-install):
-  - `brew install --cask temurin` (Eclipse foundation official OpenJDK binaries)
-  - `brew install coursier/formulas/coursier && cs setup`
-  - `coursier launch --use-bootstrap almond -- --install`
+1. 使用 `cs setup` 安装 [Scala](https://www.scala-lang.org/download/)（Coursier）：
+   - `brew install coursier/formulas/coursier && cs setup`
+2. 按 [Almond](https://almond.sh/docs/quick-start-install) 指引安装 REPL：
+   - `brew install --cask temurin`
+   - `brew install coursier/formulas/coursier && cs setup`
+   - `coursier launch --use-bootstrap almond -- --install`
 
-## Changing which kernel is used per language {#changing-kernels}
+## 指定默认内核 {#changing-kernels}
 
-Zed automatically detects the available kernels on your system. If you need to configure a different default kernel for a
-language, you can assign a kernel for any supported language in your `settings.json`.
+Zed 会自动检测可用内核。如果需要为某种语言指定默认内核，可在 `settings.json` 中配置：
 
 ```json [settings]
 {
@@ -162,22 +143,22 @@ language, you can assign a kernel for any supported language in your `settings.j
 }
 ```
 
-## Debugging Kernelspecs
+## 调试 Kernelspec
 
-Available kernels are shown via the `repl: sessions` command. To refresh the kernels you can run, use the `repl: refresh kernelspecs` command.
-
-If you have `jupyter` installed, you can run `jupyter kernelspec list` to see the available kernels.
+使用 `repl: sessions` 查看当前会话，`repl: refresh kernelspecs` 刷新列表。如果安装了 `jupyter`，可运行：
 
 ```sh
-$ jupyter kernelspec list
+jupyter kernelspec list
+```
+
+输出示例：
+
+```sh
 Available kernels:
   ark                   /Users/z/Library/Jupyter/kernels/ark
   conda-base            /Users/z/Library/Jupyter/kernels/conda-base
   deno                  /Users/z/Library/Jupyter/kernels/deno
-  python-chatlab-dev    /Users/z/Library/Jupyter/kernels/python-chatlab-dev
   python3               /Users/z/Library/Jupyter/kernels/python3
-  ruby                  /Users/z/Library/Jupyter/kernels/ruby
-  rust                  /Users/z/Library/Jupyter/kernels/rust
 ```
 
-> Note: Zed makes best effort usage of `sys.prefix` and `CONDA_PREFIX` to find kernels in Python environments. If you want explicitly control run `python -m ipykernel install --user --name myenv --display-name "Python (myenv)"` to install the kernel directly while in the environment.
+> 注意：Zed 会尝试通过 `sys.prefix` 与 `CONDA_PREFIX` 自动查找 Python 内核。如需精确控制，可在目标环境中执行 `python -m ipykernel install --user --name myenv --display-name "Python (myenv)"`。

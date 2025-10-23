@@ -1,35 +1,35 @@
 # Java
 
-Java language support in Zed is provided by:
+Zed 对 Java 的语言支持包括：
 
-- Zed Java: [zed-extensions/java](https://github.com/zed-extensions/java)
-- Tree-sitter: [tree-sitter/tree-sitter-java](https://github.com/tree-sitter/tree-sitter-java)
-- Language Server: [eclipse-jdtls/eclipse.jdt.ls](https://github.com/eclipse-jdtls/eclipse.jdt.ls)
+- Zed Java 扩展：[zed-extensions/java](https://github.com/zed-extensions/java)
+- Tree-sitter：[tree-sitter/tree-sitter-java](https://github.com/tree-sitter/tree-sitter-java)
+- 语言服务器：[eclipse-jdtls/eclipse.jdt.ls](https://github.com/eclipse-jdtls/eclipse.jdt.ls)
 
-## Install OpenJDK
+## 安装 OpenJDK
 
-You will need to install a Java runtime (OpenJDK).
+需要先安装 Java 运行时（OpenJDK）。
 
-- macOS: `brew install openjdk`
-- Ubuntu: `sudo add-apt-repository ppa:openjdk-23 && sudo apt-get install openjdk-23`
-- Windows: `choco install openjdk`
-- Arch Linux: `sudo pacman -S jre-openjdk-headless`
+- macOS：`brew install openjdk`
+- Ubuntu：`sudo add-apt-repository ppa:openjdk-23 && sudo apt-get install openjdk-23`
+- Windows：`choco install openjdk`
+- Arch Linux：`sudo pacman -S jre-openjdk-headless`
 
-Or manually download and install [OpenJDK 23](https://jdk.java.net/23/).
+或手动下载与安装 [OpenJDK 23](https://jdk.java.net/23/)。
 
-## Extension Install
+## 安装扩展
 
-You can install either by opening {#action zed::Extensions}({#kb zed::Extensions}) and searching for `java`.
+打开 {#action zed::Extensions}（{#kb zed::Extensions}）并搜索 `java` 即可安装。
 
-## Settings / Initialization Options
+## 设置与初始化选项
 
-The extension will automatically download the language server, see: [Manual JDTLS Install](#manual-jdts-install) below if you'd prefer to manage that yourself.
+扩展会自动下载语言服务器。如希望自行管理，可参见下文的[手动安装 JDTLS](#manual-jdtls-install)。
 
-For available `initialization_options` please see the [Initialize Request section of the Eclipse.jdt.ls Wiki](https://github.com/eclipse-jdtls/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request).
+可用的 `initialization_options` 请参阅 [Eclipse.jdt.ls Wiki 的 Initialize Request 章节](https://github.com/eclipse-jdtls/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request)。
 
-You can add these customizations to your Zed Settings by launching {#action zed::OpenSettings}({#kb zed::OpenSettings}) or by using a `.zed/setting.json` inside your project.
+可以通过 {#action zed::OpenSettings}（{#kb zed::OpenSettings}）打开设置，或在项目中创建 `.zed/settings.json` 来添加以下自定义配置。
 
-### Zed Java Settings
+### Zed Java 设置
 
 ```json [settings]
 {
@@ -41,11 +41,11 @@ You can add these customizations to your Zed Settings by launching {#action zed:
 }
 ```
 
-## Example Configs
+## 配置示例
 
-### JDTLS Binary
+### JDTLS 可执行文件
 
-By default, zed will look in your `PATH` for a `jdtls` binary, if you wish to specify an explicit binary you can do so via settings:
+默认情况下 Zed 会在 `PATH` 中查找 `jdtls`。若想指定不同的可执行文件，可以在设置中写入：
 
 ```json [settings]
   "lsp": {
@@ -60,9 +60,9 @@ By default, zed will look in your `PATH` for a `jdtls` binary, if you wish to sp
   }
 ```
 
-### Zed Java Initialization Options
+### Zed Java 初始化选项
 
-There are also many more options you can pass directly to the language server, for example:
+还可以直接向语言服务器传递更多选项，例如：
 
 ```json [settings]
 {
@@ -106,7 +106,7 @@ There are also many more options you can pass directly to the language server, f
             "jdt": {
               "ls": {
                 "lombokSupport": {
-                  "enabled": false // Set this to true to enable lombok support
+                  "enabled": false // 为 true 时启用 Lombok 支持
                 }
               }
             },
@@ -150,19 +150,19 @@ There are also many more options you can pass directly to the language server, f
 }
 ```
 
-## Manual JDTLS Install
+## 手动安装 JDTLS
 
-If you prefer, you can install JDTLS yourself and the extension can be configured to use that instead.
+如果愿意，也可以自行安装 JDTLS，并在扩展中配置使用。
 
-- macOS: `brew install jdtls`
-- Arch: [`jdtls` from AUR](https://aur.archlinux.org/packages/jdtls)
+- macOS：`brew install jdtls`
+- Arch：[AUR 上的 `jdtls`](https://aur.archlinux.org/packages/jdtls)
 
-Or manually download install:
+或手动下载：
 
-- [JDTLS Milestone Builds](http://download.eclipse.org/jdtls/milestones/) (updated every two weeks)
-- [JDTLS Snapshot Builds](https://download.eclipse.org/jdtls/snapshots/) (frequent updates)
+- [JDTLS Milestone Builds](http://download.eclipse.org/jdtls/milestones/)（每两周更新）
+- [JDTLS Snapshot Builds](https://download.eclipse.org/jdtls/snapshots/)（更频繁的更新）
 
-## See also
+## 另请参阅
 
-- [Zed Java Repo](https://github.com/zed-extensions/java)
-- [Zed Java Issues](https://github.com/zed-extensions/java/issues)
+- [Zed Java 仓库](https://github.com/zed-extensions/java)
+- [Zed Java 问题反馈](https://github.com/zed-extensions/java/issues)

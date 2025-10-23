@@ -1,12 +1,12 @@
 # Tailwind CSS
 
-Zed has built-in support for Tailwind CSS autocomplete, linting, and hover previews.
+Zed 原生支持 Tailwind CSS 的自动补全、Lint 与悬停预览。
 
-- Language Server: [tailwindlabs/tailwindcss-intellisense](https://github.com/tailwindlabs/tailwindcss-intellisense)
+- 语言服务器：[tailwindlabs/tailwindcss-intellisense](https://github.com/tailwindlabs/tailwindcss-intellisense)
 
-## Configuration
+## 配置
 
-To configure the Tailwind CSS language server, refer [to the extension settings](https://github.com/tailwindlabs/tailwindcss-intellisense?tab=readme-ov-file#extension-settings) and add them to the `lsp` section of your `settings.json`:
+可参考 [Tailwind CSS 语言服务器设置](https://github.com/tailwindlabs/tailwindcss-intellisense?tab=readme-ov-file#extension-settings)，并在 `settings.json` 的 `lsp` 段中配置：
 
 ```json [settings]
 {
@@ -23,7 +23,7 @@ To configure the Tailwind CSS language server, refer [to the extension settings]
 }
 ```
 
-Languages which can be used with Tailwind CSS in Zed:
+Zed 中支持 Tailwind CSS 的语言包括：
 
 - [Astro](./astro.md)
 - [CSS](./css.md)
@@ -36,9 +36,9 @@ Languages which can be used with Tailwind CSS in Zed:
 - [Svelte](./svelte.md)
 - [Vue](./vue.md)
 
-### Prettier Plugin
+### Prettier 插件
 
-Zed supports Prettier out of the box, which means that if you have the [Tailwind CSS Prettier plugin](https://github.com/tailwindlabs/prettier-plugin-tailwindcss) installed, adding it to your Prettier configuration will make it work automatically:
+Zed 原生支持 Prettier。如果安装了 [Tailwind CSS Prettier 插件](https://github.com/tailwindlabs/prettier-plugin-tailwindcss)，只需在 Prettier 配置中添加即可生效：
 
 ```json [settings]
 // .prettierrc

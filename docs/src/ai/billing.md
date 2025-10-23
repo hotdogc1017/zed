@@ -1,50 +1,50 @@
-# Billing
+# 计费
 
-We use Stripe as our payments provider, and Orb for invoicing and metering. All Pro plans require payment via credit card or other supported payment method.
-For invoice-based billing, a Business plan is required. Contact [sales@zed.dev](mailto:sales@zed.dev) for more information.
+我们使用 Stripe 作为支付提供商，使用 Orb 进行发票和计量。所有 Pro 计划都需要通过信用卡或其他支持的支付方式进行支付。
+对于基于发票的计费，需要商业计划。请联系 [sales@zed.dev](mailto:sales@zed.dev) 获取更多信息。
 
-## Billing Information {#settings}
+## 计费信息 {#settings}
 
-You can access billing information and settings at [zed.dev/account](https://zed.dev/account).
-Most of the page embeds information from our invoicing/metering partner, Orb (we're planning on a more native experience soon!).
+您可以在 [zed.dev/account](https://zed.dev/account) 访问计费信息和设置。
+该页面的大部分内容嵌入了来自我们的发票/计量合作伙伴 Orb 的信息（我们计划很快提供更原生的体验！）。
 
-## Billing Cycles {#billing-cycles}
+## 计费周期 {#billing-cycles}
 
-Zed is billed on a monthly basis based on the date you initially subscribe. You'll receive _at least_ one invoice from Zed each month you're subscribed to Zed Pro, and more than one if you use more than $10 in incremental token spend within the month.
+Zed 根据您最初订阅的日期按月计费。您订阅 Zed Pro 的每个月将_至少_收到一张来自 Zed 的发票，如果您在一个月内使用超过 $10 的增量令牌支出，则会收到多张发票。
 
-## Threshold Billing {#threshold-billing}
+## 阈值计费 {#threshold-billing}
 
-Zed utilizes threshold billing to ensure timely collection of owed monies and prevent abuse. Every time your usage of Zed's hosted models crosses a $10 spend threshold, a new invoice is generated, and the threshold resets to $0.
+Zed 使用阈值计费来确保及时收取应付款项并防止滥用。每次您使用 Zed 托管模型的支出超过 $10 的阈值时，就会生成一张新发票，并且阈值重置为 $0。
 
-For example,
+例如：
 
-- You subscribe on February 1. Your first invoice is $10.
-- You use $12 of incremental tokens in the month of February, with the first $10 spent on February 15. You'll receive an invoice for $10 on February 15
-- On March 1, you receive an invoice for $12: $10 (March Pro subscription) and $2 in leftover token spend, since your usage didn't cross the $10 threshold.
+- 您在 2 月 1 日订阅。您的第一张发票是 $10。
+- 您在 2 月份使用了 $12 的增量令牌，其中前 $10 在 2 月 15 日花费。您将在 2 月 15 日收到 $10 的发票
+- 在 3 月 1 日，您收到 $12 的发票：$10（3 月 Pro 订阅）和 $2 的剩余令牌支出，因为您的使用没有超过 $10 的阈值。
 
-## Payment Failures {#payment-failures}
+## 支付失败 {#payment-failures}
 
-If payment of an invoice fails, Zed will block usage of our hosted models until the payment is complete. Email [billing-support@zed.dev](mailto:billing-support@zed.dev) for assistance.
+如果发票支付失败，Zed 将阻止使用我们托管的模型，直到支付完成。请发送邮件至 [billing-support@zed.dev](mailto:billing-support@zed.dev) 寻求帮助。
 
-## Invoice History {#invoice-history}
+## 发票历史 {#invoice-history}
 
-You can access your invoice history by navigating to [zed.dev/account](https://zed.dev/account) and clicking `Invoice history` within the embedded Orb portal.
+您可以通过导航到 [zed.dev/account](https://zed.dev/account) 并在嵌入的 Orb 门户中点击 `Invoice history` 来访问您的发票历史。
 
-If you require historical Stripe invoices, email [billing-support@zed.dev](mailto:billing-support@zed.dev)
+如果您需要历史 Stripe 发票，请发送邮件至 [billing-support@zed.dev](mailto:billing-support@zed.dev)
 
-## Updating Billing Information {#updating-billing-info}
+## 更新计费信息 {#updating-billing-info}
 
-Email [billing-support@zed.dev](mailto:billing-support@zed.dev) for help updating payment methods, names, addresses, and tax information.
+请发送邮件至 [billing-support@zed.dev](mailto:billing-support@zed.dev) 寻求帮助更新支付方式、姓名、地址和税务信息。
 
-> We'll be updating our account page shortly to allow for self-service updates. Stay tuned!
+> 我们将很快更新我们的账户页面以允许自助更新。敬请期待！
 
-Please note that changes to billing information will **only** affect future invoices — **we cannot modify historical invoices**.
+请注意，计费信息的更改**仅**影响未来的发票——**我们无法修改历史发票**。
 
-## Sales Tax {#sales-tax}
+## 销售税 {#sales-tax}
 
-Zed partners with [Sphere](https://www.getsphere.com/) to calculate indirect tax rate for invoices, based on customer location and the product being sold. Tax is listed as a separate line item on invoices, based preferentially on your billing address, followed by the card issue country known to Stripe.
+Zed 与 [Sphere](https://www.getsphere.com/) 合作，根据客户位置和销售的产品计算发票的间接税率。税款在发票上列为单独的项目，优先基于您的账单地址，其次是 Stripe 已知的卡发行国家。
 
-If you have a VAT/GST ID, you can add it at during checkout. Check the box that denotes you as a business.
+如果您有 VAT/GST ID，可以在结账时添加。勾选表示您是企业的复选框。
 
-Please note that changes to VAT/GST IDs and address will **only** affect future invoices — **we cannot modify historical invoices**.
-Questions or issues can be directed to [billing-support@zed.dev](mailto:billing-support@zed.dev).
+请注意，VAT/GST ID 和地址的更改**仅**影响未来的发票——**我们无法修改历史发票**。
+问题或疑问可以发送至 [billing-support@zed.dev](mailto:billing-support@zed.dev)。

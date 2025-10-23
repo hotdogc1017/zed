@@ -1,20 +1,19 @@
 # JSON
 
-JSON support is available natively in Zed.
+Zed 原生支持 JSON。
 
-- Tree-sitter: [tree-sitter/tree-sitter-json](https://github.com/tree-sitter/tree-sitter-json)
-- Language Server: [zed-industries/json-language-server](https://github.com/zed-industries/json-language-server)
+- Tree-sitter：[tree-sitter/tree-sitter-json](https://github.com/tree-sitter/tree-sitter-json)
+- 语言服务器：[zed-industries/json-language-server](https://github.com/zed-industries/json-language-server)
 
 ## JSONC
 
-Zed also supports a super-set of JSON called JSONC, which allows single line comments (`//`) in JSON files.
-While editing these files you can use `cmd-/` (macOS) or `ctrl-/` (Linux) to toggle comments on the current line or selection.
+Zed 也支持 JSON 的超集 JSONC，允许在文件中使用单行注释（`//`）。在编辑此类文件时，可以通过 `cmd-/`（macOS）或 `ctrl-/`（Linux）来切换当前行或选区的注释状态。
 
-## JSONC Prettier Formatting
+## JSONC 与 Prettier 格式化
 
-If you use files with the `*.jsonc` extension when using `Format Document` or have `format_on_save` enabled, Zed invokes Prettier as the formatter. Prettier has an [outstanding issue](https://github.com/prettier/prettier/issues/15956) where it will add trailing commas to files with a `jsonc` extension. JSONC files which have a `.json` extension are unaffected.
+当对 `*.jsonc` 文件执行 “Format Document” 或启用 `format_on_save` 时，Zed 会调用 Prettier 进行格式化。但 Prettier 存在一个[未解决的问题](https://github.com/prettier/prettier/issues/15956)：它会为 `jsonc` 扩展名的文件添加尾随逗号。同样内容若使用 `.json` 扩展名则不会受影响。
 
-To workaround this behavior you can add the following to your `.prettierrc` configuration file:
+解决方法是在 `.prettierrc` 中加入以下配置：
 
 ```json [settings]
 {
@@ -30,15 +29,15 @@ To workaround this behavior you can add the following to your `.prettierrc` conf
 }
 ```
 
-## JSON Language Server
+## JSON 语言服务器
 
-Zed automatically out of the box supports JSON Schema validation of `package.json` and `tsconfig.json` files, but `json-language-server` can use JSON Schema definitions in project files, from the [JSON Schema Store](https://www.schemastore.org) or other publicly available URLs for JSON validation.
+Zed 默认会对 `package.json` 与 `tsconfig.json` 进行 JSON Schema 验证；此外，`json-language-server` 还能使用项目文件中的 Schema、[JSON Schema Store](https://www.schemastore.org) 或其他公开 URL 来完成验证。
 
-### Inline Schema Specification
+### 在文件中内联指定 Schema
 
-To specify a schema inline with your JSON files, add a `$schema` top level key linking to your json schema file.
+可以在 JSON 文件顶部添加 `$schema` 字段，直接指定 Schema 路径。
 
-For example to for a `.luarc.json` for use with [lua-language-server](https://github.com/LuaLS/lua-language-server/):
+例如为 [lua-language-server](https://github.com/LuaLS/lua-language-server/) 使用的 `.luarc.json`：
 
 ```json [settings]
 {
@@ -47,11 +46,9 @@ For example to for a `.luarc.json` for use with [lua-language-server](https://gi
 }
 ```
 
-### Schema Specification via Settings
+### 通过设置指定 Schema
 
-You can alternatively associate JSON Schemas with file paths by via Zed LSP settings.
-
-To
+也可以在 Zed 的 LSP 设置中，将 JSON Schema 与文件路径关联：
 
 ```json [settings]
 "lsp": {
@@ -70,8 +67,8 @@ To
 }
 ```
 
-You can also pass any of the [supported settings](https://github.com/Microsoft/vscode/blob/main/extensions/json-language-features/server/README.md#settings) to json-language-server by specifying them in your Zed settings.json:
+同时可以在 `settings.json` 中传递 [json-language-server 支持的任意设置](https://github.com/Microsoft/vscode/blob/main/extensions/json-language-features/server/README.md#settings)。
 
 <!--
-TBD: Add formatter (prettier) settings (autoformat, tab_size, etc)
+待补充：Formatter（Prettier）相关设置（自动格式化、tab_size 等）
 -->

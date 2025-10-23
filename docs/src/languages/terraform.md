@@ -1,17 +1,13 @@
 # Terraform
 
-Terraform support is available through the [Terraform extension](https://github.com/zed-extensions/terraform).
+可以通过 [Terraform 扩展](https://github.com/zed-extensions/terraform) 在 Zed 中使用 Terraform。
 
-- Tree-sitter: [MichaHoffmann/tree-sitter-hcl](https://github.com/MichaHoffmann/tree-sitter-hcl)
-- Language Server: [hashicorp/terraform-ls](https://github.com/hashicorp/terraform-ls)
+- Tree-sitter：[MichaHoffmann/tree-sitter-hcl](https://github.com/MichaHoffmann/tree-sitter-hcl)
+- 语言服务器：[hashicorp/terraform-ls](https://github.com/hashicorp/terraform-ls)
 
-## Configuration
+## 配置
 
-<!--
-TBD: Add example using `rootModulePaths` to match upstream example https://github.com/hashicorp/terraform-ls/blob/main/docs/SETTINGS.md#vs-code
--->
-
-The Terraform language server can be configured in your `settings.json`, e.g.:
+可在 `settings.json` 中配置 Terraform 语言服务器，例如：
 
 ```json [settings]
 {
@@ -27,4 +23,4 @@ The Terraform language server can be configured in your `settings.json`, e.g.:
 }
 ```
 
-See the [full list of server settings here](https://github.com/hashicorp/terraform-ls/blob/main/docs/SETTINGS.md).
+完整配置项请参阅[官方文档](https://github.com/hashicorp/terraform-ls/blob/main/docs/SETTINGS.md)。

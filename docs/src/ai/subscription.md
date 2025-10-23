@@ -1,13 +1,13 @@
-# Subscription
+# 订阅
 
-Zed's hosted models are offered via subscription to Zed Pro or Zed Business.
+Zed 的托管模型通过订阅 Zed Pro 或 Zed Business 提供。
 
-> Using [your own API keys](./llm-providers.md), and [external agents](./external-agents.md), is _free_ — you do not need to subscribe to a Zed plan to use AI features.
+> 使用[您自己的 API 密钥](./llm-providers.md)和[外部代理](./external-agents.md)是**_免费_**的 — 您不需要订阅 Zed 计划来使用 AI 功能。
 
-See the following pages for specific aspects of our subscription offering:
+请参阅以下页面了解我们订阅产品的具体方面：
 
-- [Models](./models.md): Overview of the models offered by Zed's subscriptions.
+- [模型](./models.md)：Zed 订阅提供的模型概述。
 
-- [Plans and Usage](./plans-and-usage.md): Outlines Zed's plans and how usage is measured.
+- [计划和用量](./plans-and-usage.md)：概述 Zed 的计划以及如何测量用量。
 
-- [Billing](./billing.md): Billing policies and procedures, and how to update or view various billing settings.
+- [计费](./billing.md)：计费政策和程序，以及如何更新或查看各种计费设置。

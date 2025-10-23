@@ -1,27 +1,27 @@
-# Privacy and Security
+# 隐私和安全
 
-## Philosophy
+## 理念
 
-Zed aims to collect on the minimum data necessary to serve and improve our product.
+Zed 旨在收集服务和改进我们产品所需的最少数据。
 
-We believe in opt-in data sharing as the default in building AI products, rather than opt-out, like most of our competitors. Privacy Mode is not a setting to be toggled, it's a default stance.
+我们相信在构建 AI 产品时，默认应该是选择加入数据共享，而不是像大多数竞争对手那样选择退出。隐私模式不是要切换的设置，而是默认立场。
 
-As an open-source product, we believe in maximal transparency, and invite you to examine our codebase. If you find issues, we encourage you to share them with us.
+作为一个开源产品，我们相信最大程度的透明度，并邀请您检查我们的代码库。如果您发现问题，我们鼓励您与我们分享。
 
-It is entirely possible to use Zed, including Zed's AI capabilities, without sharing any data with us and without authenticating into the product. We're happy to always support this desired use pattern.
+完全可以在不与我们共享任何数据且不进行产品身份验证的情况下使用 Zed，包括 Zed 的 AI 功能。我们很高兴始终支持这种期望的使用模式。
 
-## Documentation
+## 文档
 
-- [Telemetry](../telemetry.md): How Zed collects general telemetry data.
+- [遥测](../telemetry.md)：Zed 如何收集一般遥测数据。
 
-- [AI Improvement](./ai-improvement.md): Zed's opt-in-only approach to data collection for AI improvement, whether our Agentic offering or Edit Predictions.
+- [AI 改进](./ai-improvement.md)：Zed 仅限选择加入的数据收集方法，用于 AI 改进，无论是我们的代理产品还是编辑预测。
 
-- [Accounts](../accounts.md): When and why you'd need to authenticate into Zed, how to do so, and what scope we need from you.
+- [账户](../accounts.md)：何时以及为什么需要在 Zed 中进行身份验证，如何操作，以及我们需要您提供什么范围。
 
-## Legal Links
+## 法律链接
 
-- [Terms of Service](https://zed.dev/terms-of-service)
-- [Terms of Use](https://zed.dev/terms)
-- [Privacy Policy](https://zed.dev/privacy-policy)
-- [Zed's Contributor License and Feedback Agreement](https://zed.dev/cla)
-- [Subprocessors](https://zed.dev/subprocessors)
+- [服务条款](https://zed.dev/terms-of-service)
+- [使用条款](https://zed.dev/terms)
+- [隐私政策](https://zed.dev/privacy-policy)
+- [Zed 贡献者许可和反馈协议](https://zed.dev/cla)
+- [子处理器](https://zed.dev/subprocessors)

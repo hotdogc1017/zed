@@ -1,101 +1,77 @@
-# Debugger
+# 调试器
 
-Zed uses the [Debug Adapter Protocol (DAP)](https://microsoft.github.io/debug-adapter-protocol/) to provide debugging functionality across multiple programming languages.
-DAP is a standardized protocol that defines how debuggers, editors, and IDEs communicate with each other.
-It allows Zed to support various debuggers without needing to implement language-specific debugging logic.
-Zed implements the client side of the protocol, and various _debug adapters_ implement the server side.
+Zed 通过 [Debug Adapter Protocol (DAP)](https://microsoft.github.io/debug-adapter-protocol/) 实现跨语言调试。DAP 定义了调试器、编辑器与 IDE 之间的通讯方式，使 Zed 无需实现各语言的调试细节即可兼容不同运行时。Zed 充当协议的客户端，各类**调试适配器**负责服务器端逻辑。
 
-This protocol enables features like setting breakpoints, stepping through code, inspecting variables,
-and more, in a consistent manner across different programming languages and runtime environments.
+借助该协议，你可以以一致的方式设置断点、单步执行、检查变量等操作，无论使用何种语言或运行时。
 
-## Supported Languages
+## 支持的语言
 
-To debug code written in a specific language, Zed needs to find a debug adapter for that language. Some debug adapters are provided by Zed without additional setup, and some are provided by [language extensions](./extensions/debugger-extensions.md). The following languages currently have debug adapters available:
+要调试特定语言，Zed 需要找到对应的调试适配器。有些适配器由 Zed 内置，另一些来自[调试器扩展](./extensions/debugger-extensions.md)。目前可用的语言如下（按字母排序）：
 
-<!-- keep this sorted -->
+- [C](./languages/c.md#debugging)（内置）
+- [C++](./languages/cpp.md#debugging)（内置）
+- [Go](./languages/go.md#debugging)（内置）
+- [JavaScript](./languages/javascript.md#debugging)（内置）
+- [PHP](./languages/php.md#debugging)（内置）
+- [Python](./languages/python.md#debugging)（内置）
+- [Ruby](./languages/ruby.md#debugging)（扩展提供）
+- [Rust](./languages/rust.md#debugging)（内置）
+- [Swift](./languages/swift.md#debugging)（扩展提供）
+- [TypeScript](./languages/typescript.md#debugging)（内置）
 
-- [C](./languages/c.md#debugging) (built-in)
-- [C++](./languages/cpp.md#debugging) (built-in)
-- [Go](./languages/go.md#debugging) (built-in)
-- [JavaScript](./languages/javascript.md#debugging) (built-in)
-- [PHP](./languages/php.md#debugging) (built-in)
-- [Python](./languages/python.md#debugging) (built-in)
-- [Ruby](./languages/ruby.md#debugging) (provided by extension)
-- [Rust](./languages/rust.md#debugging) (built-in)
-- [Swift](./languages/swift.md#debugging) (provided by extension)
-- [TypeScript](./languages/typescript.md#debugging) (built-in)
+> 如果列表中没有你的语言，欢迎贡献调试适配器。请参考 [调试器扩展文档](./extensions/debugger-extensions.md)。
 
-> If your language isn't listed, you can contribute by adding a debug adapter for it. Check out our [debugger extensions](./extensions/debugger-extensions.md) documentation for more information.
+各语言页面提供适配器专属示例；下文介绍通用调试功能。
 
-Follow those links for language- and adapter-specific information and examples, or read on for more about Zed's general debugging features that apply to all adapters.
+## 入门
 
-## Getting Started
+多数语言最快的方式是运行 {#action debugger::Start}（{#kb debugger::Start}）。这会打开“新进程”面板，根据当前项目列出预配置调试任务（如 `main`、测试入口等）。点击调试面板右上角的 “+” 亦可打开同一窗口。
 
-For most languages, the fastest way to get started is to run {#action debugger::Start} ({#kb debugger::Start}). This opens the _new process modal_, which shows you a contextual list of preconfigured debug tasks for the current project. Debug tasks are created from tests, entry points (like a `main` function), and from other sources — consult the documentation for your language for full information about what's supported.
-
-You can open the same modal by clicking the "plus" button at the top right of the debug panel.
-
-For languages that don't provide preconfigured debug tasks (this includes C, C++, and some extension-supported languages), you can define debug configurations in the `.zed/debug.json` file in your project root. This file should be an array of configuration objects:
+对于未提供预设任务的语言（如 C/C++ 等），可在项目根目录创建 `.zed/debug.json`，写入调试配置数组：
 
 ```json [debug]
 [
   {
     "adapter": "CodeLLDB",
     "label": "First configuration"
-    // ...
   },
   {
     "adapter": "Debugpy",
     "label": "Second configuration"
-    // ...
   }
 ]
 ```
 
-Check the documentation for your language for example configurations covering typical use-cases. Once you've added configurations to `.zed/debug.json`, they'll appear in the list in the new process modal.
+请参阅各语言文档获取示例。配置完成后会显示在“新进程”面板中。若 `.zed/debug.json` 为空，Zed 会读取 `.vscode/launch.json` 并展示其中的配置。
 
-Zed will also load debug configurations from `.vscode/launch.json`, and show them in the new process modal if no configurations are found in `.zed/debug.json`.
+### 启动与附加
 
-### Launching & Attaching
+调试器通常有两种模式：
 
-Zed debugger offers two ways to debug your program; you can either _launch_ a new instance of your program or _attach_ to an existing process.
-Which one you choose depends on what you are trying to achieve.
+- **launch**：启动全新的进程进行调试，适合单元测试或调试构建。
+- **attach**：附加到现有进程，适用于无法重启的线上程序等场景。
 
-When launching a new instance, Zed (and the underlying debug adapter) can often do a better job at picking up the debug information compared to attaching to an existing process, since it controls the lifetime of a whole program.
-Running unit tests or a debug build of your application is a good use case for launching.
+## 配置选项
 
-Compared to launching, attaching to an existing process might seem inferior, but that's far from truth; there are cases where you cannot afford to restart your program, because for example, the bug is not reproducible outside of a production environment or some other circumstances.
-
-## Configuration
-
-Zed requires the `adapter` and `label` fields for all debug tasks. In addition, Zed will use the `build` field to run any necessary setup steps before the debugger starts [(see below)](#build-tasks), and can accept a `tcp_connection` field to connect to an existing process.
-
-All other fields are provided by the debug adapter and can contain [task variables](./tasks.md#variables). Most adapters support `request`, `program`, and `cwd`:
+每个调试任务必须指定 `adapter` 与 `label`。此外，Zed 支持在 `build` 字段定义预先运行的任务（见下文），并可通过 `tcp_connection` 字段连接到已有进程。其他字段由适配器定义，并可使用 [任务变量](./tasks.md#variables)。多数适配器支持以下键：
 
 ```json [debug]
 [
   {
-    // The label for the debug configuration and used to identify the debug session inside the debug panel & new process modal
     "label": "Example Start debugger config",
-    // The debug adapter that Zed should use to debug the program
     "adapter": "Example adapter name",
-    // Request:
-    //  - launch: Zed will launch the program if specified, or show a debug terminal with the right configuration
-    //  - attach: Zed will attach to a running program to debug it, or when the process_id is not specified, will show a process picker (only supported for node currently)
-    "request": "launch",
-    // The program to debug. This field supports path resolution with ~ or . symbols.
+    "request": "launch",       // launch：启动进程；attach：附加到进程
     "program": "path_to_program",
-    // cwd: defaults to the current working directory of your project ($ZED_WORKTREE_ROOT)
     "cwd": "$ZED_WORKTREE_ROOT"
   }
 ]
 ```
 
-Check your debug adapter's documentation for more information on the fields it supports.
+请查阅适配器文档了解更多字段说明。
 
-### Build tasks
+### 构建任务
 
-Zed allows embedding a Zed task in the `build` field that is run before the debugger starts. This is useful for setting up the environment or running any necessary setup steps before the debugger starts.
+在 `build` 字段中可嵌入一个 Zed 任务，调试前执行。例如：
 
 ```json [debug]
 [
@@ -112,7 +88,7 @@ Zed allows embedding a Zed task in the `build` field that is run before the debu
 ]
 ```
 
-Build tasks can also refer to the existing tasks by unsubstituted label:
+也可以直接引用已有任务标签：
 
 ```json [debug]
 [
@@ -121,73 +97,59 @@ Build tasks can also refer to the existing tasks by unsubstituted label:
     "adapter": "CodeLLDB",
     "program": "path_to_program",
     "request": "launch",
-    "build": "my build task" // Or "my build task for $ZED_FILE"
+    "build": "my build task"
   }
 ]
 ```
 
-### Automatic scenario creation
+### 自动创建场景
 
-Given a Zed task, Zed can automatically create a scenario for you. Automatic scenario creation also powers our scenario creation from gutter.
-Automatic scenario creation is currently supported for Rust, Go, Python, JavaScript, and TypeScript.
+若项目中已有 Zed 任务，调试器可自动生成调试场景，并支持从代码左侧的 “运行” 图标直接创建。目前适用于 Rust、Go、Python、JavaScript、TypeScript。
 
-## Breakpoints
+## 断点
 
-To set a breakpoint, simply click next to the line number in the editor gutter.
-Breakpoints can be tweaked depending on your needs; to access additional options of a given breakpoint, right-click on the breakpoint icon in the gutter and select the desired option.
-At present, you can:
+点击编辑器行号左侧即可设置断点。右键断点图标可配置高级选项：
 
-- Add a log to a breakpoint, which will output a log message whenever that breakpoint is hit.
-- Make the breakpoint conditional, which will only stop at the breakpoint when the condition is met. The syntax for conditions is adapter-specific.
-- Add a hit count to a breakpoint, which will only stop at the breakpoint after it's hit a certain number of times.
-- Disable a breakpoint, which will prevent it from being hit while leaving it visible in the gutter.
+- 添加日志：命中时输出信息
+- 条件断点：仅在条件满足时停下（语法依适配器而异）
+- 命中次数：达到设定次数后触发
+- 禁用断点：保留但不触发
 
-Some debug adapters (e.g. CodeLLDB and JavaScript) will also _verify_ whether your breakpoints can be hit; breakpoints that cannot be hit are surfaced more prominently in the UI.
+部分适配器（如 CodeLLDB、JavaScript）会验证断点是否可命中，并在 UI 中突出显示。所有断点可在调试面板的 “Breakpoints” 项管理，部分适配器还支持配置异常断点。
 
-All breakpoints enabled for a given project are also listed in "Breakpoints" item in your debugging session UI. From "Breakpoints" item in your UI you can also manage exception breakpoints.
-The debug adapter will then stop whenever an exception of a given kind occurs. Which exception types are supported depends on the debug adapter.
+## 设置项
 
-## Settings
+调试器的配置集中在 `settings.json` 的 `debugger` 节点：
 
-The settings for the debugger are grouped under the `debugger` key in `settings.json`:
+- `dock`：调试面板位置
+- `stepping_granularity`：单步粒度
+- `save_breakpoints`：是否在会话间保留断点
+- `button`：是否在状态栏显示调试按钮
+- `timeout`：连接 TCP 调试器时的超时时间（毫秒）
+- `log_dap_communications`：是否记录 DAP 通讯
+- `format_dap_log_messages`：日志中是否格式化 DAP 消息
 
-- `dock`: Determines the position of the debug panel in the UI.
-- `stepping_granularity`: Determines the stepping granularity.
-- `save_breakpoints`: Whether the breakpoints should be reused across Zed sessions.
-- `button`: Whether to show the debug button in the status bar.
-- `timeout`: Time in milliseconds until timeout error when connecting to a TCP debug adapter.
-- `log_dap_communications`: Whether to log messages between active debug adapters and Zed.
-- `format_dap_log_messages`: Whether to format DAP messages when adding them to the debug adapter logger.
+### 面板停靠
 
-### Dock
-
-- Description: The position of the debug panel in the UI.
-- Default: `bottom`
-- Setting: debugger.dock
-
-**Options**
-
-1. `left` - The debug panel will be docked to the left side of the UI.
-2. `right` - The debug panel will be docked to the right side of the UI.
-3. `bottom` - The debug panel will be docked to the bottom of the UI.
+- 描述：调试面板所在位置
+- 默认：`bottom`
+- 选项：`left` / `right` / `bottom`
 
 ```json [settings]
 "debugger": {
   "dock": "bottom"
-},
+}
 ```
 
-### Stepping granularity
+### 单步粒度
 
-- Description: The Step granularity that the debugger will use
-- Default: `line`
-- Setting: `debugger.stepping_granularity`
+- 描述：单步执行的粒度
+- 默认：`line`
+- 设置：`debugger.stepping_granularity`
 
-**Options**
+选项示例：
 
-1. Statement - The step should allow the program to run until the current statement has finished executing.
-   The meaning of a statement is determined by the adapter and it may be considered equivalent to a line.
-   For example 'for(int i = 0; i < 10; i++)' could be considered to have 3 statements 'int i = 0', 'i < 10', and 'i++'.
+1. `statement`：按语句级单步，语句范围由适配器决定。
 
 ```json [settings]
 {
@@ -197,163 +159,28 @@ The settings for the debugger are grouped under the `debugger` key in `settings.
 }
 ```
 
-2. Line - The step should allow the program to run until the current source line has executed.
+2. `line`：按源代码行单步。
 
-```json [settings]
-{
-  "debugger": {
-    "stepping_granularity": "line"
-  }
-}
-```
+（更多选项视调试器支持情况而定。）
 
-3. Instruction - The step should allow one instruction to execute (e.g. one x86 instruction).
+## 初始化远程调试服务
 
-```json [settings]
-{
-  "debugger": {
-    "stepping_granularity": "instruction"
-  }
-}
-```
+在执行调试前，Zed 会使用 `ssh` 建立控制连接，显示任何必要的提示（如主机指纹、私钥密码）。连接成功后会检查远端 `~/.zed_server` 是否存在与本地版本匹配的调试服务；若缺失则自动下载。也可通过设置 `"upload_binary_over_ssh": true` 先下载到本地再上传。
 
-### Save Breakpoints
+如需手动维护，可从 [GitHub Releases](https://github.com/zed-industries/zed/releases) 下载或使用 `cargo build -p remote_server --release` 编译，并放置到 `~/.zed_server/zed-remote-server-<channel>-<version>`，版本必须与本地 Zed 完全一致。
 
-- Description: Whether the breakpoints should be saved across Zed sessions.
-- Default: `true`
-- Setting: `debugger.save_breakpoints`
+## 连接与重连
 
-**Options**
+调试过程中，Zed 会复用控制连接派生子连接。当网络中断后会尝试自动重连；若失败，可稍后重新打开项目，未保存改动默认保存在本地。若遇异常，可通过 `cmd-shift-p` > `Open Log` 查看日志，或在 GitHub / Discord 寻求帮助。
 
-`boolean` values
+## 支持的 SSH 选项
 
-```json [settings]
-{
-  "debugger": {
-    "save_breakpoints": true
-  }
-}
-```
+（若调试涉及远程连接）Zed 实际调用 `ssh`，支持常见参数：`-p/-l`、端口转发 `-L/-R`、密钥 `-i`、自定义 `-o`、代理 `-J/-w`、配置文件 `-F` 等。部分选项（如 `-t/-T`）由 Zed 内部管理，不允许覆盖。
 
-### Button
+## 已知限制
 
-- Description: Whether the button should be displayed in the debugger toolbar.
-- Default: `true`
-- Setting: `debugger.show_button`
+- 目前无法在远程终端中通过 `zed` 命令直接在本地打开文件。
 
-**Options**
+## 反馈渠道
 
-`boolean` values
-
-```json [settings]
-{
-  "debugger": {
-    "show_button": true
-  }
-}
-```
-
-### Timeout
-
-- Description: Time in milliseconds until timeout error when connecting to a TCP debug adapter.
-- Default: `2000`
-- Setting: `debugger.timeout`
-
-**Options**
-
-`integer` values
-
-```json [settings]
-{
-  "debugger": {
-    "timeout": 3000
-  }
-}
-```
-
-### Inline Values
-
-- Description: Whether to enable editor inlay hints showing the values of variables in your code during debugging sessions.
-- Default: `true`
-- Setting: `inlay_hints.show_value_hints`
-
-**Options**
-
-```json [settings]
-{
-  "inlay_hints": {
-    "show_value_hints": false
-  }
-}
-```
-
-Inline value hints can also be toggled from the Editor Controls menu in the editor toolbar.
-
-### Log Dap Communications
-
-- Description: Whether to log messages between active debug adapters and Zed. (Used for DAP development)
-- Default: false
-- Setting: debugger.log_dap_communications
-
-**Options**
-
-`boolean` values
-
-```json [settings]
-{
-  "debugger": {
-    "log_dap_communications": true
-  }
-}
-```
-
-### Format Dap Log Messages
-
-- Description: Whether to format DAP messages when adding them to the debug adapter logger. (Used for DAP development)
-- Default: false
-- Setting: debugger.format_dap_log_messages
-
-**Options**
-
-`boolean` values
-
-```json [settings]
-{
-  "debugger": {
-    "format_dap_log_messages": true
-  }
-}
-```
-
-### Customizing Debug Adapters
-
-- Description: Custom program path and arguments to override how Zed launches a specific debug adapter.
-- Default: Adapter-specific
-- Setting: `dap.$ADAPTER.binary` and `dap.$ADAPTER.args`
-
-You can pass `binary`, `args`, or both. `binary` should be a path to a _debug adapter_ (like `lldb-dap`) not a _debugger_ (like `lldb` itself). The `args` setting overrides any arguments that Zed would otherwise pass to the adapter.
-
-```json [settings]
-{
-  "dap": {
-    "CodeLLDB": {
-      "binary": "/Users/name/bin/lldb-dap",
-      "args": ["--wait-for-debugger"]
-    }
-  }
-}
-```
-
-## Theme
-
-The Debugger supports the following theme options:
-
-- `debugger.accent`: Color used to accent breakpoint & breakpoint-related symbols
-- `editor.debugger_active_line.background`: Background color of active debug line
-
-## Troubleshooting
-
-If you're running into problems with the debugger, please [open a GitHub issue](https://github.com/zed-industries/zed/issues/new?template=04_bug_debugger.yml), providing as much context as possible. There are also some features you can use to gather more information about the problem:
-
-- When you have a session running in the debug panel, you can run the {#action dev::CopyDebugAdapterArguments} action to copy a JSON blob to the clipboard that describes how Zed initialized the session. This is especially useful when the session failed to start, and is great context to add if you open a GitHub issue.
-- You can also use the {#action dev::OpenDebugAdapterLogs} action to see a trace of all of Zed's communications with debug adapters during the most recent debug sessions.
+欢迎加入 [Zed Discord](https://zed.dev/community-links) 的 `#remoting-feedback` 频道，或在 GitHub 提交 Issue 与我们讨论调试体验。

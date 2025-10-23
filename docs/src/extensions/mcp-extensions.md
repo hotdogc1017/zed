@@ -1,17 +1,17 @@
-# MCP Server Extensions
+# MCP 服务器扩展
 
-[Model Context Protocol servers](../ai/mcp.md) can be exposed as extensions for use in the Agent Panel.
+[模型上下文协议服务器](../ai/mcp.md) 可以作为扩展公开，供代理面板使用。
 
-## Defining MCP Extensions
+## 定义 MCP 扩展
 
-A given extension may provide one or more MCP servers.
-Each MCP server must be registered in the `extension.toml`:
+给定的扩展可以提供一个或多个 MCP 服务器。
+每个 MCP 服务器必须在 `extension.toml` 中注册：
 
 ```toml
 [context_servers.my-context-server]
 ```
 
-Then, in the Rust code for your extension, implement the `context_server_command` method on your extension:
+然后，在您的扩展的 Rust 代码中，在您的扩展上实现 `context_server_command` 方法：
 
 ```rust
 impl zed::Extension for MyExtension {
@@ -29,16 +29,16 @@ impl zed::Extension for MyExtension {
 }
 ```
 
-This method should return the command to start up an MCP server, along with any arguments or environment variables necessary for it to function.
+此方法应返回启动 MCP 服务器的命令，以及使其正常运行所需的任何参数或环境变量。
 
-If you need to download the MCP server from an external source—like GitHub Releases or npm—you can also do that in this function.
+如果您需要从外部源（如 GitHub Releases 或 npm）下载 MCP 服务器，也可以在此函数中执行此操作。
 
-## Available Extensions
+## 可用扩展
 
-Check out all the MCP servers that have already been exposed as extensions [on Zed's site](https://zed.dev/extensions?filter=context-servers).
+查看所有已作为扩展公开的 MCP 服务器 [在 Zed 网站上](https://zed.dev/extensions?filter=context-servers)。
 
-We recommend taking a look at their repositories as a way to understand how they are generally created and structured.
+我们建议查看它们的仓库，以了解它们通常是如何创建和构建的。
 
-## Testing
+## 测试
 
-To test your new MCP server extension, you can [install it as a dev extension](./developing-extensions.md#developing-an-extension-locally).
+要测试您的新 MCP 服务器扩展，您可以[将其安装为开发扩展](./developing-extensions.md#developing-an-extension-locally)。

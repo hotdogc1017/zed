@@ -1,20 +1,15 @@
 # TypeScript
 
-TypeScript and TSX support are available natively in Zed.
+Zed 原生支持 TypeScript 与 TSX。
 
-- Tree-sitter: [tree-sitter/tree-sitter-typescript](https://github.com/tree-sitter/tree-sitter-typescript)
-- Language Server: [yioneko/vtsls](https://github.com/yioneko/vtsls)
-- Alternate Language Server: [typescript-language-server/typescript-language-server](https://github.com/typescript-language-server/typescript-language-server)
-- Debug Adapter: [vscode-js-debug](https://github.com/microsoft/vscode-js-debug)
+- Tree-sitter：[tree-sitter/tree-sitter-typescript](https://github.com/tree-sitter/tree-sitter-typescript)
+- 语言服务器：[yioneko/vtsls](https://github.com/yioneko/vtsls)
+- 备用语言服务器：[typescript-language-server/typescript-language-server](https://github.com/typescript-language-server/typescript-language-server)
+- 调试适配器：[vscode-js-debug](https://github.com/microsoft/vscode-js-debug)
 
-<!--
-TBD: Document the difference between Language servers
--->
+## 语言服务器
 
-## Language servers
-
-By default Zed uses [vtsls](https://github.com/yioneko/vtsls) for TypeScript, TSX, and JavaScript files.
-You can configure the use of [typescript-language-server](https://github.com/typescript-language-server/typescript-language-server) per language in your settings file:
+默认情况下，Zed 针对 TypeScript、TSX、JavaScript 使用 [vtsls](https://github.com/yioneko/vtsls)。若想改用 [typescript-language-server](https://github.com/typescript-language-server/typescript-language-server)，可在设置中为各语言指定：
 
 ```json [settings]
 {
@@ -32,7 +27,7 @@ You can configure the use of [typescript-language-server](https://github.com/typ
 }
 ```
 
-Prettier will also be used for TypeScript files by default. To disable this:
+TypeScript 默认使用 Prettier 进行格式化。如需禁用：
 
 ```json [settings]
 {
@@ -40,23 +35,20 @@ Prettier will also be used for TypeScript files by default. To disable this:
     "TypeScript": {
       "prettier": { "allowed": false }
     }
-    //...
   }
 }
 ```
 
-## Large projects
+## 大型项目
 
-`vtsls` may run out of memory on very large projects. We default the limit to 8092 (8 GiB) vs. the default of 3072 but this may not be sufficient for you:
+`vtsls` 在超大型项目中可能耗尽内存。Zed 默认将内存上限从 3072 调整为 8092（8 GiB），如仍不足，可进一步调高：
 
 ```json [settings]
 {
   "lsp": {
     "vtsls": {
       "settings": {
-        // For TypeScript:
         "typescript": { "tsserver": { "maxTsServerMemory": 16184 } },
-        // For JavaScript:
         "javascript": { "tsserver": { "maxTsServerMemory": 16184 } }
       }
     }
@@ -64,11 +56,9 @@ Prettier will also be used for TypeScript files by default. To disable this:
 }
 ```
 
-## Inlay Hints
+## 内联提示
 
-Zed sets the following initialization options to make the language server send back inlay hints (that is, when Zed has inlay hints enabled in the settings).
-
-You can override these settings in your Zed `settings.json` when using `typescript-language-server`:
+Zed 启用内联提示时，会向语言服务器发送相应初始化参数。若使用 `typescript-language-server`，可在 `settings.json` 中重写：
 
 ```json [settings]
 {
@@ -91,63 +81,45 @@ You can override these settings in your Zed `settings.json` when using `typescri
 }
 ```
 
-See [typescript-language-server inlayhints documentation](https://github.com/typescript-language-server/typescript-language-server?tab=readme-ov-file#inlay-hints-textdocumentinlayhint) for more information.
+更多信息参见 [typescript-language-server 内联提示文档](https://github.com/typescript-language-server/typescript-language-server?tab=readme-ov-file#inlay-hints-textdocumentinlayhint)。
 
-When using `vtsls`:
+若使用 `vtsls`：
 
 ```json [settings]
 {
   "lsp": {
     "vtsls": {
       "settings": {
-        // For JavaScript:
         "javascript": {
           "inlayHints": {
             "parameterNames": {
               "enabled": "all",
               "suppressWhenArgumentMatchesName": false
             },
-            "parameterTypes": {
-              "enabled": true
-            },
+            "parameterTypes": { "enabled": true },
             "variableTypes": {
               "enabled": true,
               "suppressWhenTypeMatchesName": true
             },
-            "propertyDeclarationTypes": {
-              "enabled": true
-            },
-            "functionLikeReturnTypes": {
-              "enabled": true
-            },
-            "enumMemberValues": {
-              "enabled": true
-            }
+            "propertyDeclarationTypes": { "enabled": true },
+            "functionLikeReturnTypes": { "enabled": true },
+            "enumMemberValues": { "enabled": true }
           }
         },
-        // For TypeScript:
         "typescript": {
           "inlayHints": {
             "parameterNames": {
               "enabled": "all",
               "suppressWhenArgumentMatchesName": false
             },
-            "parameterTypes": {
-              "enabled": true
-            },
+            "parameterTypes": { "enabled": true },
             "variableTypes": {
               "enabled": true,
               "suppressWhenTypeMatchesName": true
             },
-            "propertyDeclarationTypes": {
-              "enabled": true
-            },
-            "functionLikeReturnTypes": {
-              "enabled": true
-            },
-            "enumMemberValues": {
-              "enabled": true
-            }
+            "propertyDeclarationTypes": { "enabled": true },
+            "functionLikeReturnTypes": { "enabled": true },
+            "enumMemberValues": { "enabled": true }
           }
         }
       }
@@ -156,33 +128,32 @@ When using `vtsls`:
 }
 ```
 
-## Debugging
+## 调试
 
-Zed supports debugging TypeScript code out of the box with `vscode-js-debug`.
-The following can be debugged without writing additional configuration:
+Zed 通过 `vscode-js-debug` 开箱即用地调试 TypeScript。无需额外配置即可调试：
 
-- Tasks from `package.json`
-- Tests written using several popular frameworks (Jest, Mocha, Vitest, Jasmine, Bun, Node)
+- `package.json` 中的任务
+- 使用 Jest、Mocha、Vitest、Jasmine、Bun、Node 等框架编写的测试
 
-Run {#action debugger::Start} ({#kb debugger::Start}) to see a contextual list of these predefined debug tasks.
+执行 {#action debugger::Start}（{#kb debugger::Start}）即可查看预设调试任务。
 
-> **Note:** Bun test is automatically detected when `@types/bun` is present in `package.json`.
+> **注意：** 若 `package.json` 中存在 `@types/bun`，会自动识别 Bun 测试。
 >
-> **Note:** Node test is automatically detected when `@types/node` is present in `package.json` (requires Node.js 20+).
+> **注意：** 若 `package.json` 中存在 `@types/node`（需 Node.js 20+），会自动识别 Node 测试。
 
-As for all languages, configurations from `.vscode/launch.json` are also available for debugging in Zed.
+同时，`.vscode/launch.json` 中的配置也可直接在 Zed 中使用。
 
-If your use-case isn't covered by any of these, you can take full control by adding debug configurations to `.zed/debug.json`. See below for example configurations.
+如需更多自定义，请在 `.zed/debug.json` 中添加调试配置。示例如下。
 
-### Configuring JavaScript debug tasks
+### 配置 JavaScript 调试任务
 
-JavaScript debugging is more complicated than other languages because there are two different environments: Node.js and the browser. `vscode-js-debug` exposes a `type` field, that you can use to specify the environment, either `node` or `chrome`.
+JavaScript 调试涉及 Node 与浏览器两个环境，`vscode-js-debug` 通过 `type` 字段区分（`node` 或 `chrome`）。
 
-- [vscode-js-debug configuration documentation](https://github.com/microsoft/vscode-js-debug/blob/main/OPTIONS.md)
+- [vscode-js-debug 配置文档](https://github.com/microsoft/vscode-js-debug/blob/main/OPTIONS.md)
 
-### Attach debugger to a server running in web browser (`npx serve`)
+### 附加到运行在浏览器中的服务器（例如 `npx serve`）
 
-Given an externally-ran web server (e.g., with `npx serve` or `npx live-server`) one can attach to it and open it with a browser.
+对于外部启动的 Web 服务器，可附加调试：
 
 ```json [debug]
 [
@@ -203,7 +174,7 @@ Given an externally-ran web server (e.g., with `npx serve` or `npx live-server`)
 ]
 ```
 
-## See also
+## 另请参阅
 
-- [Zed Yarn documentation](./yarn.md) for a walkthrough of configuring your project to use Yarn.
-- [Zed Deno documentation](./deno.md)
+- [Zed Yarn 文档](./yarn.md)
+- [Zed Deno 文档](./deno.md)

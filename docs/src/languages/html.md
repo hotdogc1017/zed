@@ -1,11 +1,11 @@
 # HTML
 
-HTML support is available through the [HTML extension](https://github.com/zed-industries/zed/tree/main/extensions/html).
+可以通过 [HTML 扩展](https://github.com/zed-industries/zed/tree/main/extensions/html) 在 Zed 中使用 HTML 支持。
 
-- Tree-sitter: [tree-sitter/tree-sitter-html](https://github.com/tree-sitter/tree-sitter-html)
-- Language Server: [microsoft/vscode-html-languageservice](https://github.com/microsoft/vscode-html-languageservice)
+- Tree-sitter：[tree-sitter/tree-sitter-html](https://github.com/tree-sitter/tree-sitter-html)
+- 语言服务器：[microsoft/vscode-html-languageservice](https://github.com/microsoft/vscode-html-languageservice)
 
-This extension is automatically installed, but if you do not want to use it, you can add the following to your settings:
+该扩展会自动安装；如果不想使用它，可以在设置中加入：
 
 ```json [settings]
 {
@@ -15,35 +15,35 @@ This extension is automatically installed, but if you do not want to use it, you
 }
 ```
 
-## Formatting
+## 格式化
 
-By default Zed uses [Prettier](https://prettier.io/) for formatting HTML.
+Zed 默认使用 [Prettier](https://prettier.io/) 来格式化 HTML。
 
-You can disable `format_on_save` by adding the following to your Zed `settings.json`:
-
-```json [settings]
-  "languages": {
-    "HTML": {
-      "format_on_save": "off",
-    }
-  }
-```
-
-You can still trigger formatting manually with {#kb editor::Format} or by opening [the Command Palette](..//getting-started.md#command-palette) ({#kb command_palette::Toggle}) and selecting "Format Document".
-
-### LSP Formatting
-
-To use the `vscode-html-language-server` language server auto-formatting instead of Prettier, add the following to your Zed settings:
+若想禁用 `format_on_save`，可在 Zed 的 `settings.json` 中添加：
 
 ```json [settings]
   "languages": {
     "HTML": {
-      "formatter": "language_server",
+      "format_on_save": "off"
     }
   }
 ```
 
-You can customize various [formatting options](https://code.visualstudio.com/docs/languages/html#_formatting) for `vscode-html-language-server` via your Zed `settings.json`:
+即便禁用自动格式化，你仍可以通过 {#kb editor::Format}，或打开[命令面板](../getting-started.md#command-palette)（{#kb command_palette::Toggle}）并选择 “Format Document” 来手动格式化。
+
+### 使用语言服务器格式化
+
+如果倾向于使用 `vscode-html-language-server` 提供的自动格式化，而非 Prettier，可在 Zed 设置中添加：
+
+```json [settings]
+  "languages": {
+    "HTML": {
+      "formatter": "language_server"
+    }
+  }
+```
+
+你可以在 `settings.json` 中自定义 `vscode-html-language-server` 的各类[格式化选项](https://code.visualstudio.com/docs/languages/html#_formatting)：
 
 ```json [settings]
   "lsp": {
@@ -51,11 +51,11 @@ You can customize various [formatting options](https://code.visualstudio.com/doc
       "settings": {
         "html": {
           "format": {
-            // Indent under <html> and <head> (default: false)
+            // 在 <html> 与 <head> 内缩进（默认：false）
             "indentInnerHtml": true,
-            // Disable formatting inside <svg> or <script>
+            // 禁止格式化 <svg> 与 <script> 内的内容
             "contentUnformatted": "svg,script",
-            // Add an extra newline before <div> and <p>
+            // 在 <div> 与 <p> 前额外添加空行
             "extraLiners": "div,p"
           }
         }
@@ -64,7 +64,7 @@ You can customize various [formatting options](https://code.visualstudio.com/doc
   }
 ```
 
-## See also
+## 另请参阅
 
 - [CSS](./css.md)
 - [JavaScript](./javascript.md)

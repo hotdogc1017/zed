@@ -1,36 +1,36 @@
 # OCaml
 
-OCaml support is available through the [OCaml extension](https://github.com/zed-extensions/ocaml).
+可以通过 [OCaml 扩展](https://github.com/zed-extensions/ocaml) 在 Zed 中使用 OCaml。
 
-- Tree-sitter: [tree-sitter/tree-sitter-ocaml](https://github.com/tree-sitter/tree-sitter-ocaml)
-- Language Server: [ocaml/ocaml-lsp](https://github.com/ocaml/ocaml-lsp)
+- Tree-sitter：[tree-sitter/tree-sitter-ocaml](https://github.com/tree-sitter/tree-sitter-ocaml)
+- 语言服务器：[ocaml/ocaml-lsp](https://github.com/ocaml/ocaml-lsp)
 
-## Setup Instructions
+## 安装指南
 
-If you have the development environment already setup, you can skip to [Launching Zed](#launching-zed)
+如果你的开发环境已经就绪，可以直接跳到[启动 Zed](#launching-zed)。
 
-### Using Opam
+### 使用 Opam
 
-Opam is the official package manager for OCaml and is highly recommended for getting started with OCaml. To get started using Opam, please follow the instructions provided [here](https://ocaml.org/install).
+Opam 是 OCaml 官方推荐的包管理器，也是入门 OCaml 的首选。请按照[官方指南](https://ocaml.org/install) 进行安装。
 
-Once you install opam and setup a switch with your development environment as per the instructions, you can proceed.
+完成 opam 的安装并按照说明创建开发环境的 switch 后即可继续。
 
-### Launching Zed
+### 启动 Zed {#launching-zed}
 
-By now you should have `ocamllsp` installed, you can verify so by running
+此时你应该已安装 `ocamllsp`，可以在终端执行下列命令验证：
 
 ```sh
 ocamllsp --help
 ```
 
-in your terminal. If you get a help message, you're good to go. If not, please revisit the installation instructions for `ocamllsp` and ensure it's properly installed.
+如果能看到帮助信息，说明安装成功；否则请重新检查 `ocamllsp` 的安装步骤，确保其已正确安装。
 
-With that aside, we can now launch Zed. Given how the OCaml package manager works, we require you to run Zed from the terminal, so please make sure you install the [Zed cli](https://zed.dev/features#cli) if you haven't already.
+接下来即可启动 Zed。考虑到 OCaml 包管理的工作方式，建议从终端启动 Zed，因此请先安装 [Zed CLI](https://zed.dev/features#cli)（如果尚未安装）。
 
-Once you have the cli, simply from a terminal, navigate to your project and run
+安装完成后，在终端进入项目目录并运行：
 
 ```sh
 zed .
 ```
 
-Voila! You should have Zed running with OCaml support, no additional setup required.
+这样就能在 Zed 中启用 OCaml 支持，无需额外配置。

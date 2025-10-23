@@ -1,3 +1,3 @@
-# Additional Learning Materials
+# 附加学习材料
 
-- [Text Manipulation Kung Fu for the Aspiring Black Belt](https://zed.dev/blog/text-manipulation)
+- [文本操作功夫：为有抱负的黑带](https://zed.dev/blog/text-manipulation)

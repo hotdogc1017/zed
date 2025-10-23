@@ -1,34 +1,34 @@
-# Building Zed for Linux
+# 为 Linux 构建 Zed
 
-## Repository
+## 存储库
 
-Clone down the [Zed repository](https://github.com/zed-industries/zed).
+克隆 [Zed 存储库](https://github.com/zed-industries/zed)。
 
-## Dependencies
+## 依赖项
 
-- Install [rustup](https://www.rust-lang.org/tools/install)
+- 安装 [rustup](https://www.rust-lang.org/tools/install)
 
-- Install the necessary system libraries:
+- 安装必要的系统库：
 
   ```sh
   script/linux
   ```
 
-  If you prefer to install the system libraries manually, you can find the list of required packages in the `script/linux` file.
+  如果您更喜欢手动安装系统库，可以在 `script/linux` 文件中找到所需的包列表。
 
-### Backend Dependencies (optional) {#backend-dependencies}
+### 后端依赖（可选） {#backend-dependencies}
 
-If you are looking to develop Zed collaboration features using a local collaboration server, please see: [Local Collaboration](./local-collaboration.md) docs.
+如果您希望使用本地协作服务器开发 Zed 协作功能，请参阅：[本地协作](./local-collaboration.md) 文档。
 
-### Linkers {#linker}
+### 链接器 {#linker}
 
-On Linux, Rust's default linker is [LLVM's `lld`](https://blog.rust-lang.org/2025/09/18/Rust-1.90.0/). Alternative linkers, especially [Wild](https://github.com/davidlattimore/wild) and [Mold](https://github.com/rui314/mold) can significantly improve clean and incremental build time.
+在 Linux 上，Rust 的默认链接器是 [LLVM 的 `lld`](https://blog.rust-lang.org/2025/09/18/Rust-1.90.0/)。替代链接器，特别是 [Wild](https://github.com/davidlattimore/wild) 和 [Mold](https://github.com/rui314/mold) 可以显著改善干净和增量构建时间。
 
-At present Zed uses Mold in CI because it's more mature. For local development Wild is recommended because it's 5-20% faster than Mold.
+目前 Zed 在 CI 中使用 Mold，因为它更成熟。对于本地开发，推荐使用 Wild，因为它比 Mold 快 5-20%。
 
-These linkers can be installed with `script/install-mold` and `script/install-wild`.
+这些链接器可以使用 `script/install-mold` 和 `script/install-wild` 安装。
 
-To use Wild as your default, add these lines to your `~/.cargo/config.toml`:
+要将 Wild 用作默认链接器，请将这些行添加到您的 `~/.cargo/config.toml` 中：
 
 ```toml
 [target.x86_64-unknown-linux-gnu]
@@ -40,46 +40,46 @@ linker = "clang"
 rustflags = ["-C", "link-arg=--ld-path=wild"]
 ```
 
-To use Mold as your default:
+要将 Mold 用作默认链接器：
 
 ```toml
 [target.'cfg(target_os = "linux")']
 rustflags = ["-C", "link-arg=-fuse-ld=mold"]
 ```
 
-## Building from source
+## 从源代码构建
 
-Once the dependencies are installed, you can build Zed using [Cargo](https://doc.rust-lang.org/cargo/).
+一旦安装了依赖项，您可以使用 [Cargo](https://doc.rust-lang.org/cargo/) 构建 Zed。
 
-For a debug build of the editor:
+对于编辑器的调试构建：
 
 ```sh
 cargo run
 ```
 
-And to run the tests:
+要运行测试：
 
 ```sh
 cargo test --workspace
 ```
 
-In release mode, the primary user interface is the `cli` crate. You can run it in development with:
+在发布模式下，主要用户界面是 `cli` crate。您可以在开发中使用以下命令运行它：
 
 ```sh
 cargo run -p cli
 ```
 
-## Installing a development build
+## 安装开发构建
 
-You can install a local build on your machine with:
+您可以使用以下命令在您的机器上安装本地构建：
 
 ```sh
 ./script/install-linux
 ```
 
-This will build zed and the cli in release mode and make them available at `~/.local/bin/zed`, installing .desktop files to `~/.local/share`.
+这将在发布模式下构建 zed 和 cli，并使它们在 `~/.local/bin/zed` 可用，将 .desktop 文件安装到 `~/.local/share`。
 
-> **_Note_**: If you encounter linker errors similar to the following:
+> **_注意_**: 如果您遇到类似以下的链接器错误：
 >
 > ```bash
 > error: linking with `cc` failed: exit status: 1 ...
@@ -95,78 +95,78 @@ This will build zed and the cli in release mode and make them available at `~/.l
 > error: could not compile `remote_server` (bin "remote_server") due to 1 previous error
 > ```
 >
-> **Cause**:
-> this is caused by known bugs in aws-lc-rs(doesn't support GCC >= 14): [FIPS fails to build with GCC >= 14](https://github.com/aws/aws-lc-rs/issues/569)
+> **原因**:
+> 这是由 aws-lc-rs 中的已知错误引起的（不支持 GCC >= 14）：[FIPS fails to build with GCC >= 14](https://github.com/aws/aws-lc-rs/issues/569)
 > & [GCC-14 - build failure for FIPS module](https://github.com/aws/aws-lc/issues/2010)
 >
-> You can refer to [linux: Linker error for remote_server when using script/install-linux](https://github.com/zed-industries/zed/issues/24880) for more information.
+> 您可以参考 [linux: Linker error for remote_server when using script/install-linux](https://github.com/zed-industries/zed/issues/24880) 获取更多信息。
 >
-> **Workarounds**:
-> Set the remote server target to `x86_64-unknown-linux-gnu` like so `export REMOTE_SERVER_TARGET=x86_64-unknown-linux-gnu; script/install-linux`
+> **解决方法**:
+> 将远程服务器目标设置为 `x86_64-unknown-linux-gnu`，如下所示：`export REMOTE_SERVER_TARGET=x86_64-unknown-linux-gnu; script/install-linux`
 
 ## Wayland & X11
 
-Zed supports both X11 and Wayland. By default, we pick whichever we can find at runtime. If you're on Wayland and want to run in X11 mode, use the environment variable `WAYLAND_DISPLAY=''`.
+Zed 支持 X11 和 Wayland。默认情况下，我们在运行时选择能找到的任何一种。如果您在 Wayland 上并希望在 X11 模式下运行，请使用环境变量 `WAYLAND_DISPLAY=''`。
 
-## Notes for packaging Zed
+## 打包 Zed 的注意事项
 
-Thank you for taking on the task of packaging Zed!
+感谢您承担打包 Zed 的任务！
 
-### Technical requirements
+### 技术要求
 
-Zed has two main binaries:
+Zed 有两个主要二进制文件：
 
-- You will need to build `crates/cli` and make its binary available in `$PATH` with the name `zed`.
-- You will need to build `crates/zed` and put it at `$PATH/to/cli/../../libexec/zed-editor`. For example, if you are going to put the cli at `~/.local/bin/zed` put zed at `~/.local/libexec/zed-editor`. As some linux distributions (notably Arch) discourage the use of `libexec`, you can also put this binary at `$PATH/to/cli/../../lib/zed/zed-editor` (e.g. `~/.local/lib/zed/zed-editor`) instead.
-- If you are going to provide a `.desktop` file you can find a template in `crates/zed/resources/zed.desktop.in`, and use `envsubst` to populate it with the values required. This file should also be renamed to `$APP_ID.desktop` so that the file [follows the FreeDesktop standards](https://github.com/zed-industries/zed/issues/12707#issuecomment-2168742761). You should also make this desktop file executable (`chmod 755`).
-- You will need to ensure that the necessary libraries are installed. You can get the current list by [inspecting the built binary](https://github.com/zed-industries/zed/blob/935cf542aebf55122ce6ed1c91d0fe8711970c82/script/bundle-linux#L65-L67) on your system.
-- For an example of a complete build script, see [script/bundle-linux](https://github.com/zed-industries/zed/blob/935cf542aebf55122ce6ed1c91d0fe8711970c82/script/bundle-linux).
-- You can disable Zed's auto updates and provide instructions for users who try to update Zed manually by building (or running) Zed with the environment variable `ZED_UPDATE_EXPLANATION`. For example: `ZED_UPDATE_EXPLANATION="Please use flatpak to update zed."`.
-- Make sure to update the contents of the `crates/zed/RELEASE_CHANNEL` file to 'nightly', 'preview', or 'stable', with no newline. This will cause Zed to use the credentials manager to remember a user's login.
+- 您需要构建 `crates/cli` 并使其二进制文件在 `$PATH` 中以名称 `zed` 可用。
+- 您需要构建 `crates/zed` 并将其放在 `$PATH/to/cli/../../libexec/zed-editor`。例如，如果您要将 cli 放在 `~/.local/bin/zed`，则将 zed 放在 `~/.local/libexec/zed-editor`。由于某些 Linux 发行版（特别是 Arch）不鼓励使用 `libexec`，您也可以将此二进制文件放在 `$PATH/to/cli/../../lib/zed/zed-editor`（例如 `~/.local/lib/zed/zed-editor`）。
+- 如果您要提供 `.desktop` 文件，可以在 `crates/zed/resources/zed.desktop.in` 中找到模板，并使用 `envsubst` 填充所需的值。此文件也应重命名为 `$APP_ID.desktop`，以便文件[遵循 FreeDesktop 标准](https://github.com/zed-industries/zed/issues/12707#issuecomment-2168742761)。您还应使此桌面文件可执行（`chmod 755`）。
+- 您需要确保安装了必要的库。您可以通过[检查系统上构建的二进制文件](https://github.com/zed-industries/zed/blob/935cf542aebf55122ce6ed1c91d0fe8711970c82/script/bundle-linux#L65-L67)来获取当前列表。
+- 有关完整构建脚本的示例，请参阅 [script/bundle-linux](https://github.com/zed-industries/zed/blob/935cf542aebf55122ce6ed1c91d0fe8711970c82/script/bundle-linux)。
+- 您可以通过使用环境变量 `ZED_UPDATE_EXPLANATION` 构建（或运行）Zed 来禁用 Zed 的自动更新，并为尝试手动更新 Zed 的用户提供说明。例如：`ZED_UPDATE_EXPLANATION="Please use flatpak to update zed."`。
+- 确保将 `crates/zed/RELEASE_CHANNEL` 文件的内容更新为 'nightly'、'preview' 或 'stable'，不带换行符。这将导致 Zed 使用凭据管理器记住用户的登录。
 
-### Other things to note
+### 其他注意事项
 
-At Zed, our priority has been to move fast and bring the latest technology to our users. We've long been frustrated at having software that is slow, out of date, or hard to configure, and so we've built our editor to those tastes.
+在 Zed，我们的首要任务是快速行动并为用户带来最新技术。长期以来，我们对软件运行缓慢、过时或难以配置感到沮丧，因此我们按照这些品味构建了我们的编辑器。
 
-However, we realize that many distros have other priorities. We want to work with everyone to bring Zed to their favorite platforms. But there is a long way to go:
+然而，我们意识到许多发行版有其他优先事项。我们希望与所有人合作，将 Zed 带到他们喜欢的平台上。但还有很长的路要走：
 
-- Zed is a fast-moving early-phase project. We typically release 2-3 builds per week to fix user-reported issues and release major features.
-- There are a couple of other `zed` binaries that may be present on Linux systems ([1](https://openzfs.github.io/openzfs-docs/man/v2.2/8/zed.8.html), [2](https://zed.brimdata.io/docs/commands/zed)). If you want to rename our CLI binary because of these issues, we suggest `zedit`, `zeditor`, or `zed-cli`.
-- Zed automatically installs the correct version of common developer tools in the same way as rustup/rbenv/pyenv, etc. We understand this is contentious, [see here](https://github.com/zed-industries/zed/issues/12589).
-- We allow users to install extensions locally and from [zed-industries/extensions](https://github.com/zed-industries/extensions). These extensions may install further tooling as needed, such as language servers. In the long run, we would like to make this safer, [see here](https://github.com/zed-industries/zed/issues/12358).
-- Zed connects to several online services by default (AI, telemetry, collaboration). AI and our telemetry can be disabled by your users with their zed settings or by patching our [default settings file](https://github.com/zed-industries/zed/blob/main/assets/settings/default.json).
-- As a result of the above issues, zed currently does not play nice with sandboxes, [see here](https://github.com/zed-industries/zed/pull/12006#issuecomment-2130421220)
+- Zed 是一个快速发展的早期项目。我们通常每周发布 2-3 个构建版本来修复用户报告的问题并发布主要功能。
+- 在 Linux 系统上可能存在其他几个 `zed` 二进制文件（[1](https://openzfs.github.io/openzfs-docs/man/v2.2/8/zed.8.html)、[2](https://zed.brimdata.io/docs/commands/zed)）。如果您想因为这些问题重命名我们的 CLI 二进制文件，我们建议使用 `zedit`、`zeditor` 或 `zed-cli`。
+- Zed 会自动安装正确版本的常用开发工具，方式与 rustup/rbenv/pyenv 等类似。我们理解这是有争议的，[请参阅此处](https://github.com/zed-industries/zed/issues/12589)。
+- 我们允许用户从本地和 [zed-industries/extensions](https://github.com/zed-industries/extensions) 安装扩展。这些扩展可能会根据需要安装更多工具，例如语言服务器。从长远来看，我们希望使这更安全，[请参阅此处](https://github.com/zed-industries/zed/issues/12358)。
+- Zed 默认连接到多个在线服务（AI、遥测、协作）。您的用户可以通过他们的 zed 设置或修补我们的[默认设置文件](https://github.com/zed-industries/zed/blob/main/assets/settings/default.json)来禁用 AI 和我们的遥测功能。
+- 由于上述问题，zed 目前与沙盒不兼容，[请参阅此处](https://github.com/zed-industries/zed/pull/12006#issuecomment-2130421220)
 
 ## Flatpak
 
-> Zed's current Flatpak integration exits the sandbox on startup. Workflows that rely on Flatpak's sandboxing may not work as expected.
+> Zed 当前的 Flatpak 集成在启动时会退出沙盒。依赖 Flatpak 沙盒功能的工作流程可能无法按预期工作。
 
-To build & install the Flatpak package locally follow the steps below:
+要在本地构建和安装 Flatpak 包，请按照以下步骤操作：
 
-1. Install Flatpak for your distribution as outlined [here](https://flathub.org/setup).
-2. Run the `script/flatpak/deps` script to install the required dependencies.
-3. Run `script/flatpak/bundle-flatpak`.
-4. Now the package has been installed and has a bundle available at `target/release/{app-id}.flatpak`.
+1. 按照[此处](https://flathub.org/setup)的说明为您的发行版安装 Flatpak。
+2. 运行 `script/flatpak/deps` 脚本来安装所需的依赖项。
+3. 运行 `script/flatpak/bundle-flatpak`。
+4. 现在包已安装，并在 `target/release/{app-id}.flatpak` 处有一个可用的包。
 
-## Memory profiling
+## 内存分析
 
-[`heaptrack`](https://github.com/KDE/heaptrack) is quite useful for diagnosing memory leaks. To install it:
+[`heaptrack`](https://github.com/KDE/heaptrack) 对于诊断内存泄漏非常有用。要安装它：
 
 ```sh
 $ sudo apt install heaptrack heaptrack-gui
 $ cargo install cargo-heaptrack
 ```
 
-Then, to build and run Zed with the profiler attached:
+然后，要构建并运行带有分析器附加的 Zed：
 
 ```sh
 $ cargo heaptrack -b zed
 ```
 
-When this zed instance is exited, terminal output will include a command to run `heaptrack_interpret` to convert the `*.raw.zst` profile to a `*.zst` file which can be passed to `heaptrack_gui` for viewing.
+当这个 zed 实例退出时，终端输出将包含一个运行 `heaptrack_interpret` 的命令，用于将 `*.raw.zst` 配置文件转换为 `*.zst` 文件，该文件可以传递给 `heaptrack_gui` 进行查看。
 
-## Troubleshooting
+## 故障排除
 
-### Cargo errors claiming that a dependency is using unstable features
+### Cargo 错误声称依赖项使用了不稳定功能
 
-Try `cargo clean` and `cargo build`.
+尝试 `cargo clean` 和 `cargo build`。

@@ -1,21 +1,21 @@
 # PHP
 
-PHP support is available through the [PHP extension](https://github.com/zed-extensions/php).
+可以通过 [PHP 扩展](https://github.com/zed-extensions/php) 在 Zed 中使用 PHP。
 
-- Tree-sitter: https://github.com/tree-sitter/tree-sitter-php
-- Language Servers:
+- Tree-sitter：https://github.com/tree-sitter/tree-sitter-php
+- 语言服务器：
   - [phpactor](https://github.com/phpactor/phpactor)
   - [intelephense](https://github.com/bmewburn/vscode-intelephense/)
 
-## Choosing a language server
+## 选择语言服务器
 
-The PHP extension offers both `phpactor` and `intelephense` language server support.
+PHP 扩展支持 `phpactor` 与 `intelephense` 两种语言服务器。
 
-`phpactor` is enabled by default.
+默认启用 `phpactor`。
 
 ### Phpactor
 
-The Zed PHP Extension can install `phpactor` automatically but requires `php` to be installed and available in your path:
+Zed 的 PHP 扩展可以自动安装 `phpactor`，但前提是系统已安装 `php` 且可在 PATH 中找到：
 
 ```sh
 # brew install php            # macOS
@@ -27,9 +27,9 @@ which php
 
 ### Intelephense
 
-[Intelephense](https://intelephense.com/) is a [proprietary](https://github.com/bmewburn/vscode-intelephense/blob/master/LICENSE.txt#L29) language server for PHP operating under a freemium model. Certain features require purchase of a [premium license](https://intelephense.com/).
+[Intelephense](https://intelephense.com/) 是一款采用免费增值模式的[商业](https://github.com/bmewburn/vscode-intelephense/blob/master/LICENSE.txt#L29) PHP 语言服务器，部分功能需购买 [高级许可证](https://intelephense.com/)。
 
-To switch to `intelephense`, add the following to your `settings.json`:
+若要切换至 `intelephense`，在 `settings.json` 中添加：
 
 ```json [settings]
 {
@@ -41,7 +41,7 @@ To switch to `intelephense`, add the following to your `settings.json`:
 }
 ```
 
-To use the premium features, you can place your [licence.txt file](https://intelephense.com/faq.html) at `~/intelephense/licence.txt` inside your home directory. Alternatively, you can pass the licence key or a path to a file containing the licence key as an initialization option for the `intelephense` language server. To do this, add the following to your `settings.json`:
+如果需要启用高级功能，可将 [licence.txt 文件](https://intelephense.com/faq.html) 放在主目录下的 `~/intelephense/licence.txt`。也可以通过 `intelephense` 的初始化选项传入许可证密钥或密钥文件路径，在 `settings.json` 中添加：
 
 ```json [settings]
 {
@@ -57,13 +57,13 @@ To use the premium features, you can place your [licence.txt file](https://intel
 
 ## PHPDoc
 
-Zed supports syntax highlighting for PHPDoc comments.
+Zed 支持 PHPDoc 注释的语法高亮。
 
-- Tree-sitter: [claytonrcarter/tree-sitter-phpdoc](https://github.com/claytonrcarter/tree-sitter-phpdoc)
+- Tree-sitter：[claytonrcarter/tree-sitter-phpdoc](https://github.com/claytonrcarter/tree-sitter-phpdoc)
 
-## Setting up Xdebug
+## 配置 Xdebug
 
-Zed’s PHP extension provides a debug adapter for PHP and Xdebug. The adapter name is `Xdebug`. Here a couple ways you can use it:
+Zed 的 PHP 扩展提供了针对 PHP 与 Xdebug 的调试适配器，名称为 `Xdebug`。以下是两种常见用法：
 
 ```json
 [
@@ -85,10 +85,10 @@ Zed’s PHP extension provides a debug adapter for PHP and Xdebug. The adapter n
 ]
 ```
 
-In case you run into issues:
+若遇到问题，可依次检查：
 
-- ensure that you have Xdebug installed for the version of PHP you’re running
-- ensure that Xdebug is configured to run in `debug` mode
-- ensure that Xdebug is actually starting a debugging session
-- check that the host and port matches between Xdebug and Zed
-- look at the diagnostics log by using the `xdebug_info()` function in the page you’re trying to debug
+- 确认当前 PHP 版本已安装 Xdebug
+- 确认 Xdebug 以 `debug` 模式运行
+- 确认 Xdebug 实际启动了调试会话
+- 核对 Xdebug 与 Zed 的主机名与端口是否一致
+- 在需要调试的页面调用 `xdebug_info()` 查看诊断信息

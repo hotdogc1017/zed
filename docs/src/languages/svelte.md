@@ -1,30 +1,30 @@
 # Svelte
 
-Svelte support is available through the [Svelte extension](https://github.com/zed-extensions/svelte).
+可以通过 [Svelte 扩展](https://github.com/zed-extensions/svelte) 在 Zed 中使用 Svelte。
 
-- Tree-sitter: [tree-sitter-grammars/tree-sitter-svelte](https://github.com/tree-sitter-grammars/tree-sitter-svelte)
-- Language Server: [sveltejs/language-tools](https://github.com/sveltejs/language-tools)
+- Tree-sitter：[tree-sitter-grammars/tree-sitter-svelte](https://github.com/tree-sitter-grammars/tree-sitter-svelte)
+- 语言服务器：[sveltejs/language-tools](https://github.com/sveltejs/language-tools)
 
-## Extra theme styling configuration
+## 额外主题样式配置
 
-You can modify how certain styles, such as directives and modifiers, appear in attributes:
+可以通过设置控制指令、修饰符等属性部分的呈现效果：
 
 ```json [settings]
 "syntax": {
-  // Styling for directives (e.g., `class:foo` or `on:click`) (the `on` or `class` part of the attribute).
+  // 指令（如 `class:foo`、`on:click`）中前缀部分的样式
   "attribute.function": {
     "color": "#ff0000"
   },
-  // Styling for modifiers at the end of attributes, e.g. `on:<click|preventDefault|stopPropagation>`
+  // 属性结尾修饰符的样式，例如 `on:<click|preventDefault|stopPropagation>`
   "attribute.special": {
     "color": "#00ff00"
   }
 }
 ```
 
-## Inlay Hints
+## 内联提示
 
-When inlay hints is enabled in Zed, to make the language server send them back, Zed sets the following initialization options:
+启用内联提示时，Zed 会向语言服务器发送以下初始化配置：
 
 ```json [settings]
 "inlayHints": {
@@ -51,7 +51,7 @@ When inlay hints is enabled in Zed, to make the language server send them back, 
 }
 ```
 
-To override these settings, use the following:
+若需覆盖这些设置，可按如下方式配置：
 
 ```json [settings]
 "lsp": {
@@ -70,4 +70,4 @@ To override these settings, use the following:
 }
 ```
 
-See [the TypeScript language server `package.json`](https://github.com/microsoft/vscode/blob/main/extensions/typescript-language-features/package.json) for more information.
+更多可用选项见 [TypeScript 语言服务器的 `package.json`](https://github.com/microsoft/vscode/blob/main/extensions/typescript-language-features/package.json)。

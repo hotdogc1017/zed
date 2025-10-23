@@ -1,8 +1,8 @@
-# Multibuffers
+# 多缓冲区（Multibuffer）
 
-One of the superpowers Zed gives you is the ability to edit multiple files simultaneously. When combined with multiple cursors, this makes wide-ranging refactors significantly faster.
+多缓冲区让你可以同时编辑多个文件，配合多光标后能大幅加快跨文件的重构效率。
 
-## Editing in a multibuffer
+## 在多缓冲区中编辑
 
 <div class="video" style="position: relative; padding-top: 71.71314741035857%;">
   <iframe
@@ -13,28 +13,35 @@ One of the superpowers Zed gives you is the ability to edit multiple files simul
   ></iframe>
 </div>
 
-Editing a multibuffer is the same as editing a normal file. Changes you make will be reflected in the open copies of that file in the rest of the editor, and you can save all files with `editor: Save` (bound to `cmd-s` on macOS, `ctrl-s` on Windows/Linux, or `:w` in Vim mode).
+多缓冲区的编辑体验与普通文件一致，改动会实时反映到对应文件中。可以通过 `editor: Save`（macOS `cmd-s`、Windows/Linux `ctrl-s`、Vim 模式 `:w`）保存所有修改。
 
-When in a multibuffer, it is often useful to use multiple cursors to edit every file simultaneously. If you want to edit a few instances, you can select them with the mouse (`option-click` on macOS, `alt-click` on Window/Linux) or the keyboard. `cmd-d` on macOS, `ctrl-d` on Windows/Linux, or `gl` in Vim mode will select the next match of the word under the cursor.
+若希望一次性编辑多处内容，可结合多光标使用：
 
-When you want to edit all matches you can select them by running the `editor: Select All Matches` command (`cmd-shift-l` on macOS, `ctrl-shift-l` on Windows/Linux, or `g a` in Vim mode).
+- 鼠标：`option-click`（macOS）或 `alt-click`（Windows/Linux）
+- 快捷键：`cmd-d`（macOS）、`ctrl-d`（Windows/Linux）、Vim 模式 `g l` 会选择下一个与光标单词匹配的实例
+- 全选所有匹配：`editor: Select All Matches`（macOS `cmd-shift-l`、Windows/Linux `ctrl-shift-l`、Vim 模式 `g a`）
 
-## Navigating to the Source File
+## 打开源文件
 
-While you can easily edit files in a multibuffer, navigating directly to the source file is often beneficial. You can accomplish this by clicking on any of the divider lines between excerpts or by placing your cursor in an excerpt and executing the `editor: open excerpts` command. It’s key to note that if multiple cursors are being used, the command will open the source file positioned under each cursor within the multibuffer.
+多缓冲区中的摘录可随时跳转到源文件：
 
-Additionally, if you prefer to use the mouse and would like to double-click on an excerpt to open it, you can enable this functionality with the setting: `"double_click_in_multibuffer": "open"`.
+- 点击摘录之间的分隔线；或
+- 将光标放在摘录中执行 `editor: open excerpts`
 
-## Project search
+若使用多光标，命令会针对每个光标打开对应文件。想通过鼠标双击打开，可在设置中启用：
 
-To start a search run the `pane: Toggle Search` command (`cmd-shift-f` on macOS, `ctrl-shift-f` on Windows/Linux, or `g/` in Vim mode). After the search has completed, the results will be shown in a new multibuffer. There will be one excerpt for each matching line across the whole project.
+```json [settings]
+"double_click_in_multibuffer": "open"
+```
 
-## Diagnostics
+## 项目搜索
 
-If you have a language server installed, the diagnostics pane can show you all errors across your project. You can open it by clicking on the icon in the status bar, or running the `diagnostics: Deploy` command` ('cmd-shift-m` on macOS, `ctrl-shift-m` on Windows/Linux, or `:clist` in Vim mode).
+执行 `pane: Toggle Search`（macOS `cmd-shift-f`、Windows/Linux `ctrl-shift-f`、Vim 模式 `g/`）发起项目搜索。搜索结果会以多缓冲区形式展示，每个匹配行对应一段摘录。
 
-## Find References
+## 诊断面板
 
-If you have a language server installed, you can find all references to the symbol under the cursor with the `editor: Find References` command (`cmd-click` on macOS, `ctrl-click` on Windows/Linux, or `g A` in Vim mode.
+若启用了语言服务器，可通过状态栏图标或 `diagnostics: Deploy`（macOS `cmd-shift-m`、Windows/Linux `ctrl-shift-m`、Vim 模式 `:clist`）打开诊断面板，查看项目中的全部错误，同样以多缓冲区形式呈现。
 
-Depending on your language server, commands like `editor: Go To Definition` and `editor: Go To Type Definition` will also open a multibuffer if there are multiple possible definitions.
+## 查找引用
+
+语言服务器支持下，可使用 `editor: Find References`（macOS `cmd-click`、Windows/Linux `ctrl-click`、Vim 模式 `g A`）查看符号引用。若存在多个定义，`editor: Go To Definition`、`editor: Go To Type Definition` 等命令也会以多缓冲区形式列出各候选位置。

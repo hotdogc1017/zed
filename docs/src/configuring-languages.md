@@ -1,32 +1,26 @@
-# Configuring supported languages
+# 配置支持的语言
 
-Zed offers powerful customization options for each programming language it supports. This guide will walk you through the various ways you can tailor your coding experience to your preferences and project requirements.
+Zed 为所支持的编程语言提供了丰富的自定义选项。本指南将带你逐步了解如何根据个人偏好与项目需求调整语言体验。
 
-Zed's language support is built on two main technologies:
+Zed 的语言能力由两大组件组成：
 
-1. Tree-sitter: This handles syntax highlighting and structure-based features like the outline panel.
-2. Language Server Protocol (LSP): This provides semantic features such as code completion and diagnostics.
+1. **Tree-sitter**：负责语法高亮及基于语法树的功能（例如大纲面板）。
+2. **语言服务器协议（LSP）**：提供语义层功能，如补全、诊断等。
 
-These components work together to provide Zed's language capabilities.
+通过合理配置这两部分，你可以获得强大的语言支援。本指南涵盖：
 
-In this guide, we'll cover:
+- 语言专属设置
+- 文件类型关联
+- 语言服务器管理
+- 代码格式化与静态检查
+- 语法高亮与主题定制
+- 其他高级能力
 
-- Language-specific settings
-- File associations
-- Working with language servers
-- Formatting and linting configuration
-- Customizing syntax highlighting and themes
-- Advanced language features
+阅读完成后，你将掌握在 Zed 中定制各语言体验的常用方法。欲查看支持语言的完整列表与专属说明，请访问[支持的语言](./languages.md)。若想扩展或增强语言功能，也可参考[语言扩展开发指南](./extensions/languages.md)。
 
-By the end of this guide, you should know how to configure and customize supported languages in Zed.
+## 语言专属设置
 
-For a comprehensive list of languages supported by Zed and their specific configurations, see our [Supported Languages](./languages.md) page. To go further, you could explore developing your own extensions to add support for additional languages or enhance existing functionality. For more information on creating language extensions, see our [Language Extensions](./extensions/languages.md) guide.
-
-## Language-specific Settings
-
-Zed allows you to override global settings for individual languages. These custom configurations are defined in your `settings.json` file under the `languages` key.
-
-Here's an example of language-specific settings:
+在 `settings.json` 的 `languages` 区块中，可以覆盖某种语言的默认配置。例如：
 
 ```json [settings]
 "languages": {
@@ -47,25 +41,21 @@ Here's an example of language-specific settings:
 }
 ```
 
-You can customize a wide range of settings for each language, including:
+常见可覆写选项：
 
-- [`tab_size`](./configuring-zed.md#tab-size): The number of spaces for each indentation level
-- [`formatter`](./configuring-zed.md#formatter): The tool used for code formatting
-- [`format_on_save`](./configuring-zed.md#format-on-save): Whether to automatically format code when saving
-- [`enable_language_server`](./configuring-zed.md#enable-language-server): Toggle language server support
-- [`hard_tabs`](./configuring-zed.md#hard-tabs): Use tabs instead of spaces for indentation
-- [`preferred_line_length`](./configuring-zed.md#preferred-line-length): The recommended maximum line length
-- [`soft_wrap`](./configuring-zed.md#soft-wrap): How to wrap long lines of code
-- [`show_completions_on_input`](./configuring-zed.md#show-completions-on-input): Whether or not to show completions as you type
-- [`show_completion_documentation`](./configuring-zed.md#show-completion-documentation): Whether to display inline and alongside documentation for items in the completions menu
+- [`tab_size`](./configuring-zed.md#tab-size)：缩进宽度
+- [`formatter`](./configuring-zed.md#formatter)：格式化工具
+- [`format_on_save`](./configuring-zed.md#format-on-save)：保存时自动格式化
+- [`enable_language_server`](./configuring-zed.md#enable-language-server)：启用/禁用语言服务器
+- [`hard_tabs`](./configuring-zed.md#hard-tabs)：缩进是否使用 `\t`
+- [`preferred_line_length`](./configuring-zed.md#preferred-line-length)：推荐行宽
+- [`soft_wrap`](./configuring-zed.md#soft-wrap)：软换行策略
+- [`show_completions_on_input`](./configuring-zed.md#show-completions-on-input)：输入时自动弹出补全
+- [`show_completion_documentation`](./configuring-zed.md#show-completion-documentation)：补全列表中显示文档
 
-These settings allow you to maintain specific coding styles across different languages and projects.
+## 文件类型关联
 
-## File Associations
-
-Zed automatically detects file types based on their extensions, but you can customize these associations to fit your workflow.
-
-To set up custom file associations, use the [`file_types`](./configuring-zed.md#file-types) setting in your `settings.json`:
+虽然 Zed 会自动根据扩展名识别文件类型，但你也可以通过 [`file_types`](./configuring-zed.md#file-types) 设置自行映射：
 
 ```json [settings]
 "file_types": {
@@ -75,77 +65,60 @@ To set up custom file associations, use the [`file_types`](./configuring-zed.md#
 }
 ```
 
-This configuration tells Zed to:
+上述配置会让 `.c` 文件按 C++ 处理、识别名为 `MyLockFile` 的文件为 TOML、以及让以 `Dockerfile` 开头的文件应用 Dockerfile 语法。`file_types` 支持 glob，因此可应对各种命名约定。
 
-- Treat `.c` files as C++ instead of C
-- Recognize files named "MyLockFile" as TOML
-- Apply Dockerfile syntax to any file starting with "Dockerfile"
+## 使用语言服务器
 
-You can use glob patterns for more flexible matching, allowing you to handle complex naming conventions in your projects.
+语言服务器提供自动补全、跳转、实时诊断等智能功能，是 Zed 语言支持的核心。
 
-## Working with Language Servers
+### 什么是语言服务器？
 
-Language servers are a crucial part of Zed's intelligent coding features, providing capabilities like auto-completion, go-to-definition, and real-time error checking.
+语言服务器实现了 Language Server Protocol（LSP），它规范了编辑器与语言工具之间的通信。通过这一协议，Zed 可以在无需针对每种语言重新实现所有功能的情况下，获得下列能力：
 
-### What are Language Servers?
+- 代码补全
+- 错误检查与诊断
+- 跳转定义、查找引用
+- 代码操作（重命名、提取函数等）
+- 悬停信息
+- 工作区符号检索
 
-Language servers implement the Language Server Protocol (LSP), which standardizes communication between the editor and language-specific tools. This allows Zed to support advanced features for multiple programming languages without implementing each feature separately.
+### 管理语言服务器
 
-Some key features provided by language servers include:
+Zed 会自动为你处理大部分工作：
 
-- Code completion
-- Error checking and diagnostics
-- Code navigation (go to definition, find references)
-- Code actions (Rename, extract method)
-- Hover information
-- Workspace symbol search
+1. **自动下载**：当你打开某种语言的文件时，Zed 会自动下载匹配的语言服务器；若需要额外扩展，也会提示安装。
+2. **存储位置**：
+   - macOS：`~/Library/Application Support/Zed/languages`
+   - Linux：`$XDG_DATA_HOME/zed/languages` 或 `$HOME/.local/share/zed/languages`
+3. **自动更新**：语言服务器会随 Zed 自动保持最新。
 
-### Managing Language Servers
+### 选择语言服务器
 
-Zed simplifies language server management for users:
-
-1. Automatic Download: When you open a file with a matching file type, Zed automatically downloads the appropriate language server. Zed may prompt you to install an extension for known file types.
-
-2. Storage Location:
-
-   - macOS: `~/Library/Application Support/Zed/languages`
-   - Linux: `$XDG_DATA_HOME/zed/languages`, `$FLATPAK_XDG_DATA_HOME/zed/languages`, or `$HOME/.local/share/zed/languages`
-
-3. Automatic Updates: Zed keeps your language servers up-to-date, ensuring you always have the latest features and improvements.
-
-### Choosing Language Servers
-
-Some languages in Zed offer multiple language server options. You might have multiple extensions installed that bundle language servers targeting the same language, potentially leading to overlapping capabilities. To ensure you get the functionality you prefer, Zed allows you to prioritize which language servers are used and in what order.
-
-You can specify your preference using the `language_servers` setting:
+部分语言同时存在多个语言服务器。若你安装了多个扩展，可能会出现能力重叠的情况，可以通过 `language_servers` 设置指定优先顺序：
 
 ```json [settings]
+{
   "languages": {
-    "PHP": {
-      "language_servers": ["intelephense", "!phpactor", "..."]
+    "TypeScript": {
+      "language_servers": [
+        "vtsls",
+        "!typescript-language-server",
+        "..."
+      ]
     }
   }
+}
 ```
 
-In this example:
+- 列表按顺序尝试，`"..."` 代表保留默认值。
+- 在名称前加 `!` 表示禁用该语言服务器。
 
-- `intelephense` is set as the primary language server
-- `phpactor` is disabled (note the `!` prefix)
-- `...` expands to the rest of the language servers that are registered for PHP
+### 语言服务器设置
 
-This configuration allows you to tailor the language server setup to your specific needs, ensuring that you get the most suitable functionality for your development workflow.
-
-### Toolchains
-
-Some language servers need to be configured with a current "toolchain", which is an installation of a specific version of a programming language compiler or/and interpreter, which can possibly include a full set of dependencies of a project.
-An example of what Zed considers a toolchain is a virtual environment in Python.
-Not all languages in Zed support toolchain discovery and selection, but for those that do, you can specify the toolchain from a toolchain picker (via {#action toolchain::Select}). To learn more about toolchains in Zed, see [`toolchains`](./toolchains.md).
-
-### Configuring Language Servers
-
-Many language servers accept custom configuration options. You can set these in the `lsp` section of your `settings.json`:
+每个语言服务器都可以通过 `lsp` 区块进一步定制：
 
 ```json [settings]
+{
   "lsp": {
     "rust-analyzer": {
       "initialization_options": {
@@ -155,308 +128,75 @@ Many language servers accept custom configuration options. You can set these in 
       }
     }
   }
-```
-
-This example configures the Rust Analyzer to use Clippy for additional linting when saving files.
-
-#### Nested objects
-
-When configuring language server options in Zed, it's important to use nested objects rather than dot-delimited strings. This is particularly relevant when working with more complex configurations. Let's look at a real-world example using the TypeScript language server:
-
-Suppose you want to configure the following settings for TypeScript:
-
-- Enable strict null checks
-- Set the target ECMAScript version to ES2020
-
-Here's how you would structure these settings in Zed's `settings.json`:
-
-```json [settings]
-"lsp": {
-  "typescript-language-server": {
-    "initialization_options": {
-      // These are not supported (VSCode dotted style):
-      // "preferences.strictNullChecks": true,
-      // "preferences.target": "ES2020"
-      //
-      // These is correct (nested notation):
-      "preferences": {
-        "strictNullChecks": true,
-        "target": "ES2020"
-      },
-    }
-  }
 }
 ```
 
-#### Possible configuration options
+- `initialization_options`：启动时生效的配置，修改后需要重启语言服务器。
+- `settings`：运行时可热更新的配置。
 
-Depending on how a particular language server is implemented, they may depend on different configuration options, both specified in the LSP.
+更多示例可参考语言文档或语言服务器官方说明。
 
-- [initializationOptions](https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#version_3_17_0)
+## 格式化与代码检查
 
-Sent once during language server startup, requires server's restart to reapply changes.
+Zed 支持多种格式化方式：
 
-For example, rust-analyzer and clangd rely on this way of configuring only.
-
-```json [settings]
-  "lsp": {
-    "rust-analyzer": {
-      "initialization_options": {
-        "checkOnSave": false
-      }
-    }
-  }
-```
-
-- [Configuration Request](https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#workspace_configuration)
-
-May be queried by the server multiple times.
-Most of the servers would rely on this way of configuring only.
+1. 语言服务器提供的格式化（`"language_server"`）。
+2. 外部命令（`"external"`），通过标准输入输出处理代码。例如：
 
 ```json [settings]
-"lsp": {
-  "tailwindcss-language-server": {
-    "settings": {
-      "tailwindCSS": {
-        "emmetCompletions": true,
-      },
-    }
-  }
-}
-```
-
-Apart of the LSP-related server configuration options, certain servers in Zed allow configuring the way binary is launched by Zed.
-
-Language servers are automatically downloaded or launched if found in your path, if you wish to specify an explicit alternate binary you can specify that in settings:
-
-```json [settings]
-  "lsp": {
-    "rust-analyzer": {
-      "binary": {
-        // Whether to fetch the binary from the internet, or attempt to find locally.
-        "ignore_system_version": false,
-        "path": "/path/to/langserver/bin",
-        "arguments": ["--option", "value"],
-        "env": {
-          "FOO": "BAR"
-        }
-      }
-    }
-  }
-```
-
-### Enabling or Disabling Language Servers
-
-You can toggle language server support globally or per-language:
-
-```json [settings]
+{
   "languages": {
-    "Markdown": {
-      "enable_language_server": false
-    }
-  }
-```
-
-This disables the language server for Markdown files, which can be useful for performance in large documentation projects. You can configure this globally in your `~/.config/zed/settings.json` or inside a `.zed/settings.json` in your project directory.
-
-## Formatting and Linting
-
-Zed provides support for code formatting and linting to maintain consistent code style and catch potential issues early.
-
-### Configuring Formatters
-
-Zed supports both built-in and external formatters. See [`formatter`](./configuring-zed.md#formatter) docs for more. You can configure formatters globally or per-language in your `settings.json`:
-
-```json [settings]
-"languages": {
-  "JavaScript": {
-    "formatter": {
-      "external": {
-        "command": "prettier",
-        "arguments": ["--stdin-filepath", "{buffer_path}"]
-      }
-    },
-    "format_on_save": "on"
-  },
-  "Rust": {
-    "formatter": "language_server",
-    "format_on_save": "on"
-  }
-}
-```
-
-This example uses Prettier for JavaScript and the language server's formatter for Rust, both set to format on save.
-
-To disable formatting for a specific language:
-
-```json [settings]
-"languages": {
-  "Markdown": {
-    "format_on_save": "off"
-  }
-}
-```
-
-### Setting Up Linters
-
-Linting in Zed is typically handled by language servers. Many language servers allow you to configure linting rules:
-
-```json [settings]
-"lsp": {
-  "eslint": {
-    "settings": {
-      "codeActionOnSave": {
-        "rules": ["import/order"]
-      }
-    }
-  }
-}
-```
-
-This configuration sets up ESLint to organize imports on save for JavaScript files.
-
-To run linter fixes automatically on save:
-
-```json [settings]
-"languages": {
-  "JavaScript": {
-    "formatter": {
-      "code_action": "source.fixAll.eslint"
-    }
-  }
-}
-```
-
-### Integrating Formatting and Linting
-
-Zed allows you to run both formatting and linting on save. Here's an example that uses Prettier for formatting and ESLint for linting JavaScript files:
-
-```json [settings]
-"languages": {
-  "JavaScript": {
-    "formatter": [
-      {
-        "code_action": "source.fixAll.eslint"
-      },
-      {
+    "Python": {
+      "formatter": {
         "external": {
-          "command": "prettier",
-          "arguments": ["--stdin-filepath", "{buffer_path}"]
+          "command": "black",
+          "arguments": ["--stdin-filepath", "{buffer_path}", "-"]
         }
-      }
-    ],
-    "format_on_save": "on"
-  }
-}
-```
-
-### Troubleshooting
-
-If you encounter issues with formatting or linting:
-
-1. Check Zed's log file for error messages (Use the command palette: `zed: open log`)
-2. Ensure external tools (formatters, linters) are correctly installed and in your PATH
-3. Verify configurations in both Zed settings and language-specific config files (e.g., `.eslintrc`, `.prettierrc`)
-
-## Syntax Highlighting and Themes
-
-Zed offers customization options for syntax highlighting and themes, allowing you to tailor the visual appearance of your code.
-
-### Customizing Syntax Highlighting
-
-Zed uses Tree-sitter grammars for syntax highlighting. Override the default highlighting using the `experimental.theme_overrides` setting.
-
-This example makes comments italic and changes the color of strings:
-
-```json [settings]
-"experimental.theme_overrides": {
-  "syntax": {
-    "comment": {
-      "font_style": "italic"
-    },
-    "string": {
-      "color": "#00AA00"
+      },
+      "format_on_save": "on"
     }
   }
 }
 ```
 
-### Selecting and Customizing Themes
-
-Change your theme:
-
-1. Use the theme selector ({#kb theme_selector::Toggle})
-2. Or set it in your `settings.json`:
+3. 使用语言服务器提供的代码操作链（`"code_actions"`），可串联多个操作。示例：
 
 ```json [settings]
-"theme": {
-  "mode": "dark",
-  "dark": "One Dark",
-  "light": "GitHub Light"
+{
+  "languages": {
+    "JavaScript": {
+      "formatter": [
+        { "code_action": "source.fixAll.eslint" },
+        { "code_action": "source.organizeImports" }
+      ]
+    }
+  }
 }
 ```
 
-Create custom themes by creating a JSON file in `~/.config/zed/themes/`. Zed will automatically detect and make available any themes in this directory.
+此外，你可以组合多种格式化器顺序执行，只要确保每一步都能从标准输入读取并输出结果。
 
-### Using Theme Extensions
+## 语法高亮与主题
 
-Zed supports theme extensions. Browse and install theme extensions from the Extensions panel ({#kb zed::Extensions}).
+如果你想进一步自定义高亮风格，可以结合 Tree-sitter 的语法节点与主题配置：
 
-To create your own theme extension, refer to the [Developing Theme Extensions](./extensions/themes.md) guide.
+- 通过主题覆盖（见 [主题文档](./visual-customization.md)）调整某类语法的颜色。
+- 使用语言扩展，为某些结构增加额外的语义标识。
 
-## Using Language Server Features
+## 高级功能
 
-### Inlay Hints
+除了上述基础设置外，Zed 还提供多种进阶能力：
 
-Inlay hints provide additional information inline in your code, such as parameter names or inferred types. Configure inlay hints in your `settings.json`:
+- **多工作区工具链**：为不同语言选择不同编译器/解释器链，详见 [工具链文档](./toolchains.md)。
+- **任务运行器**：通过 `.zed/tasks.json` 调用语言工具、测试套件（参阅 [任务](./tasks.md)）。
+- **调试器支持**：在 `.zed/debug.json` 中设定语言特定的调试流程，参见 [调试器](./debugger.md)。
+- **REPL 集成**：在 [REPL 文档](./repl.md) 中了解如何连接交互式解释器。
 
-```json [settings]
-"inlay_hints": {
-  "enabled": true,
-  "show_type_hints": true,
-  "show_parameter_hints": true,
-  "show_other_hints": true
-}
-```
+## 小结
 
-For language-specific inlay hint settings, refer to the documentation for each language.
+- 在 `languages` 和 `lsp` 区块中覆盖语言相关设置。
+- 使用 `file_types` 绑定文件与语言。
+- 根据需要启用或禁用指定语言服务器，或自定义其初始化参数。
+- 配置格式化、静态检查与主题，让 Zed 符合你的开发风格。
 
-### Code Actions
-
-Code actions provide quick fixes and refactoring options. Access code actions using the `editor: Toggle Code Actions` command or by clicking the lightbulb icon that appears next to your cursor when actions are available.
-
-### Go To Definition and References
-
-Use these commands to navigate your codebase:
-
-- `editor: Go to Definition` (<kbd>f12|f12</kbd>)
-- `editor: Go to Type Definition` (<kbd>cmd-f12|ctrl-f12</kbd>)
-- `editor: Find All References` (<kbd>shift-f12|shift-f12</kbd>)
-
-### Rename Symbol
-
-To rename a symbol across your project:
-
-1. Place your cursor on the symbol
-2. Use the `editor: Rename Symbol` command (<kbd>f2|f2</kbd>)
-3. Enter the new name and press Enter
-
-These features depend on the capabilities of the language server for each language.
-
-When renaming a symbol that spans multiple files, Zed will open a preview in a multibuffer. This allows you to review all the changes across your project before applying them. To confirm the rename, simply save the multibuffer. If you decide not to proceed with the rename, you can undo the changes or close the multibuffer without saving.
-
-### Hover Information
-
-Use the `editor: Hover` command to display information about the symbol under the cursor. This often includes type information, documentation, and links to relevant resources.
-
-### Workspace Symbol Search
-
-The `workspace: Open Symbol` command allows you to search for symbols (functions, classes, variables) across your entire project. This is useful for quickly navigating large codebases.
-
-### Code Completion
-
-Zed provides intelligent code completion suggestions as you type. You can manually trigger completion with the `editor: Show Completions` command. Use <kbd>tab|tab</kbd> or <kbd>enter|enter</kbd> to accept suggestions.
-
-### Diagnostics
-
-Language servers provide real-time diagnostics (errors, warnings, hints) as you code. View all diagnostics for your project using the `diagnostics: Toggle` command.
+通过上述方法，你可以在 Zed 中为任意语言打造契合团队规范、顺手高效的工作流。

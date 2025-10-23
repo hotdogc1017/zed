@@ -1,106 +1,106 @@
-# Edit Prediction
+# 编辑预测
 
-Edit Prediction is Zed's native mechanism for predicting the code you want to write through AI.
-Each keystroke sends a new request to our [open source, open dataset Zeta model](https://huggingface.co/zed-industries/zeta) and it returns with individual or multi-line suggestions that can be quickly accepted by pressing `tab`.
+编辑预测是 Zed 通过 AI 预测您想要编写的代码的本机机制。
+每个按键都会向我们的[开源、开放数据集 Zeta 模型](https://huggingface.co/zed-industries/zeta)发送一个新请求，它返回单个或多行建议，可以通过按 `tab` 快速接受。
 
-## Configuring Zeta
+## 配置 Zeta
 
-Zed's Edit Prediction was initially introduced via a banner on the title bar.
-Clicking on it would take you to a modal with a button ("Enable Edit Prediction") that sets `zed` as your `edit_prediction_provider`.
+Zed 的编辑预测最初是通过标题栏上的横幅引入的。
+点击它会带您到一个带有按钮（"启用编辑预测"）的模态框，该按钮将 `zed` 设置为您的 `edit_prediction_provider`。
 
-![Onboarding banner and modal](https://zed.dev/img/edit-prediction/docs.webp)
+![入门横幅和模态框](https://zed.dev/img/edit-prediction/docs.webp)
 
-But, if you haven't come across the banner, Zed's Edit Prediction is the default edit prediction provider and you should see it right away in your status bar.
+但是，如果您没有遇到横幅，Zed 的编辑预测是默认的编辑预测提供程序，您应该立即在状态栏中看到它。
 
-### Switching Modes {#switching-modes}
+### 切换模式 {#switching-modes}
 
-Zed's Edit Prediction comes with two different display modes:
+Zed 的编辑预测带有两种不同的显示模式：
 
-1. `eager` (default): predictions are displayed inline as long as it doesn't conflict with language server completions
-2. `subtle`: predictions only appear inline when holding a modifier key (`alt` by default)
+1. `eager`（默认）：只要不与语言服务器补全冲突，预测就会内联显示
+2. `subtle`：只有在按住修饰键（默认为 `alt`）时，预测才会内联出现
 
-Toggle between them via the `mode` key:
+通过 `mode` 键在它们之间切换：
 
 ```json [settings]
 "edit_predictions": {
-  "mode": "eager" // or "subtle"
+  "mode": "eager" // 或 "subtle"
 },
 ```
 
-Or directly via the UI through the status bar menu:
+或直接通过状态栏菜单的 UI：
 
-![Edit Prediction status bar menu, with the modes toggle.](https://zed.dev/img/edit-prediction/status-bar-menu.webp)
+![编辑预测状态栏菜单，带有模式切换。](https://zed.dev/img/edit-prediction/status-bar-menu.webp)
 
-### Conflict With Other `tab` Actions {#edit-predictions-conflict}
+### 与其他 `tab` 操作的冲突 {#edit-predictions-conflict}
 
-By default, when `tab` would normally perform a different action, Zed requires a modifier key to accept predictions:
+默认情况下，当 `tab` 通常会执行不同操作时，Zed 需要修饰键来接受预测：
 
-1. When the language server completions menu is visible.
-2. When your cursor isn't at the right indentation level.
+1. 当语言服务器补全菜单可见时。
+2. 当您的光标不在正确的缩进级别时。
 
-In these cases, `alt-tab` is used instead to accept the prediction. When the language server completions menu is open, holding `alt` first will cause it to temporarily disappear in order to preview the prediction within the buffer.
+在这些情况下，使用 `alt-tab` 代替来接受预测。当语言服务器补全菜单打开时，首先按住 `alt` 将使其暂时消失，以便在缓冲区中预览预测。
 
-On Linux, `alt-tab` is often used by the window manager for switching windows, so `alt-l` is provided as the default binding for accepting predictions. `tab` and `alt-tab` also work, but aren't displayed by default.
+在 Linux 上，`alt-tab` 通常被窗口管理器用于切换窗口，因此提供了 `alt-l` 作为接受预测的默认绑定。`tab` 和 `alt-tab` 也有效，但默认不显示。
 
-{#action editor::AcceptPartialEditPrediction} ({#kb editor::AcceptPartialEditPrediction}) can be used to accept the current edit prediction up to the next word boundary.
+{#action editor::AcceptPartialEditPrediction} ({#kb editor::AcceptPartialEditPrediction}) 可用于接受当前编辑预测直到下一个单词边界。
 
-See the [Configuring GitHub Copilot](#github-copilot) and [Configuring Supermaven](#supermaven) sections below for configuration of other providers. Only text insertions at the current cursor are supported for these providers, whereas the Zeta model provides multiple predictions including deletions.
+有关其他提供程序的配置，请参阅下面的[配置 GitHub Copilot](#github-copilot) 和[配置 Supermaven](#supermaven) 部分。这些提供程序仅支持在当前光标处插入文本，而 Zeta 模型提供包括删除在内的多种预测。
 
-## Configuring Edit Prediction Keybindings {#edit-predictions-keybinding}
+## 配置编辑预测键绑定 {#edit-predictions-keybinding}
 
-By default, `tab` is used to accept edit predictions. You can use another keybinding by inserting this in your keymap:
+默认情况下，`tab` 用于接受编辑预测。您可以通过在键映射中插入以下内容来使用其他键绑定：
 
 ```json [settings]
 {
   "context": "Editor && edit_prediction",
   "bindings": {
-    // Here we also allow `alt-enter` to accept the prediction
+    // 这里我们也允许 `alt-enter` 来接受预测
     "alt-enter": "editor::AcceptEditPrediction"
   }
 }
 ```
 
-When there's a [conflict with the `tab` key](#edit-predictions-conflict), Zed uses a different context to accept keybindings (`edit_prediction_conflict`). If you want to use a different one, you can insert this in your keymap:
+当[与 `tab` 键冲突](#edit-predictions-conflict)时，Zed 使用不同的上下文来接受键绑定（`edit_prediction_conflict`）。如果您想使用不同的键绑定，可以在键映射中插入以下内容：
 
 ```json [settings]
 {
   "context": "Editor && edit_prediction_conflict",
   "bindings": {
-    "ctrl-enter": "editor::AcceptEditPrediction" // Example of a modified keybinding
+    "ctrl-enter": "editor::AcceptEditPrediction" // 修改后的键绑定示例
   }
 }
 ```
 
-If your keybinding contains a modifier (`ctrl` in the example above), it will also be used to preview the edit prediction and temporarily hide the language server completion menu.
+如果您的键绑定包含修饰键（上例中的 `ctrl`），它也将用于预览编辑预测并暂时隐藏语言服务器补全菜单。
 
-You can also bind this action to keybind without a modifier. In that case, Zed will use the default modifier (`alt`) to preview the edit prediction.
+您也可以将此操作绑定到没有修饰键的键绑定。在这种情况下，Zed 将使用默认修饰键（`alt`）来预览编辑预测。
 
 ```json [settings]
 {
   "context": "Editor && edit_prediction_conflict",
   "bindings": {
-    // Here we bind tab to accept even when there's a language server completion
-    // or the cursor isn't at the correct indentation level
+    // 这里我们将 tab 绑定为即使有语言服务器补全
+    // 或光标不在正确的缩进级别时也接受预测
     "tab": "editor::AcceptEditPrediction"
   }
 }
 ```
 
-To maintain the use of the modifier key for accepting predictions when there is a language server completions menu, but allow `tab` to accept predictions regardless of cursor position, you can specify the context further with `showing_completions`:
+为了在有语言服务器补全菜单时保持使用修饰键接受预测，但允许 `tab` 无论光标位置如何都接受预测，您可以使用 `showing_completions` 进一步指定上下文：
 
 ```json [settings]
 {
   "context": "Editor && edit_prediction_conflict && !showing_completions",
   "bindings": {
-    // Here we don't require a modifier unless there's a language server completion
+    // 这里除非有语言服务器补全，否则不需要修饰键
     "tab": "editor::AcceptEditPrediction"
   }
 }
 ```
 
-### Keybinding Example: Always Use Alt-Tab
+### 键绑定示例：始终使用 Alt-Tab
 
-The keybinding example below causes `alt-tab` to always be used instead of sometimes using `tab`. You might want this in order to have just one keybinding to use for accepting edit predictions, since the behavior of `tab` varies based on context.
+下面的键绑定示例导致始终使用 `alt-tab` 而不是有时使用 `tab`。您可能希望这样，以便只有一个键绑定用于接受编辑预测，因为 `tab` 的行为会根据上下文而变化。
 
 ```json [keymap]
   {
@@ -109,7 +109,7 @@ The keybinding example below causes `alt-tab` to always be used instead of somet
       "alt-tab": "editor::AcceptEditPrediction"
     }
   },
-  // Bind `tab` back to its original behavior.
+  // 将 `tab` 绑定回其原始行为。
   {
     "context": "Editor",
     "bindings": {
@@ -124,7 +124,7 @@ The keybinding example below causes `alt-tab` to always be used instead of somet
   },
 ```
 
-If `"vim_mode": true` is set within `settings.json`, then additional bindings are needed after the above to return `tab` to its original behavior:
+如果在 `settings.json` 中设置了 `"vim_mode": true`，则需要在上述内容之后添加额外的绑定以将 `tab` 恢复为其原始行为：
 
 ```json [keymap]
   {
@@ -141,16 +141,16 @@ If `"vim_mode": true` is set within `settings.json`, then additional bindings ar
   },
 ```
 
-### Keybinding Example: Displaying Tab and Alt-Tab on Linux
+### 键绑定示例：在 Linux 上显示 Tab 和 Alt-Tab
 
-While `tab` and `alt-tab` are supported on Linux, `alt-l` is displayed instead. If your window manager does not reserve `alt-tab`, and you would prefer to use `tab` and `alt-tab`, include these bindings in `keymap.json`:
+虽然 `tab` 和 `alt-tab` 在 Linux 上受支持，但显示的是 `alt-l`。如果您的窗口管理器没有保留 `alt-tab`，并且您更愿意使用 `tab` 和 `alt-tab`，请在 `keymap.json` 中包含这些绑定：
 
 ```json [keymap]
   {
     "context": "Editor && edit_prediction",
     "bindings": {
       "tab": "editor::AcceptEditPrediction",
-      // Optional: This makes the default `alt-l` binding do nothing.
+      // 可选：这使默认的 `alt-l` 绑定不执行任何操作。
       "alt-l": null
     }
   },
@@ -158,31 +158,31 @@ While `tab` and `alt-tab` are supported on Linux, `alt-l` is displayed instead. 
     "context": "Editor && edit_prediction_conflict",
     "bindings": {
       "alt-tab": "editor::AcceptEditPrediction",
-      // Optional: This makes the default `alt-l` binding do nothing.
+      // 可选：这使默认的 `alt-l` 绑定不执行任何操作。
       "alt-l": null
     }
   },
 ```
 
-### Missing keybind {#edit-predictions-missing-keybinding}
+### 缺少键绑定 {#edit-predictions-missing-keybinding}
 
-Zed requires at least one keybinding for the {#action editor::AcceptEditPrediction} action in both the `Editor && edit_prediction` and `Editor && edit_prediction_conflict` contexts ([learn more above](#edit-predictions-keybinding)).
+Zed 要求在 `Editor && edit_prediction` 和 `Editor && edit_prediction_conflict` 上下文中至少有一个用于 {#action editor::AcceptEditPrediction} 操作的键绑定（[在上面了解更多](#edit-predictions-keybinding)）。
 
-If you have previously bound the default keybindings to different actions in the global context, you will not be able to preview or accept edit predictions. For example:
+如果您之前已将默认键绑定绑定到全局上下文中的不同操作，您将无法预览或接受编辑预测。例如：
 
 ```json [keymap]
 [
-  // Your keymap
+  // 您的键映射
   {
     "bindings": {
-      // Binds `alt-tab` to a different action globally
+      // 将 `alt-tab` 绑定到全局的不同操作
       "alt-tab": "menu::SelectNext"
     }
   }
 ]
 ```
 
-To fix this, you can specify your own keybinding for accepting edit predictions:
+要解决此问题，您可以指定自己的键绑定来接受编辑预测：
 
 ```json [keymap]
 [
@@ -196,17 +196,17 @@ To fix this, you can specify your own keybinding for accepting edit predictions:
 ]
 ```
 
-If you would like to use the default keybinding, you can free it up by either moving yours to a more specific context or changing it to something else.
+如果您想使用默认键绑定，可以通过将您的键绑定移动到更具体的上下文或将其更改为其他内容来释放它。
 
-## Disabling Automatic Edit Prediction
+## 禁用自动编辑预测
 
-There are different levels in which you can disable edit predictions to be displayed, including not having it turned on at all.
+您可以在不同级别禁用编辑预测的显示，包括完全不启用它。
 
-Alternatively, if you have Zed set as your provider, consider [using Subtle Mode](#switching-modes).
+或者，如果您已将 Zed 设置为提供程序，请考虑[使用微妙模式](#switching-modes)。
 
-### On Buffers
+### 在缓冲区上
 
-To not have predictions appear automatically as you type, set this within `settings.json`:
+要在您输入时不自动显示预测，请在 `settings.json` 中设置：
 
 ```json [settings]
 {
@@ -214,12 +214,12 @@ To not have predictions appear automatically as you type, set this within `setti
 }
 ```
 
-This hides every indication that there is a prediction available, regardless of [the display mode](#switching-modes) you're in (valid only if you have Zed as your provider).
-Still, you can trigger edit predictions manually by executing {#action editor::ShowEditPrediction} or hitting {#kb editor::ShowEditPrediction}.
+这会隐藏所有指示有可用预测的迹象，无论您处于[哪种显示模式](#switching-modes)（仅在您将 Zed 作为提供程序时有效）。
+尽管如此，您仍然可以通过执行 {#action editor::ShowEditPrediction} 或按 {#kb editor::ShowEditPrediction} 手动触发编辑预测。
 
-### For Specific Languages
+### 对于特定语言
 
-To not have predictions appear automatically as you type when working with a specific language, set this within `settings.json`:
+要在使用特定语言工作时不在输入时自动显示预测，请在 `settings.json` 中设置：
 
 ```json [settings]
 {
@@ -231,9 +231,9 @@ To not have predictions appear automatically as you type when working with a spe
 }
 ```
 
-### In Specific Directories
+### 在特定目录中
 
-To disable edit predictions for specific directories or files, set this within `settings.json`:
+要禁用特定目录或文件的编辑预测，请在 `settings.json` 中设置：
 
 ```json [settings]
 {
@@ -243,9 +243,9 @@ To disable edit predictions for specific directories or files, set this within `
 }
 ```
 
-### Turning Off Completely
+### 完全关闭
 
-To completely turn off edit prediction across all providers, explicitly set the settings to `none`, like so:
+要完全关闭所有提供程序的编辑预测，请明确将设置设置为 `none`，如下所示：
 
 ```json [settings]
 "features": {
@@ -253,9 +253,9 @@ To completely turn off edit prediction across all providers, explicitly set the 
 },
 ```
 
-## Configuring GitHub Copilot {#github-copilot}
+## 配置 GitHub Copilot {#github-copilot}
 
-To use GitHub Copilot as your provider, set this within `settings.json`:
+要使用 GitHub Copilot 作为您的提供程序，请在 `settings.json` 中设置：
 
 ```json [settings]
 {
@@ -265,11 +265,11 @@ To use GitHub Copilot as your provider, set this within `settings.json`:
 }
 ```
 
-You should be able to sign-in to GitHub Copilot by clicking on the Copilot icon in the status bar and following the setup instructions.
+您应该能够通过点击状态栏中的 Copilot 图标并按照设置说明登录 GitHub Copilot。
 
-### Using GitHub Copilot Enterprise {#github-copilot-enterprise}
+### 使用 GitHub Copilot Enterprise {#github-copilot-enterprise}
 
-If your organization uses GitHub Copilot Enterprise, you can configure Zed to use your enterprise instance by specifying the enterprise URI in your `settings.json`:
+如果您的组织使用 GitHub Copilot Enterprise，您可以通过在 `settings.json` 中指定企业 URI 来配置 Zed 使用您的企业实例：
 
 ```json [settings]
 {
@@ -281,18 +281,18 @@ If your organization uses GitHub Copilot Enterprise, you can configure Zed to us
 }
 ```
 
-Replace `"https://your.enterprise.domain"` with the URL provided by your GitHub Enterprise administrator (e.g., `https://foo.ghe.com`).
+将 `"https://your.enterprise.domain"` 替换为您的 GitHub Enterprise 管理员提供的 URL（例如，`https://foo.ghe.com`）。
 
-Once set, Zed will route Copilot requests through your enterprise endpoint. When you sign in by clicking the Copilot icon in the status bar, you will be redirected to your configured enterprise URL to complete authentication. All other Copilot features and usage remain the same.
+设置后，Zed 将通过您的企业端点路由 Copilot 请求。当您通过点击状态栏中的 Copilot 图标登录时，您将被重定向到您配置的企业 URL 以完成身份验证。所有其他 Copilot 功能和用法保持不变。
 
-Copilot can provide multiple completion alternatives, and these can be navigated with the following actions:
+Copilot 可以提供多个补全替代方案，这些可以通过以下操作进行导航：
 
-- {#action editor::NextEditPrediction} ({#kb editor::NextEditPrediction}): To cycle to the next edit prediction
-- {#action editor::PreviousEditPrediction} ({#kb editor::PreviousEditPrediction}): To cycle to the previous edit prediction
+- {#action editor::NextEditPrediction} ({#kb editor::NextEditPrediction})：循环到下一个编辑预测
+- {#action editor::PreviousEditPrediction} ({#kb editor::PreviousEditPrediction})：循环到上一个编辑预测
 
-## Configuring Supermaven {#supermaven}
+## 配置 Supermaven {#supermaven}
 
-To use Supermaven as your provider, set this within `settings.json`:
+要使用 Supermaven 作为您的提供程序，请在 `settings.json` 中设置：
 
 ```json [settings]
 {
@@ -302,8 +302,8 @@ To use Supermaven as your provider, set this within `settings.json`:
 }
 ```
 
-You should be able to sign-in to Supermaven by clicking on the Supermaven icon in the status bar and following the setup instructions.
+您应该能够通过点击状态栏中的 Supermaven 图标并按照设置说明登录 Supermaven。
 
-## See also
+## 另请参阅
 
-You may also use the [Agent Panel](./agent-panel.md) or the [Inline Assistant](./inline-assistant.md) to interact with language models, see the [AI documentation](./overview.md) for more information on the other AI features in Zed.
+您也可以使用[代理面板](./agent-panel.md) 或[内联助手](./inline-assistant.md) 与语言模型交互，有关 Zed 中其他 AI 功能的更多信息，请参阅 [AI 文档](./overview.md)。

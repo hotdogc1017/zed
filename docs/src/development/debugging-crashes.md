@@ -1,20 +1,20 @@
-# Debugging Crashes
+# 调试崩溃
 
-When Zed panics or otherwise crashes, Zed sends a message to a sidecar process which inspects the memory of the crashing editor to create a [minidump](https://chromium.googlesource.com/breakpad/breakpad/+/master/docs/getting_started_with_breakpad.md#the-minidump-file-format) file in `~/Library/Logs/Zed` or `$XDG_DATA_HOME/zed/logs`. This minidump can be used to generate backtraces for the stacks of all threads.
+当 Zed 发生恐慌或其他崩溃时，Zed 会向一个辅助进程发送消息，该进程检查崩溃编辑器的内存，在 `~/Library/Logs/Zed` 或 `$XDG_DATA_HOME/zed/logs` 中创建一个 [minidump](https://chromium.googlesource.com/breakpad/breakpad/+/master/docs/getting_started_with_breakpad.md#the-minidump-file-format) 文件。此 minidump 可用于为所有线程的堆栈生成回溯。
 
-If you have enabled Zed's telemetry these will be uploaded to us when you restart the app. They end up in a [Slack channel](https://zed-industries.slack.com/archives/C0977J9MA1Y) and in [Sentry](https://zed-dev.sentry.io/issues) (both of which are Zed-staff-only).
+如果您启用了 Zed 的遥测功能，这些文件将在您重新启动应用程序时上传给我们。它们最终会出现在 [Slack 频道](https://zed-industries.slack.com/archives/C0977J9MA1Y) 和 [Sentry](https://zed-dev.sentry.io/issues) 中（两者都仅供 Zed 员工使用）。
 
-These crash reports contain rich information; but they are hard to read because they don't contain spans or symbol information. You can still work with them locally by downloading sources and an unstripped binary (or separate symbols file) for your Zed release and running:
+这些崩溃报告包含丰富的信息；但由于不包含跨度和符号信息，因此很难阅读。您仍然可以通过下载 Zed 版本的源代码和未剥离的二进制文件（或单独的符号文件）并在本地处理它们：
 
 ```sh
 zstd -d ~/.local/share/zed/<uuid>.dmp -o minidump.dmp
 minidump-stackwalk minidump.dmp
 ```
 
-Alongside the minidump file in your logs dir, there should be a `<uuid>.json` which contains additional metadata like the panic message, span, and system specs.
+在日志目录中的 minidump 文件旁边，应该有一个 `<uuid>.json` 文件，其中包含额外的元数据，如恐慌消息、跨度和系统规格。
 
-## Using a Debugger
+## 使用调试器
 
-If you can reproduce the crash consistently, a debugger can be used to inspect the state of the program at the time of the crash, often providing useful insights into the cause of the crash.
+如果您可以一致地重现崩溃，可以使用调试器检查程序在崩溃时的状态，通常可以提供有关崩溃原因的有用见解。
 
-You can read more about setting up and using a debugger with Zed, and specifically for debugging crashes [here](./debuggers.md#debugging-panics-and-crashes)
+您可以在此处阅读有关设置和使用 Zed 调试器的更多信息，特别是关于调试崩溃的信息[此处](./debuggers.md#debugging-panics-and-crashes)

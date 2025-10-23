@@ -1,29 +1,29 @@
 # Scala
 
-Scala language support in Zed is provided by the community-maintained [Scala extension](https://github.com/scalameta/metals-zed).
-Report issues to: [https://github.com/scalameta/metals-zed/issues](https://github.com/scalameta/metals-zed/issues)
+Zed 对 Scala 的语言支持由社区维护的 [Scala 扩展](https://github.com/scalameta/metals-zed) 提供。
+如需反馈问题，请访问：[https://github.com/scalameta/metals-zed/issues](https://github.com/scalameta/metals-zed/issues)
 
-- Tree-sitter: [tree-sitter/tree-sitter-scala](https://github.com/tree-sitter/tree-sitter-scala)
-- Language Server: [scalameta/metals](https://github.com/scalameta/metals)
+- Tree-sitter：[tree-sitter/tree-sitter-scala](https://github.com/tree-sitter/tree-sitter-scala)
+- 语言服务器：[scalameta/metals](https://github.com/scalameta/metals)
 
-## Setup
+## 安装
 
-- Install Scala with `cs setup` (Coursier): https://www.scala-lang.org/download/
-  - `brew install coursier/formulas/coursier && cs setup`
-- REPL (Almond) Setup Instructions https://almond.sh/docs/quick-start-install
-  - `brew install --cask temurin` (Eclipse foundation official OpenJDK binaries)
+- 使用 Coursier 安装 Scala：`cs setup`（https://www.scala-lang.org/download/）
+  - 例如：`brew install coursier/formulas/coursier && cs setup`
+- REPL（Almond）安装指南：https://almond.sh/docs/quick-start-install
+  - `brew install --cask temurin`（Eclipse 基金会官方 OpenJDK）
   - `brew install coursier/formulas/coursier && cs setup`
   - `coursier launch --use-bootstrap almond -- --install`
 
-## Configuration
+## 配置
 
-Behavior of the Metals language server can be controlled with:
+可以通过以下文件控制 Metals 语言服务器的行为：
 
-- `.scalafix.conf` file - See [Scalafix Configuration](https://scalacenter.github.io/scalafix/docs/users/configuration.html)
-- `.scalafmt.conf` file - See [Scalafmt Configuration](https://scalameta.org/scalafmt/docs/configuration.html)
+- `.scalafix.conf`——参阅 [Scalafix 配置](https://scalacenter.github.io/scalafix/docs/users/configuration.html)
+- `.scalafmt.conf`——参阅 [Scalafmt 配置](https://scalameta.org/scalafmt/docs/configuration.html)
 
-You can place these files in the root of your project or specifying their location in the Metals configuration. See [Metals User Configuration](https://scalameta.org/metals/docs/editors/user-configuration) for more.
+可将这些文件放在项目根目录，或在 Metals 配置中指定路径。更多内容请参阅 [Metals 用户配置文档](https://scalameta.org/metals/docs/editors/user-configuration)。
 
 <!--
-TBD: Provide LSP configuration example for metals in Zed settings.json. metals.{javaHome,excludedPackages,customProjectRoot} etc.
+待补充：Metals 在 Zed settings.json 中的配置示例，如 metals.{javaHome,excludedPackages,customProjectRoot} 等。
 -->

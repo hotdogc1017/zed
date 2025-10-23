@@ -1,66 +1,69 @@
-# System Requirements
+# 系统要求
 
 ## Apple
 
 ### macOS
 
-Zed supports the follow macOS releases:
+Zed 支持以下 macOS 版本：
 
-| Version       | Codename | Apple Status   | Zed Status          |
-| ------------- | -------- | -------------- | ------------------- |
-| macOS 15.x    | Sequoia  | Supported      | Supported           |
-| macOS 14.x    | Sonoma   | Supported      | Supported           |
-| macOS 13.x    | Ventura  | Supported      | Supported           |
-| macOS 12.x    | Monterey | EOL 2024-09-16 | Supported           |
-| macOS 11.x    | Big Sur  | EOL 2023-09-26 | Partially Supported |
-| macOS 10.15.x | Catalina | EOL 2022-09-12 | Partially Supported |
+| 版本         | 代号     | Apple 状态 | Zed 状态         |
+| ------------ | -------- | ---------- | ---------------- |
+| macOS 15.x   | Sequoia  | 官方支持   | 支持             |
+| macOS 14.x   | Sonoma   | 官方支持   | 支持             |
+| macOS 13.x   | Ventura  | 官方支持   | 支持             |
+| macOS 12.x   | Monterey | 2024-09-16 停止更新 | 支持 |
+| macOS 11.x   | Big Sur  | 2023-09-26 停止更新 | 部分支持 |
+| macOS 10.15.x| Catalina | 2022-09-12 停止更新 | 部分支持 |
 
-The macOS releases labelled "Partially Supported" (Big Sur and Catalina) do not support screen sharing via Zed Collaboration. These features use the [LiveKit SDK](https://livekit.io) which relies upon [ScreenCaptureKit.framework](https://developer.apple.com/documentation/screencapturekit/) only available on macOS 12 (Monterey) and newer.
+标记为“部分支持”的版本（Big Sur、Catalina）不支持通过 Zed 协作进行屏幕共享。该功能依赖 [LiveKit SDK](https://livekit.io)，而 LiveKit 又需要 macOS 12（Monterey）及以上才提供的 [ScreenCaptureKit.framework](https://developer.apple.com/documentation/screencapturekit/)。
 
-### Mac Hardware
+### Mac 硬件
 
-Zed supports machines with Intel (x86_64) or Apple (aarch64) processors that meet the above macOS requirements:
+满足上述 macOS 要求的 Intel（x86_64）或 Apple 芯片（aarch64）机型均受支持，例如：
 
-- MacBook Pro (Early 2015 and newer)
-- MacBook Air (Early 2015 and newer)
-- MacBook (Early 2016 and newer)
-- Mac Mini (Late 2014 and newer)
-- Mac Pro (Late 2013 or newer)
-- iMac (Late 2015 and newer)
-- iMac Pro (all models)
-- Mac Studio (all models)
+- MacBook Pro（2015 年初及更新机型）
+- MacBook Air（2015 年初及更新机型）
+- MacBook（2016 年初及更新机型）
+- Mac Mini（2014 年末及更新机型）
+- Mac Pro（2013 年末或更新机型）
+- iMac（2015 年末及更新机型）
+- iMac Pro（全部机型）
+- Mac Studio（全部机型）
 
 ## Linux
 
-Zed supports 64bit Intel/AMD (x86_64) and 64Bit ARM (aarch64) processors.
+Zed 支持 64 位 Intel/AMD（x86_64）与 64 位 ARM（aarch64）处理器。
 
-Zed requires a Vulkan 1.3 driver, and the following desktop portals:
+需要满足以下条件：
 
-- `org.freedesktop.portal.FileChooser`
-- `org.freedesktop.portal.OpenURI`
-- `org.freedesktop.portal.Secret`, or `org.freedesktop.Secrets`
+- Vulkan 1.3 驱动
+- 以下桌面 portal：
+  - `org.freedesktop.portal.FileChooser`
+  - `org.freedesktop.portal.OpenURI`
+  - `org.freedesktop.portal.Secret` 或 `org.freedesktop.Secrets`
 
 ## Windows
 
-Zed supports the follow Windows releases:
-| Version | Microsoft Status | Zed Status |
-| ------------------------- | ------------------ | ------------------- |
-| Windows 11 (all releases) | Supported | Supported |
-| Windows 10 (64-bit) | Supported | Supported |
+Zed 支持下列 Windows 版本：
 
-### Windows Hardware
+| 版本                | Microsoft 状态 | Zed 状态 |
+| ------------------- | --------------- | -------- |
+| Windows 11（全部版本） | 官方支持        | 支持     |
+| Windows 10（64 位） | 官方支持        | 支持     |
 
-Zed supports machines with Intel or AMD 64-bit (x86_64) processors that meet the above Windows requirements:
+### Windows 硬件
 
-- Windows 11 (64-bit)
-- Windows 10 (64-bit)
-- Graphics: A GPU that supports DirectX 11 (most PCs from 2012+).
-- Driver: Current NVIDIA/AMD/Intel driver (not the Microsoft Basic Display Adapter).
+满足上述 Windows 要求的 64 位 Intel/AMD 处理器均可使用，具体包括：
+
+- Windows 11（64 位）
+- Windows 10（64 位）
+- 显卡需支持 DirectX 11（大多数 2012 年后的 PC 都符合）
+- 驱动需为 NVIDIA / AMD / Intel 官方驱动（非 Microsoft Basic Display Adapter）
 
 ## FreeBSD
 
-Not yet available as an official download. Can be built [from source](./development/freebsd.md).
+暂未提供官方发行版，可[从源码构建](./development/freebsd.md)。
 
 ## Web
 
-Not supported at this time. See our [Platform Support issue](https://github.com/zed-industries/zed/issues/5391).
+目前不支持 Web 版本，详情参见 [平台支持议题](https://github.com/zed-industries/zed/issues/5391)。

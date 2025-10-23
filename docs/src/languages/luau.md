@@ -1,31 +1,31 @@
 # Luau
 
-[Luau](https://luau.org/) is a fast, small, safe, gradually typed, embeddable scripting language derived from Lua. Luau was developed by Roblox and is available under the MIT license.
+[Luau](https://luau.org/) 是一种源自 Lua 的脚本语言，具有快速、体积小、安全、渐进类型与可嵌入等特性，由 Roblox 开发并以 MIT 许可证发布。
 
-Luau language support in Zed is provided by the community-maintained [Luau extension](https://github.com/4teapo/zed-luau).
-Report issues to: [https://github.com/4teapo/zed-luau/issues](https://github.com/4teapo/zed-luau/issues)
+Zed 对 Luau 的语言支持由社区维护的 [Luau 扩展](https://github.com/4teapo/zed-luau) 提供。
+如需反馈问题，请访问：[https://github.com/4teapo/zed-luau/issues](https://github.com/4teapo/zed-luau/issues)
 
-- Tree-sitter: [4teapo/tree-sitter-luau](https://github.com/4teapo/tree-sitter-luau)
-- Language Server: [JohnnyMorganz/luau-lsp](https://github.com/JohnnyMorganz/luau-lsp)
+- Tree-sitter：[4teapo/tree-sitter-luau](https://github.com/4teapo/tree-sitter-luau)
+- 语言服务器：[JohnnyMorganz/luau-lsp](https://github.com/JohnnyMorganz/luau-lsp)
 
-## Configuration
+## 配置
 
-Configuration instructions are available in the [Luau Zed Extension README](https://github.com/4teapo/zed-luau).
+相关配置说明请参阅 [Luau Zed 扩展 README](https://github.com/4teapo/zed-luau)。
 
-## Formatting
+## 格式化
 
-To support automatically formatting your code, you can use [JohnnyMorganz/StyLua](https://github.com/JohnnyMorganz/StyLua), a Lua code formatter.
+可使用 Lua 代码格式化工具 [JohnnyMorganz/StyLua](https://github.com/JohnnyMorganz/StyLua) 来自动格式化代码。
 
-Install with:
+安装方式：
 
 ```sh
-# macOS via Homebrew
+# macOS（Homebrew）
 brew install stylua
-# Or via Cargo
+# 或通过 Cargo
 cargo install stylua --features lua52,lua53,lua54,luau
 ```
 
-Then add the following to your Zed `settings.json`:
+然后在 Zed 的 `settings.json` 中加入：
 
 ```json [settings]
   "languages": {

@@ -1,22 +1,22 @@
 # Fish
 
-Fish language support in Zed is provided by the community-maintained [Fish extension](https://github.com/hasit/zed-fish).
-Report issues to: [https://github.com/hasit/zed-fish/issues](https://github.com/hasit/zed-fish/issues)
+Zed 对 Fish 语言的支持由社区维护的 [Fish 扩展](https://github.com/hasit/zed-fish) 提供。
+如需反馈问题，请前往：[https://github.com/hasit/zed-fish/issues](https://github.com/hasit/zed-fish/issues)
 
-- Tree-sitter: [ram02z/tree-sitter-fish](https://github.com/ram02z/tree-sitter-fish)
+- Tree-sitter：[ram02z/tree-sitter-fish](https://github.com/ram02z/tree-sitter-fish)
 
-### Formatting
+### 格式化
 
-Zed supports auto-formatting fish code using external tools like [`fish_indent`](https://fishshell.com/docs/current/cmds/fish_indent.html), which is included with fish.
+Zed 支持使用外部工具（如 fish 自带的 [`fish_indent`](https://fishshell.com/docs/current/cmds/fish_indent.html)）对 Fish 代码进行自动格式化。
 
-1. Ensure `fish_indent` is available in your path and check the version:
+1. 确认 `fish_indent` 已加入 PATH，并检查版本：
 
 ```sh
 which fish_indent
 fish_indent --version
 ```
 
-2. Configure Zed to automatically format fish code with `fish_indent`:
+2. 在 Zed 中配置使用 `fish_indent` 自动格式化 Fish 代码：
 
 ```json [settings]
   "languages": {

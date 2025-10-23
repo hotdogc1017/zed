@@ -1,58 +1,58 @@
-# Local Collaboration
+# 本地协作
 
-1. Ensure you have access to our cloud infrastructure. If you don't have access, you can't collaborate locally at this time.
+1. 确保您有权访问我们的云基础设施。如果您没有访问权限，目前无法进行本地协作。
 
-2. Make sure you've installed Zed's dependencies for your platform:
+2. 确保您已为您的平台安装了 Zed 的依赖项：
 
 - [macOS](#macos)
 - [Linux](#linux)
 - [Windows](#backend-windows)
 
-Note that `collab` can be compiled only with MSVC toolchain on Windows
+请注意，在 Windows 上 `collab` 只能使用 MSVC 工具链编译
 
-3. Clone down our cloud repository and follow the instructions in the cloud README
+3. 克隆我们的云存储库并按照云 README 中的说明操作
 
-4. Setup the local database for your platform:
+4. 为您的平台设置本地数据库：
 
 - [macOS & Linux](#database-unix)
 - [Windows](#database-windows)
 
-5. Run collab:
+5. 运行 collab：
 
 - [macOS & Linux](#run-collab-unix)
 - [Windows](#run-collab-windows)
 
-## Backend Dependencies
+## 后端依赖
 
-If you are developing collaborative features of Zed, you'll need to install the dependencies of zed's `collab` server:
+如果您正在开发 Zed 的协作功能，您需要安装 zed 的 `collab` 服务器的依赖项：
 
 - PostgreSQL
 - LiveKit
 - Foreman
 
-You can install these dependencies natively or run them under Docker.
+您可以本地安装这些依赖项，或在 Docker 下运行它们。
 
 ### macOS
 
-1. Install [Postgres.app](https://postgresapp.com) or [postgresql via homebrew](https://formulae.brew.sh/formula/postgresql@15):
+1. 安装 [Postgres.app](https://postgresapp.com) 或通过 homebrew 安装 [postgresql](https://formulae.brew.sh/formula/postgresql@15)：
 
    ```sh
    brew install postgresql@15
    ```
 
-2. Install [Livekit](https://formulae.brew.sh/formula/livekit) and [Foreman](https://formulae.brew.sh/formula/foreman)
+2. 安装 [Livekit](https://formulae.brew.sh/formula/livekit) 和 [Foreman](https://formulae.brew.sh/formula/foreman)
 
    ```sh
    brew install livekit foreman
    ```
 
-- Follow the steps in the [collab README](https://github.com/zed-industries/zed/blob/main/crates/collab/README.md) to configure the Postgres database for integration tests
+- 按照 [collab README](https://github.com/zed-industries/zed/blob/main/crates/collab/README.md) 中的步骤配置用于集成测试的 Postgres 数据库
 
-Alternatively, if you have [Docker](https://www.docker.com/) installed you can bring up all the `collab` dependencies using Docker Compose.
+或者，如果您安装了 [Docker](https://www.docker.com/)，可以使用 Docker Compose 启动所有 `collab` 依赖项。
 
 ### Linux
 
-1. Install [Postgres](https://www.postgresql.org/download/linux/)
+1. 安装 [Postgres](https://www.postgresql.org/download/linux/)
 
    ```sh
    sudo apt-get install postgresql                    # Ubuntu/Debian
@@ -61,50 +61,50 @@ Alternatively, if you have [Docker](https://www.docker.com/) installed you can b
    sudo zypper install postgresql postgresql-server   # OpenSUSE
    ```
 
-2. Install [Livekit](https://github.com/livekit/livekit-cli)
+2. 安装 [Livekit](https://github.com/livekit/livekit-cli)
 
    ```sh
    curl -sSL https://get.livekit.io/cli | bash
    ```
 
-3. Install [Foreman](https://theforeman.org/manuals/3.15/quickstart_guide.html)
+3. 安装 [Foreman](https://theforeman.org/manuals/3.15/quickstart_guide.html)
 
 ### Windows {#backend-windows}
 
-> This section is still in development. The instructions are not yet complete.
+> 此部分仍在开发中。说明尚未完成。
 
-- Install [Postgres](https://www.postgresql.org/download/windows/)
-- Install [Livekit](https://github.com/livekit/livekit), optionally you can add the `livekit-server` binary to your `PATH`.
+- 安装 [Postgres](https://www.postgresql.org/download/windows/)
+- 安装 [Livekit](https://github.com/livekit/livekit)，可选地您可以将 `livekit-server` 二进制文件添加到您的 `PATH` 中。
 
-Alternatively, if you have [Docker](https://www.docker.com/) installed you can bring up all the `collab` dependencies using Docker Compose.
+或者，如果您安装了 [Docker](https://www.docker.com/)，可以使用 Docker Compose 启动所有 `collab` 依赖项。
 
 ### Docker {#Docker}
 
-If you have docker or podman available, you can run the backend dependencies inside containers with Docker Compose:
+如果您有 docker 或 podman 可用，可以使用 Docker Compose 在容器内运行后端依赖项：
 
 ```sh
 docker compose up -d
 ```
 
-## Database setup
+## 数据库设置
 
-Before you can run the `collab` server locally, you'll need to set up a `zed` Postgres database.
+在本地运行 `collab` 服务器之前，您需要设置一个 `zed` Postgres 数据库。
 
-### On macOS and Linux {#database-unix}
+### 在 macOS 和 Linux 上 {#database-unix}
 
 ```sh
 script/bootstrap
 ```
 
-This script will set up the `zed` Postgres database, and populate it with some users. It requires internet access, because it fetches some users from the GitHub API.
+此脚本将设置 `zed` Postgres 数据库，并用一些用户填充它。它需要互联网访问，因为它从 GitHub API 获取一些用户。
 
-The script will seed the database with various content defined by:
+该脚本将使用以下定义的各种内容填充数据库：
 
 ```sh
 cat crates/collab/seed.default.json
 ```
 
-To use a different set of admin users, you can create your own version of that json file and export the `SEED_PATH` environment variable. Note that the usernames listed in the admins list currently must correspond to valid GitHub users.
+要使用不同的管理员用户集，您可以创建该 json 文件的自己的版本并导出 `SEED_PATH` 环境变量。请注意，管理员列表中列出的用户名当前必须对应于有效的 GitHub 用户。
 
 ```json [settings]
 {
@@ -113,25 +113,25 @@ To use a different set of admin users, you can create your own version of that j
 }
 ```
 
-### On Windows {#database-windows}
+### 在 Windows 上 {#database-windows}
 
 ```powershell
 .\script\bootstrap.ps1
 ```
 
-## Testing collaborative features locally
+## 本地测试协作功能
 
-### On macOS and Linux {#run-collab-unix}
+### 在 macOS 和 Linux 上 {#run-collab-unix}
 
-Ensure that Postgres is configured and running, then run Zed's collaboration server and the `livekit` dev server:
+确保 Postgres 已配置并运行，然后运行 Zed 的协作服务器和 `livekit` 开发服务器：
 
 ```sh
 foreman start
-# OR
+# 或
 docker compose up
 ```
 
-Alternatively, if you're not testing voice and screenshare, you can just run `collab` and `cloud`, and not the `livekit` dev server:
+或者，如果您不测试语音和屏幕共享，可以只运行 `collab` 和 `cloud`，而不运行 `livekit` 开发服务器：
 
 ```sh
 cargo run -p collab -- serve all
@@ -141,60 +141,60 @@ cargo run -p collab -- serve all
 cd ../cloud; cargo make dev
 ```
 
-In a new terminal, run two or more instances of Zed.
+在新的终端中，运行两个或更多 Zed 实例。
 
 ```sh
 script/zed-local -3
 ```
 
-This script starts one to four instances of Zed, depending on the `-2`, `-3` or `-4` flags. Each instance will be connected to the local `collab` server, signed in as a different user from `.admins.json` or `.admins.default.json`.
+此脚本启动一到四个 Zed 实例，具体取决于 `-2`、`-3` 或 `-4` 标志。每个实例都将连接到本地 `collab` 服务器，并以 `.admins.json` 或 `.admins.default.json` 中的不同用户身份登录。
 
-### On Windows {#run-collab-windows}
+### 在 Windows 上 {#run-collab-windows}
 
-Since `foreman` is not available on Windows, you can run the following commands in separate terminals:
+由于 `foreman` 在 Windows 上不可用，您可以在单独的终端中运行以下命令：
 
 ```powershell
 cargo run --package=collab -- serve all
 ```
 
-If you have added the `livekit-server` binary to your `PATH`, you can run:
+如果您已将 `livekit-server` 二进制文件添加到您的 `PATH` 中，可以运行：
 
 ```powershell
 livekit-server --dev
 ```
 
-Otherwise,
+否则，
 
 ```powershell
 .\path\to\livekit-serve.exe --dev
 ```
 
-You'll also need to start the cloud server:
+您还需要启动云服务器：
 
 ```powershell
 cd ..\cloud; cargo make dev
 ```
 
-In a new terminal, run two or more instances of Zed.
+在新的终端中，运行两个或更多 Zed 实例。
 
 ```powershell
 node .\script\zed-local -2
 ```
 
-Note that this requires `node.exe` to be in your `PATH`.
+请注意，这需要 `node.exe` 在您的 `PATH` 中。
 
-## Running a local collab server
+## 运行本地 collab 服务器
 
 > [!NOTE]
-> Because of recent changes to our authentication system, Zed will not be able to authenticate itself with, and therefore use, a local collab server.
+> 由于我们认证系统的最新更改，Zed 将无法与本地 collab 服务器进行身份验证，因此无法使用它。
 
-If you want to run your own version of the zed collaboration service, you can, but note that this is still under development, and there is no support for authentication nor extensions.
+如果您想运行自己的 zed 协作服务版本，可以这样做，但请注意这仍在开发中，并且不支持身份验证或扩展。
 
-Configuration is done through environment variables. By default it will read the configuration from [`.env.toml`](https://github.com/zed-industries/zed/blob/main/crates/collab/.env.toml) and you should use that as a guide for setting this up.
+配置通过环境变量完成。默认情况下，它将从 [`.env.toml`](https://github.com/zed-industries/zed/blob/main/crates/collab/.env.toml) 读取配置，您应该将其作为设置指南。
 
-By default Zed assumes that the DATABASE_URL is a Postgres database, but you can make it use Sqlite by compiling with `--features sqlite` and using a sqlite DATABASE_URL with `?mode=rwc`.
+默认情况下，Zed 假设 DATABASE_URL 是 Postgres 数据库，但您可以通过使用 `--features sqlite` 编译并使用带有 `?mode=rwc` 的 sqlite DATABASE_URL 来使其使用 Sqlite。
 
-To authenticate you must first configure the server by creating a seed.json file that contains at a minimum your github handle. This will be used to create the user on demand.
+要进行身份验证，您必须首先通过创建一个至少包含您的 GitHub 用户名的 seed.json 文件来配置服务器。这将用于按需创建用户。
 
 ```json [settings]
 {
@@ -202,6 +202,6 @@ To authenticate you must first configure the server by creating a seed.json file
 }
 ```
 
-By default the collab server will seed the database when first creating it, but if you want to add more users you can explicitly reseed them with `SEED_PATH=./seed.json cargo run -p collab seed`
+默认情况下，collab 服务器在首次创建数据库时会填充它，但如果您想添加更多用户，可以使用 `SEED_PATH=./seed.json cargo run -p collab seed` 显式重新填充它们
 
-Then when running the zed client you must specify two environment variables, `ZED_ADMIN_API_TOKEN` (which should match the value of `API_TOKEN` in .env.toml) and `ZED_IMPERSONATE` (which should match one of the users in your seed.json)
+然后在运行 zed 客户端时，您必须指定两个环境变量：`ZED_ADMIN_API_TOKEN`（应与 .env.toml 中的 `API_TOKEN` 值匹配）和 `ZED_IMPERSONATE`（应与您的 seed.json 中的一个用户匹配）

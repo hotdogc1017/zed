@@ -1,39 +1,47 @@
-# Remote Development
+# 远程开发
 
-Remote Development allows you to code at the speed of thought, even when your codebase is not on your local machine. You use Zed locally so the UI is immediately responsive, but offload heavy computation to the development server so that you can work effectively.
+远程开发让你即使在代码不位于本地机器时，也能保持“所想即所得”的开发体验。Zed 的界面在本地运行，保持即时反馈；计算密集型任务则在开发服务器上执行。
 
-## Overview
+## 基本概念
 
-Remote development requires two computers, your local machine that runs the Zed UI and the remote server which runs a Zed headless server. The two communicate over SSH, so you will need to be able to SSH from your local machine into the remote server to use this feature.
+远程开发需要两台机器：
 
-![Architectural overview of Zed Remote Development](https://zed.dev/img/remote-development/diagram.png)
+1. 本地计算机：运行 Zed UI、与语言模型交互、使用 Tree-sitter 解析语法、保存未提交改动与历史项目。
+2. 远程服务器：运行 Zed 无头服务（headless server），承载源代码、语言服务器、任务与终端。
 
-On your local machine, Zed runs its UI, talks to language models, uses Tree-sitter to parse and syntax-highlight code, and store unsaved changes and recent projects. The source code, language servers, tasks, and the terminal all run on the remote server.
+两端通过 SSH 建立连接，因此需要在本地可直接 SSH 登录远程主机。
 
-> **Note:** The original version of remote development sent traffic via Zed's servers. As of Zed v0.157 you can no-longer use that mode.
+![远程开发架构](https://zed.dev/img/remote-development/diagram.png)
 
-## Setup
+> **提示**：自 Zed v0.157 起，远程开发仅通过 SSH 直连，不再经过 Zed 中转服务器。
 
-1. Download and install the latest [Zed](https://zed.dev/releases). You need at least Zed v0.159.
-1. Use {#kb projects::OpenRemote} to open the "Remote Projects" dialog.
-1. Click "Connect New Server" and enter the command you use to SSH into the server. See [Supported SSH options](#supported-ssh-options) for options you can pass.
-1. Your local machine will attempt to connect to the remote server using the `ssh` binary on your path. Assuming the connection is successful, Zed will download the server on the remote host and start it.
-1. Once the Zed server is running, you will be prompted to choose a path to open on the remote server.
-   > **Note:** Zed does not currently handle opening very large directories (for example, `/` or `~` that may have >100,000 files) very well. We are working on improving this, but suggest in the meantime opening only specific projects, or subfolders of very large mono-repos.
+## 环境准备
 
-For simple cases where you don't need any SSH arguments, you can run `zed ssh://[<user>@]<host>[:<port>]/<path>` to open a remote folder/file directly. If you'd like to hotlink into an SSH project, use a link of the format: `zed://ssh/[<user>@]<host>[:<port>]/<path>`.
+1. 安装最新版 [Zed](https://zed.dev/releases)，至少需要 v0.159。
+2. 执行 {#kb projects::OpenRemote} 打开 “Remote Projects” 面板。
+3. 点击 “Connect New Server”，填写你平时用于 SSH 的命令（下文列出可用选项）。
+4. Zed 会调用系统中的 `ssh` 命令发起连接。首次连接时会自动在远端下载并启动 Zed Server。
+5. Server 启动后会提示选择远程路径。建议直接选取项目目录或大型仓库中的子目录，避免一次性加载 `/` 或 `~` 等包含十万级文件的路径。
 
-## Supported platforms
+若无需额外参数，也可直接在终端运行：
 
-The remote machine must be able to run Zed's server. The following platforms should work, though note that we have not exhaustively tested every Linux distribution:
+```sh
+zed ssh://[<user>@]<host>[:<port>]/<path>
+```
 
-- macOS Catalina or later (Intel or Apple Silicon)
-- Linux (x86_64 or arm64, we do not yet support 32-bit platforms)
-- Windows is not yet supported.
+并可通过 `zed://ssh/...` 这种链接格式在外部跳转到远程项目。
 
-## Configuration
+## 支持平台
 
-The list of remote servers is stored in your settings file {#kb zed::OpenSettings}. You can edit this list using the Remote Projects dialog {#kb projects::OpenRemote}, which provides some robustness - for example it checks that the connection can be established before writing it to the settings file.
+远程主机需能运行 Zed Server，目前支持：
+
+- macOS Catalina 或更新版本（Intel / Apple Silicon）
+- Linux（x86_64 / arm64）
+- Windows 暂不支持
+
+## 配置连接
+
+远程连接信息保存在 `settings.json`（{#kb zed::OpenSettings}）。可通过 Remote Projects 面板维护，也可手动编辑：
 
 ```json [settings]
 {
@@ -46,7 +54,7 @@ The list of remote servers is stored in your settings file {#kb zed::OpenSetting
 }
 ```
 
-Zed shells out to the `ssh` on your path, and so it will inherit any configuration you have in `~/.ssh/config` for the given host. That said, if you need to override anything you can configure the following additional options on each connection:
+Zed 默认读取 `ssh_config` 配置，如需覆盖可在连接项中指定：
 
 ```json [settings]
 {
@@ -54,17 +62,15 @@ Zed shells out to the `ssh` on your path, and so it will inherit any configurati
     {
       "host": "192.168.1.10",
       "projects": [{ "paths": ["~/code/zed/zed"] }],
-      // any argument to pass to the ssh master process
       "args": ["-i", "~/.ssh/work_id_file"],
-      "port": 22, // defaults to 22
-      // defaults to your username on your local machine
+      "port": 22,
       "username": "me"
     }
   ]
 }
 ```
 
-There are two additional Zed-specific options per connection, `upload_binary_over_ssh` and `nickname`:
+额外选项：
 
 ```json [settings]
 {
@@ -72,24 +78,21 @@ There are two additional Zed-specific options per connection, `upload_binary_ove
     {
       "host": "192.168.1.10",
       "projects": [{ "paths": ["~/code/zed/zed"] }],
-      // by default Zed will download the server binary from the internet on the remote.
-      // When this is true, it'll be downloaded to your laptop and uploaded over SSH.
-      // This is useful when your remote server has restricted internet access.
       "upload_binary_over_ssh": true,
-      // Shown in the Zed UI to help distinguish multiple hosts.
       "nickname": "lil-linux"
     }
   ]
 }
 ```
 
-If you use the command line to open a connection to a host by doing `zed ssh://192.168.1.10/~/.vimrc`, then extra options are read from your settings file by finding the first connection that matches the host/username/port of the URL on the command line.
+- `upload_binary_over_ssh`: 默认远端直接下载 server，可改为先在本地下载再上传（适合远端无法访问互联网的情况）。
+- `nickname`: 在 UI 中显示，便于区分多台主机。
 
-Additionally it's worth noting that while you can pass a password on the command line `zed ssh://user:password@host/~`, we do not support writing a password to your settings file. If you're connecting repeatedly to the same host, you should configure key-based authentication.
+命令行打开远程文件时，会查找设置中匹配 `host/username/port` 的配置，并复用其中参数。虽然可以在 URL 中写密码（`user:password@host`），但不建议；推荐使用 SSH 公钥认证。
 
-## Port forwarding
+## 端口转发
 
-If you'd like to be able to connect to ports on your remote server from your local machine, you can configure port forwarding in your settings file. This is particularly useful for developing websites so you can load the site in your browser while working.
+需要本地访问远端端口时，可添加 `port_forwards`：
 
 ```json [settings]
 {
@@ -102,9 +105,7 @@ If you'd like to be able to connect to ports on your remote server from your loc
 }
 ```
 
-This will cause requests from your local machine to `localhost:8080` to be forwarded to the remote machine's port 80. Under the hood this uses the `-L` argument to ssh.
-
-By default these ports are bound to localhost, so other computers in the same network as your development machine cannot access them. You can set the local_host to bind to a different interface, for example, 0.0.0.0 will bind to all local interfaces.
+这会将本地 `localhost:8080` 转发到远端 `80`。可设置 `local_host`、`remote_host` 调整绑定地址：
 
 ```json [settings]
 {
@@ -115,25 +116,7 @@ By default these ports are bound to localhost, so other computers in the same ne
         {
           "local_port": 8080,
           "remote_port": 80,
-          "local_host": "0.0.0.0"
-        }
-      ]
-    }
-  ]
-}
-```
-
-These ports also default to the `localhost` interface on the remote host. If you need to change this, you can also set the remote host:
-
-```json [settings]
-{
-  "ssh_connections": [
-    {
-      "host": "192.168.1.10",
-      "port_forwards": [
-        {
-          "local_port": 8080,
-          "remote_port": 80,
+          "local_host": "0.0.0.0",
           "remote_host": "docker-host"
         }
       ]
@@ -142,68 +125,61 @@ These ports also default to the `localhost` interface on the remote host. If you
 }
 ```
 
-## Zed settings
+## 设置作用域
 
-When opening a remote project there are three relevant settings locations:
+远程项目生效的设置来源：
 
-- The local Zed settings (in `~/.zed/settings.json` on macOS or `~/.config/zed/settings.json` on Linux) on your local machine.
-- The server Zed settings (in the same place) on the remote server.
-- The project settings (in `.zed/settings.json` or `.editorconfig` of your project)
+1. 本地 Zed 设置（如字体、界面偏好）
+2. 远端 Zed 设置（取决于语言服务器路径、工具链，保存在远端 `~/.config/zed/settings.json`）
+3. 项目设置（仓库内 `.zed/settings.json` 或 `.editorconfig`）
 
-Both the local Zed and the server Zed read the project settings, but they are not aware of the other's main `settings.json`.
+项目设置会被本地和远端同时读取；本地与远端的主配置互不共享。
 
-Depending on the kind of setting you want to make, which settings file you should use:
+- 项目设置：格式化、缩进、语言服务器等
+- 远端设置：语言服务器路径、任务工具等
+- 本地设置：UI、键位等
 
-- Project settings should be used for things that affect the project: indentation settings, which formatter / language server to use, etc.
-- Server settings should be used for things that affect the server: paths to language servers, etc.
-- Local settings should be used for things that affect the UI: font size, etc.
+本地安装的扩展会自动同步至远端，确保语言服务器正常运行。
 
-In addition any extensions you have installed locally will be propagated to the remote server. This means that language servers, etc. will run correctly.
+## Server 初始化流程
 
-## Initializing the remote server
+Zed 使用 SSH ControlMaster 建立连接，过程中会在 UI 显示提示：
 
-Once you provide the SSH options, Zed shells out to `ssh` on your local machine to create a ControlMaster connection with the options you provide.
+1. 提示确认主机指纹或输入密钥密码
+2. 建立主连接后，检查远端 `~/.zed_server` 是否存在匹配版本的 server 二进制
+3. 若不存在或版本不符，默认从 `https://zed.dev` 下载；如设置 `upload_binary_over_ssh`，则先下载到本地再上传
+4. 也可以自行下载或编译（`cargo build -p remote_server --release`），并放置在 `~/.zed_server/zed-remote-server-<channel>-<version>`，版本需与本地 Zed 完全一致
 
-Any prompts that SSH needs will be shown in the UI, so you can verify host keys, type key passwords, etc.
+## 连接维护
 
-Once the master connection is established, Zed will check to see if the remote server binary is present in `~/.zed_server` on the remote, and that its version matches the current version of Zed that you're using.
+Server 初始化后，Zed 会复用 ControlMaster 派生新的 SSH 连接运行远程守护进程。守护进程具备自动重连能力：
 
-If it is not there or the version mismatches, Zed will try to download the latest version. By default, it will download from `https://zed.dev` directly, but if you set: `{"upload_binary_over_ssh":true}` in your settings for that server, it will download the binary to your local machine and then upload it to the remote server.
+- 连接断开后自动尝试重连
+- 若重连失败，必要时重新启动守护进程
+- 未保存的改动默认缓存在本地，不会丢失
 
-If you'd like to maintain the server binary yourself you can. You can either download our prebuilt versions from [GitHub](https://github.com/zed-industries/zed/releases), or [build your own](https://zed.dev/docs/development) with `cargo build -p remote_server --release`. If you do this, you must upload it to `~/.zed_server/zed-remote-server-{RELEASE_CHANNEL}-{VERSION}` on the server, for example `~/.zed_server/zed-remote-server-stable-0.181.6`. The version must exactly match the version of Zed itself you are using.
+若遭遇连接问题，可通过 `cmd-shift-p` → `Open Log` 查看 `Zed.log` 日志，或在 GitHub / Discord（#remoting-feedback）寻求帮助。
 
-## Maintaining the SSH connection
+## 支持的 SSH 参数
 
-Once the server is initialized. Zed will create new SSH connections (reusing the existing ControlMaster) to run the remote development server.
+Zed 实际调用系统 `ssh`，支持常见选项：
 
-Each connection tries to run the development server in proxy mode. This mode will start the daemon if it is not running, and reconnect to it if it is. This way when your connection drops and is restarted, you can continue to work without interruption.
+- `-p`、`-l`：指定端口、用户名
+- `-L`、`-R`：端口转发
+- `-i`：指定私钥
+- `-o`：自定义 SSH 参数
+- `-J`、`-w`：跳板/代理
+- `-F`：指定配置文件
+- 其他常见开关如 `-4/-6/-A/-C/-X/-Y/-a/-b` 等
 
-In the case that reconnecting fails, the daemon will not be re-used. That said, unsaved changes are by default persisted locally, so that you do not lose work. You can always reconnect to the project at a later date and Zed will restore unsaved changes.
+部分选项（如 `-t/-T`）由 Zed 自动处理，为保证稳定会禁止用户覆盖。
 
-If you are struggling with connection issues, you should be able to see more information in the Zed log `cmd-shift-p Open Log`. If you are seeing things that are unexpected, please file a [GitHub issue](https://github.com/zed-industries/zed/issues/new) or reach out in the #remoting-feedback channel in the [Zed Discord](https://zed.dev/community-links).
+在 “Connect New Server” 对话框中可使用 Shell 风格引用，将参数写成一条命令。保存后会写入 `settings.json` 的 `ssh_connections` 数组，可直接编辑。
 
-## Supported SSH Options
+## 已知限制
 
-Under the hood, Zed shells out to the `ssh` binary to connect to the remote server. We create one SSH control master per project, and use then use that to multiplex SSH connections for the Zed protocol itself, any terminals you open and tasks you run. We read settings from your SSH config file, but if you want to specify additional options to the SSH control master you can configure Zed to set them.
+- 远端终端中运行 `zed` 命令无法在本地打开文件（当前版本尚未支持）。
 
-When typing in the "Connect New Server" dialog, you can use bash-style quoting to pass options containing a space. Once you have created a server it will be added to the `"ssh_connections": []` array in your settings file. You can edit the settings file directly to make changes to SSH connections.
+## 反馈
 
-Supported options:
-
-- `-p` / `-l` - these are equivalent to passing the port and the username in the host string.
-- `-L` / `-R` for port forwarding
-- `-i` - to use a specific key file
-- `-o` - to set custom options
-- `-J` / `-w` - to proxy the SSH connection
-- `-F` for specifying an `ssh_config`
-- And also... `-4`, `-6`, `-A`, `-B`, `-C`, `-D`, `-I`, `-K`, `-P`, `-X`, `-Y`, `-a`, `-b`, `-c`, `-i`, `-k`, `-l`, `-m`, `-o`, `-p`, `-w`, `-x`, `-y`
-
-Note that we deliberately disallow some options (for example `-t` or `-T`) that Zed will set for you.
-
-## Known Limitations
-
-- You can't open files from the remote Terminal by typing the `zed` command.
-
-## Feedback
-
-Please join the #remoting-feedback channel in the [Zed Discord](https://zed.dev/community-links).
+欢迎加入 [Zed Discord](https://zed.dev/community-links) 的 `#remoting-feedback` 频道交流体验，也可在 GitHub 提交 Issue。

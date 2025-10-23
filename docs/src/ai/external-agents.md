@@ -1,25 +1,25 @@
-# External Agents
+# 外部代理
 
-Zed supports terminal-based agents through the [Agent Client Protocol (ACP)](https://agentclientprotocol.com).
+Zed 通过[代理客户端协议 (ACP)](https://agentclientprotocol.com)支持基于终端的代理。
 
-Currently, [Gemini CLI](https://github.com/google-gemini/gemini-cli) serves as the reference implementation.
-[Claude Code](https://www.anthropic.com/claude-code) and [Codex](https://developers.openai.com/codex) are also included by default, and you can [add custom ACP-compatible agents](#add-custom-agents) as well.
+目前，[Gemini CLI](https://github.com/google-gemini/gemini-cli) 作为参考实现。
+[Claude Code](https://www.anthropic.com/claude-code) 和 [Codex](https://developers.openai.com/codex) 也默认包含，您还可以[添加自定义的 ACP 兼容代理](#add-custom-agents)。
 
-> Note that Zed's affordance for external agents is strictly UI-based; the billing and legal/terms arrangement is directly between you and the agent provider.
-> Zed does not charge for use of external agents, and our [zero-data retention agreements/privacy guarantees](./ai-improvement.md) are **_only_** applicable for Zed's hosted models.
+> 请注意，Zed 对外部代理的支持严格基于 UI；计费和法律/条款安排直接发生在您和代理提供商之间。
+> Zed 不对外部代理的使用收费，我们的[零数据保留协议/隐私保证](./ai-improvement.md) **_仅_** 适用于 Zed 的托管模型。
 
 ## Gemini CLI {#gemini-cli}
 
-Zed provides the ability to run [Gemini CLI](https://github.com/google-gemini/gemini-cli) directly in the [agent panel](./agent-panel.md).
+Zed 提供了直接在[代理面板](./agent-panel.md)中运行 [Gemini CLI](https://github.com/google-gemini/gemini-cli) 的能力。
 
-Under the hood we run Gemini CLI in the background, and talk to it over ACP.
-This means that you're running the real Gemini CLI, with all of the advantages of that, but you can see and interact with files in your editor.
+在底层，我们在后台运行 Gemini CLI，并通过 ACP 与其通信。
+这意味着您运行的是真正的 Gemini CLI，具有其所有优势，但您可以在编辑器中查看和与文件交互。
 
-### Getting Started
+### 开始使用
 
-As of [Zed Stable v0.201.5](https://zed.dev/releases/stable/0.201.5) you should be able to use Gemini CLI directly from Zed. First open the agent panel with {#kb agent::ToggleFocus}, and then use the `+` button in the top right to start a new Gemini CLI thread.
+从 [Zed Stable v0.201.5](https://zed.dev/releases/stable/0.201.5) 开始，您应该能够直接从 Zed 使用 Gemini CLI。首先使用 {#kb agent::ToggleFocus} 打开代理面板，然后使用右上角的 `+` 按钮开始一个新的 Gemini CLI 线程。
 
-If you'd like to bind this to a keyboard shortcut, you can do so by editing your `keymap.json` file via the `zed: open keymap` command to include:
+如果您想将其绑定到键盘快捷键，可以通过 `zed: open keymap` 命令编辑您的 `keymap.json` 文件来包含：
 
 ```json [keymap]
 [
@@ -31,11 +31,11 @@ If you'd like to bind this to a keyboard shortcut, you can do so by editing your
 ]
 ```
 
-#### Installation
+#### 安装
 
-The first time you create a Gemini CLI thread, Zed will install [@google/gemini-cli](https://github.com/zed-industries/claude-code-acp). This installation is only available to Zed and is kept up to date as you use the agent.
+第一次创建 Gemini CLI 线程时，Zed 将安装 [@google/gemini-cli](https://github.com/zed-industries/claude-code-acp)。此安装仅对 Zed 可用，并在您使用代理时保持最新。
 
-By default, Zed will use this managed version of Gemini CLI even if you have it installed globally. However, you can configure it to use a version in your `PATH` by adding this to your settings:
+默认情况下，即使您全局安装了 Gemini CLI，Zed 也会使用此托管版本。但是，您可以通过将此添加到您的设置中来配置它使用 `PATH` 中的版本：
 
 ```json [settings]
 {
@@ -47,36 +47,36 @@ By default, Zed will use this managed version of Gemini CLI even if you have it 
 }
 ```
 
-#### Authentication
+#### 身份验证
 
-After you have Gemini CLI running, you'll be prompted to choose your authentication method.
+运行 Gemini CLI 后，系统将提示您选择身份验证方法。
 
-Most users should click the "Log in with Google". This will cause a browser window to pop-up and auth directly with Gemini CLI. Zed does not see your OAuth or access tokens in this case.
+大多数用户应点击"使用 Google 登录"。这将导致浏览器窗口弹出并直接与 Gemini CLI 进行身份验证。在这种情况下，Zed 不会看到您的 OAuth 或访问令牌。
 
-You can also use the "Gemini API Key". If you select this, and have the `GEMINI_API_KEY` set, then we will use that. Otherwise Zed will prompt you for an API key which will be stored securely in your keychain, and used to start Gemini CLI from within Zed.
+您也可以使用"Gemini API 密钥"。如果您选择此选项并设置了 `GEMINI_API_KEY`，我们将使用该密钥。否则，Zed 将提示您输入 API 密钥，该密钥将安全地存储在您的钥匙串中，并用于从 Zed 内部启动 Gemini CLI。
 
-The "Vertex AI" option is for those who are using [Vertex AI](https://cloud.google.com/vertex-ai), and have already configured their environment correctly.
+"Vertex AI"选项适用于使用 [Vertex AI](https://cloud.google.com/vertex-ai) 并已正确配置其环境的用户。
 
-For more information, see the [Gemini CLI docs](https://github.com/google-gemini/gemini-cli/blob/main/docs/index.md).
+有关更多信息，请参阅 [Gemini CLI 文档](https://github.com/google-gemini/gemini-cli/blob/main/docs/index.md)。
 
-### Usage
+### 使用
 
-Similar to Zed's first-party agent, you can use Gemini CLI to do anything that you need.
-And to give it context, you can @-mention files, recent threads, symbols, or fetch the web.
+与 Zed 的第一方代理类似，您可以使用 Gemini CLI 执行任何您需要的操作。
+为了给它提供上下文，您可以 @-提及文件、最近的线程、符号或获取网页。
 
-> Note that some first-party agent features don't yet work with Gemini CLI: editing past messages, resuming threads from history, and checkpointing.
-> We hope to add these features in the near future.
+> 请注意，某些第一方代理功能尚未与 Gemini CLI 配合使用：编辑过去的消息、从历史记录恢复线程和检查点。
+> 我们希望在未来添加这些功能。
 
 ## Claude Code
 
-Similar to Gemini CLI, you can also run [Claude Code](https://www.anthropic.com/claude-code) directly via Zed's [agent panel](./agent-panel.md).
-Under the hood, Zed runs Claude Code and communicate to it over ACP, through [a dedicated adapter](https://github.com/zed-industries/claude-code-acp).
+与 Gemini CLI 类似，您也可以直接通过 Zed 的[代理面板](./agent-panel.md)运行 [Claude Code](https://www.anthropic.com/claude-code)。
+在底层，Zed 运行 Claude Code 并通过[专用适配器](https://github.com/zed-industries/claude-code-acp)通过 ACP 与其通信。
 
-### Getting Started
+### 开始使用
 
-Open the agent panel with {#kb agent::ToggleFocus}, and then use the `+` button in the top right to start a new Claude Code thread.
+使用 {#kb agent::ToggleFocus} 打开代理面板，然后使用右上角的 `+` 按钮开始一个新的 Claude Code 线程。
 
-If you'd like to bind this to a keyboard shortcut, you can do so by editing your `keymap.json` file via the `zed: open keymap` command to include:
+如果您想将其绑定到键盘快捷键，可以通过 `zed: open keymap` 命令编辑您的 `keymap.json` 文件来包含：
 
 ```json [keymap]
 [
@@ -88,19 +88,19 @@ If you'd like to bind this to a keyboard shortcut, you can do so by editing your
 ]
 ```
 
-### Authentication
+### 身份验证
 
-As of version `0.202.7` (stable) and `0.203.2` (preview), authentication to Zed's Claude Code installation is decoupled entirely from Zed's agent. That is to say, an Anthropic API key added via the [Zed Agent's settings](./llm-providers.md#anthropic) will _not_ be utilized by Claude Code for authentication and billing.
+从版本 `0.202.7`（稳定版）和 `0.203.2`（预览版）开始，Zed 的 Claude Code 安装的身份验证与 Zed 的代理完全解耦。也就是说，通过 [Zed 代理设置](./llm-providers.md#anthropic) 添加的 Anthropic API 密钥将 **_不_** 被 Claude Code 用于身份验证和计费。
 
-To ensure you're using your billing method of choice, [open a new Claude Code thread](./agent-panel.md#new-thread). Then, run `/login`, and authenticate either via API key, or via `Log in with Claude Code` to use a Claude Pro/Max subscription.
+为确保您使用选择的计费方式，[打开一个新的 Claude Code 线程](./agent-panel.md#new-thread)。然后，运行 `/login`，并通过 API 密钥或通过`使用 Claude Code 登录`来使用 Claude Pro/Max 订阅进行身份验证。
 
-#### Installation
+#### 安装
 
-The first time you create a Claude Code thread, Zed will install [@zed-industries/claude-code-acp](https://github.com/zed-industries/claude-code-acp). This installation is only available to Zed and is kept up to date as you use the agent.
+第一次创建 Claude Code 线程时，Zed 将安装 [@zed-industries/claude-code-acp](https://github.com/zed-industries/claude-code-acp)。此安装仅对 Zed 可用，并在您使用代理时保持最新。
 
-Zed will always use this managed version of the Claude Code adapter, which includes a vendored version of the Claude Code CLI, even if you have it installed globally.
+即使您全局安装了 Claude Code，Zed 也会始终使用此托管版本的 Claude Code 适配器，其中包括 Claude Code CLI 的供应商版本。
 
-If you want to override the executable used by the adapter, you can set the `CLAUDE_CODE_EXECUTABLE` environment variable in your settings to the path of your preferred executable.
+如果您想覆盖适配器使用的可执行文件，可以在设置中将 `CLAUDE_CODE_EXECUTABLE` 环境变量设置为您首选可执行文件的路径。
 
 ```json
 {
@@ -114,37 +114,37 @@ If you want to override the executable used by the adapter, you can set the `CLA
 }
 ```
 
-### Usage
+### 使用
 
-Similar to Zed's first-party agent, you can use Claude Code to do anything that you need.
-And to give it context, you can @-mention files, recent threads, symbols, or fetch the web.
+与 Zed 的第一方代理类似，您可以使用 Claude Code 执行任何您需要的操作。
+为了给它提供上下文，您可以 @-提及文件、最近的线程、符号或获取网页。
 
-In complement to talking to it [over ACP](https://agentclientprotocol.com), Zed relies on the [Claude Code SDK](https://docs.anthropic.com/en/docs/claude-code/sdk/sdk-overview) to support some of its specific features.
-However, the SDK doesn't yet expose everything needed to fully support all of them:
+除了通过 [ACP](https://agentclientprotocol.com) 与其通信外，Zed 还依赖 [Claude Code SDK](https://docs.anthropic.com/en/docs/claude-code/sdk/sdk-overview) 来支持其某些特定功能。
+但是，SDK 尚未公开完全支持所有功能所需的一切：
 
-- Slash Commands: A subset of [built-in commands](https://docs.anthropic.com/en/docs/claude-code/slash-commands#built-in-slash-commands) are supported, while [custom slash commands](https://docs.anthropic.com/en/docs/claude-code/slash-commands#custom-slash-commands) are fully supported.
-- [Subagents](https://docs.anthropic.com/en/docs/claude-code/sub-agents) are supported.
-- [Hooks](https://docs.anthropic.com/en/docs/claude-code/hooks-guide) are currently _not_ supported.
+- 斜杠命令：支持[内置命令](https://docs.anthropic.com/en/docs/claude-code/slash-commands#built-in-slash-commands)的子集，而[自定义斜杠命令](https://docs.anthropic.com/en/docs/claude-code/slash-commands#custom-slash-commands)完全支持。
+- [子代理](https://docs.anthropic.com/en/docs/claude-code/sub-agents) 支持。
+- [钩子](https://docs.anthropic.com/en/docs/claude-code/hooks-guide) 目前**_不_** 支持。
 
-> Also note that some [first-party agent](./agent-panel.md) features don't yet work with Claude Code: editing past messages, resuming threads from history, and checkpointing.
-> We hope to add these features in the near future.
+> 另请注意，某些[第一方代理](./agent-panel.md)功能尚未与 Claude Code 配合使用：编辑过去的消息、从历史记录恢复线程和检查点。
+> 我们希望在未来添加这些功能。
 
 #### CLAUDE.md
 
-Claude Code in Zed will automatically use any `CLAUDE.md` file found in your project root, project subdirectories, or root `.claude` directory.
+Zed 中的 Claude Code 将自动使用在项目根目录、项目子目录或根 `.claude` 目录中找到的任何 `CLAUDE.md` 文件。
 
-If you don't have a `CLAUDE.md` file, you can ask Claude Code to create one for you through the `init` slash command.
+如果您没有 `CLAUDE.md` 文件，可以通过 `init` 斜杠命令要求 Claude Code 为您创建一个。
 
 ## Codex CLI
 
-You can also run [Codex CLI](https://github.com/openai/codex) directly via Zed's [agent panel](./agent-panel.md).
-Under the hood, Zed runs Codex CLI and communicates to it over ACP, through [a dedicated adapter](https://github.com/zed-industries/codex-acp).
+您也可以直接通过 Zed 的[代理面板](./agent-panel.md)运行 [Codex CLI](https://github.com/openai/codex)。
+在底层，Zed 运行 Codex CLI 并通过[专用适配器](https://github.com/zed-industries/codex-acp)通过 ACP 与其通信。
 
-### Getting Started
+### 开始使用
 
-As of Zed Stable v0.208 you should be able to use Codex directly from Zed. Open the agent panel with {#kb agent::ToggleFocus}, and then use the `+` button in the top right to start a new Codex thread.
+从 Zed Stable v0.208 开始，您应该能够直接从 Zed 使用 Codex。使用 {#kb agent::ToggleFocus} 打开代理面板，然后使用右上角的 `+` 按钮开始一个新的 Codex 线程。
 
-If you'd like to bind this to a keyboard shortcut, you can do so by editing your `keymap.json` file via the `zed: open keymap` command to include:
+如果您想将其绑定到键盘快捷键，可以通过 `zed: open keymap` 命令编辑您的 `keymap.json` 文件来包含：
 
 ```json
 [
@@ -156,35 +156,35 @@ If you'd like to bind this to a keyboard shortcut, you can do so by editing your
 ]
 ```
 
-### Authentication
+### 身份验证
 
-Authentication to Zed's Codex installation is decoupled entirely from Zed's agent. That is to say, an OpenAI API key added via the [Zed Agent's settings](./llm-providers.md#openai) will _not_ be utilized by Codex for authentication and billing.
+Zed 的 Codex 安装的身份验证与 Zed 的代理完全解耦。也就是说，通过 [Zed 代理设置](./llm-providers.md#openai) 添加的 OpenAI API 密钥将 **_不_** 被 Codex 用于身份验证和计费。
 
-To ensure you're using your billing method of choice, [open a new Codex thread](./agent-panel.md#new-thread). The first time you will be prompted to authenticate with one of three methods:
+为确保您使用选择的计费方式，[打开一个新的 Codex 线程](./agent-panel.md#new-thread)。第一次您将被提示使用以下三种方法之一进行身份验证：
 
-1. Login with ChatGPT - allows you to use your existing, paid ChatGPT subscription. _Note: This method isn't currently supported in remote projects_
-2. `CODEX_API_KEY` - uses an API key you have set in your environment under the variable `CODEX_API_KEY`.
-3. `OPENAI_API_KEY` - uses an API key you have set in your environment under the variable `OPENAI_API_KEY`.
+1. 使用 ChatGPT 登录 - 允许您使用现有的付费 ChatGPT 订阅。_注意：此方法目前在远程项目中不受支持_
+2. `CODEX_API_KEY` - 使用您在环境变量 `CODEX_API_KEY` 下设置的 API 密钥。
+3. `OPENAI_API_KEY` - 使用您在环境变量 `OPENAI_API_KEY` 下设置的 API 密钥。
 
-If you are already logged in and want to change your authentication method, type `/logout` in the thread and authenticate again.
+如果您已登录并想要更改身份验证方法，请在线程中键入 `/logout` 并重新进行身份验证。
 
-#### Installation
+#### 安装
 
-The first time you create a Codex thread, Zed will install [codex-acp](https://github.com/zed-industries/codex-acp). This installation is only available to Zed and is kept up to date as you use the agent.
+第一次创建 Codex 线程时，Zed 将安装 [codex-acp](https://github.com/zed-industries/codex-acp)。此安装仅对 Zed 可用，并在您使用代理时保持最新。
 
-Zed will always use this managed version of Codex even if you have it installed globally.
+即使您全局安装了 Codex，Zed 也会始终使用此托管版本。
 
-### Usage
+### 使用
 
-Similar to Zed's first-party agent, you can use Codex to do anything that you need.
-And to give it context, you can @-mention files, symbols, or fetch the web.
+与 Zed 的第一方代理类似，您可以使用 Codex 执行任何您需要的操作。
+为了给它提供上下文，您可以 @-提及文件、符号或获取网页。
 
-> Note that some first-party agent features don't yet work with Codex: editing past messages, resuming threads from history, and checkpointing.
-> We hope to add these features in the near future.
+> 请注意，某些第一方代理功能尚未与 Codex 配合使用：编辑过去的消息、从历史记录恢复线程和检查点。
+> 我们希望在未来添加这些功能。
 
-## Add Custom Agents {#add-custom-agents}
+## 添加自定义代理 {#add-custom-agents}
 
-You can run any agent speaking ACP in Zed by changing your settings as follows:
+您可以通过如下更改设置来运行任何支持 ACP 的代理：
 
 ```json [settings]
 {
@@ -198,19 +198,19 @@ You can run any agent speaking ACP in Zed by changing your settings as follows:
 }
 ```
 
-This can also be useful if you're in the middle of developing a new agent that speaks the protocol and you want to debug it.
+如果您正在开发一个支持该协议的新代理并想要调试它，这也很有用。
 
-You can also specify a custom path, arguments, or environment for the builtin integrations by using the `claude` and `gemini` names.
+您还可以使用 `claude` 和 `gemini` 名称为内置集成指定自定义路径、参数或环境。
 
-## Debugging Agents
+## 调试代理
 
-When using external agents in Zed, you can access the debug view via with `dev: open acp logs` from the Command Palette. This lets you see the messages being sent and received between Zed and the agent.
+在 Zed 中使用外部代理时，您可以通过命令面板中的 `dev: open acp logs` 访问调试视图。这使您可以看到 Zed 和代理之间发送和接收的消息。
 
-![The debug view for ACP logs.](https://zed.dev/img/acp/acp-logs.webp)
+![ACP 日志的调试视图。](https://zed.dev/img/acp/acp-logs.webp)
 
-## MCP Servers
+## MCP 服务器
 
-Note that for external agents, access to MCP servers [installed from Zed](./mcp.md) may vary depending on the ACP agent implementation.
+请注意，对于外部代理，访问[从 Zed 安装的 MCP 服务器](./mcp.md)可能因 ACP 代理实现而异。
 
-Regarding the built-in ones, Claude Code and Codex both support it, and Gemini CLI does not yet.
-In the meantime, learn how to add MCP server support to Gemini CLI through [their documentation](https://github.com/google-gemini/gemini-cli?tab=readme-ov-file#using-mcp-servers).
+关于内置代理，Claude Code 和 Codex 都支持它，而 Gemini CLI 目前还不支持。
+同时，通过[他们的文档](https://github.com/google-gemini/gemini-cli?tab=readme-ov-file#using-mcp-servers)了解如何为 Gemini CLI 添加 MCP 服务器支持。

@@ -1,19 +1,16 @@
 # JavaScript
 
-JavaScript support is available natively in Zed.
+Zed 原生支持 JavaScript。
 
-- Tree-sitter: [tree-sitter/tree-sitter-javascript](https://github.com/tree-sitter/tree-sitter-javascript)
-- Language Server: [typescript-language-server/typescript-language-server](https://github.com/typescript-language-server/typescript-language-server)
-- Debug Adapter: [vscode-js-debug](https://github.com/microsoft/vscode-js-debug)
+- Tree-sitter：[tree-sitter/tree-sitter-javascript](https://github.com/tree-sitter/tree-sitter-javascript)
+- 语言服务器：[typescript-language-server/typescript-language-server](https://github.com/typescript-language-server/typescript-language-server)
+- 调试适配器：[vscode-js-debug](https://github.com/microsoft/vscode-js-debug)
 
-## Code formatting
+## 代码格式化
 
-Formatting on save is enabled by default for JavaScript, using TypeScript's built-in code formatting.
-But many JavaScript projects use other command-line code-formatting tools, such as [Prettier](https://prettier.io/).
-You can use one of these tools by specifying an _external_ code formatter for JavaScript in your settings.
-See [the configuration docs](../configuring-zed.md) for more information.
+JavaScript 默认启用保存时格式化，使用 TypeScript 自带的格式化器。不过许多项目会使用 [Prettier](https://prettier.io/) 等命令行格式化工具。若要使用此类工具，可在设置中为 JavaScript 指定外部格式化器。更多信息见[配置 Zed](../configuring-zed.md)。
 
-For example, if you have Prettier installed and on your `PATH`, you can use it to format JavaScript files by adding the following to your `settings.json`:
+例如，如果已安装 Prettier 并且位于 `PATH` 中，可以在 `settings.json` 中添加以下内容来格式化 JavaScript 文件：
 
 ```json [settings]
 {
@@ -32,18 +29,17 @@ For example, if you have Prettier installed and on your `PATH`, you can use it t
 
 ## JSX
 
-Zed supports JSX syntax highlighting out of the box.
+Zed 内置 JSX 语法高亮。
 
-In JSX strings, the [`tailwindcss-language-server`](./tailwindcss.md) is used provide autocompletion for Tailwind CSS classes.
+在 JSX 字符串内，Zed 会通过 [`tailwindcss-language-server`](./tailwindcss.md) 提供 Tailwind CSS 类名的自动补全。
 
 ## JSDoc
 
-Zed supports JSDoc syntax in JavaScript and TypeScript comments that match the JSDoc syntax.
-Zed uses [tree-sitter/tree-sitter-jsdoc](https://github.com/tree-sitter/tree-sitter-jsdoc) for parsing and highlighting JSDoc.
+Zed 支持在 JavaScript 与 TypeScript 注释中使用 JSDoc 语法，并通过 [tree-sitter/tree-sitter-jsdoc](https://github.com/tree-sitter/tree-sitter-jsdoc) 进行解析与高亮。
 
 ## ESLint
 
-You can configure Zed to format code using `eslint --fix` by running the ESLint code action when formatting:
+可以通过在格式化时运行 ESLint 的代码操作来实现 `eslint --fix`：
 
 ```json [settings]
 {
@@ -57,7 +53,7 @@ You can configure Zed to format code using `eslint --fix` by running the ESLint 
 }
 ```
 
-You can also only execute a single ESLint rule when using `fixAll`:
+也可以在使用 `fixAll` 时仅执行某条 ESLint 规则：
 
 ```json [settings]
 {
@@ -80,13 +76,9 @@ You can also only execute a single ESLint rule when using `fixAll`:
 }
 ```
 
-> **Note:** the other formatter you have configured will still run, after ESLint.
-> So if your language server or Prettier configuration don't format according to
-> ESLint's rules, then they will overwrite what ESLint fixed and you end up with
-> errors.
+> **注意：** 其他格式化器仍会在 ESLint 之后运行。如果语言服务器或 Prettier 的格式化规则与 ESLint 不一致，它们可能会覆盖 ESLint 的修改并再次产生错误。
 
-If you **only** want to run ESLint on save, you can configure code actions as
-the formatter:
+如果只想在保存时运行 ESLint，可以将代码操作配置为格式化器：
 
 ```json [settings]
 {
@@ -100,9 +92,9 @@ the formatter:
 }
 ```
 
-### Configure ESLint's `nodePath`:
+### 配置 ESLint 的 `nodePath`
 
-You can configure ESLint's `nodePath` setting:
+可以如下设置 ESLint 的 `nodePath`：
 
 ```json [settings]
 {
@@ -116,11 +108,9 @@ You can configure ESLint's `nodePath` setting:
 }
 ```
 
-### Configure ESLint's `problems`:
+### 配置 ESLint 的 `problems`
 
-You can configure ESLint's `problems` setting.
-
-For example, here's how to set `problems.shortenToSingleLine`:
+以下示例展示如何设置 `problems.shortenToSingleLine`：
 
 ```json [settings]
 {
@@ -136,9 +126,7 @@ For example, here's how to set `problems.shortenToSingleLine`:
 }
 ```
 
-### Configure ESLint's `rulesCustomizations`:
-
-You can configure ESLint's `rulesCustomizations` setting:
+### 配置 ESLint 的 `rulesCustomizations`
 
 ```json [settings]
 {
@@ -146,7 +134,7 @@ You can configure ESLint's `rulesCustomizations` setting:
     "eslint": {
       "settings": {
         "rulesCustomizations": [
-          // set all eslint errors/warnings to show as warnings
+          // 将所有 ESLint 错误/警告显示为警告
           { "rule": "*", "severity": "warn" }
         ]
       }
@@ -155,9 +143,7 @@ You can configure ESLint's `rulesCustomizations` setting:
 }
 ```
 
-### Configure ESLint's `workingDirectory`:
-
-You can configure ESLint's `workingDirectory` setting:
+### 配置 ESLint 的 `workingDirectory`
 
 ```json [settings]
 {
@@ -173,31 +159,31 @@ You can configure ESLint's `workingDirectory` setting:
 }
 ```
 
-## Debugging
+## 调试
 
-Zed supports debugging JavaScript code out of the box with `vscode-js-debug`.
-The following can be debugged without writing additional configuration:
+Zed 通过 `vscode-js-debug` 开箱即用地支持调试 JavaScript。
+无需额外配置即可调试：
 
-- Tasks from `package.json`
-- Tests written using several popular frameworks (Jest, Mocha, Vitest, Jasmine, Bun, Node)
+- `package.json` 中定义的任务
+- 使用 Jest、Mocha、Vitest、Jasmine、Bun、Node 等常见框架编写的测试
 
-Run {#action debugger::Start} ({#kb debugger::Start}) to see a contextual list of these predefined debug tasks.
+执行 {#action debugger::Start}（{#kb debugger::Start}）可查看上下文相关的预设调试任务列表。
 
-> **Note:** Bun test is automatically detected when `@types/bun` is present in `package.json`.
+> **注意：** 当 `package.json` 中存在 `@types/bun` 时会自动检测 Bun 测试。
 >
-> **Note:** Node test is automatically detected when `@types/node` is present in `package.json` (requires Node.js 20+).
+> **注意：** 当 `package.json` 中存在 `@types/node` 时会自动检测 Node 测试（需要 Node.js 20+）。
 
-As for all languages, configurations from `.vscode/launch.json` are also available for debugging in Zed.
+如常见情况一样，`.vscode/launch.json` 中的配置也会在 Zed 中使用。
 
-If your use-case isn't covered by any of these, you can take full control by adding debug configurations to `.zed/debug.json`. See below for example configurations.
+如果这些预设无法满足需求，可以在 `.zed/debug.json` 中添加自定义调试配置，示例如下。
 
-### Configuring JavaScript debug tasks
+### 配置 JavaScript 调试任务
 
-JavaScript debugging is more complicated than other languages because there are two different environments: Node.js and the browser. `vscode-js-debug` exposes a `type` field, that you can use to specify the environment, either `node` or `chrome`.
+JavaScript 调试比其他语言复杂，因为它既可能在 Node.js 中运行，也可能在浏览器中运行。`vscode-js-debug` 提供 `type` 字段用于指定环境，常见的值为 `node` 或 `chrome`。
 
-- [vscode-js-debug configuration documentation](https://github.com/microsoft/vscode-js-debug/blob/main/OPTIONS.md)
+- [vscode-js-debug 配置文档](https://github.com/microsoft/vscode-js-debug/blob/main/OPTIONS.md)
 
-### Debug the current file with Node
+### 使用 Node 调试当前文件
 
 ```json [debug]
 [
@@ -212,7 +198,7 @@ JavaScript debugging is more complicated than other languages because there are 
 ]
 ```
 
-### Launch a web app in Chrome
+### 在 Chrome 中启动 Web 应用调试
 
 ```json [debug]
 [
@@ -229,7 +215,7 @@ JavaScript debugging is more complicated than other languages because there are 
 ]
 ```
 
-## See also
+## 另请参阅
 
-- [Yarn documentation](./yarn.md) for a walkthrough of configuring your project to use Yarn.
-- [TypeScript documentation](./typescript.md)
+- [Yarn 文档](./yarn.md)：介绍如何将项目配置为使用 Yarn
+- [TypeScript 文档](./typescript.md)

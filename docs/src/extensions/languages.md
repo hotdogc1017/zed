@@ -1,17 +1,17 @@
-# Language Extensions
+# 语言扩展
 
-Language support in Zed has several components:
+Zed 中的语言支持包含几个组件：
 
-- Language metadata and configuration
-- Grammar
-- Queries
-- Language servers
+- 语言元数据和配置
+- 语法
+- 查询
+- 语言服务器
 
-## Language Metadata
+## 语言元数据
 
-Each language supported by Zed must be defined in a subdirectory inside the `languages` directory of your extension.
+Zed 支持的每种语言必须在您的扩展的 `languages` 目录内的子目录中定义。
 
-This subdirectory must contain a file called `config.toml` file with the following structure:
+此子目录必须包含一个名为 `config.toml` 的文件，具有以下结构：
 
 ```toml
 name = "My Language"
@@ -20,14 +20,14 @@ path_suffixes = ["myl"]
 line_comments = ["# "]
 ```
 
-- `name` (required) is the human readable name that will show up in the Select Language dropdown.
-- `grammar` (required) is the name of a grammar. Grammars are registered separately, described below.
-- `path_suffixes` is an array of file suffixes that should be associated with this language. Unlike `file_types` in settings, this does not support glob patterns.
-- `line_comments` is an array of strings that are used to identify line comments in the language. This is used for the `editor::ToggleComments` keybind: {#kb editor::ToggleComments} for toggling lines of code.
-- `tab_size` defines the indentation/tab size used for this language (default is `4`).
-- `hard_tabs` whether to indent with tabs (`true`) or spaces (`false`, the default).
-- `first_line_pattern` is a regular expression, that in addition to `path_suffixes` (above) or `file_types` in settings can be used to match files which should use this language. For example Zed uses this to identify Shell Scripts by matching the [shebangs lines](https://github.com/zed-industries/zed/blob/main/crates/languages/src/bash/config.toml) in the first line of a script.
-- `debuggers` is an array of strings that are used to identify debuggers in the language. When launching a debugger's `New Process Modal`, Zed will order available debuggers by the order of entries in this array.
+- `name`（必需）是将在选择语言下拉列表中显示的人类可读名称。
+- `grammar`（必需）是语法的名称。语法是单独注册的，如下所述。
+- `path_suffixes` 是应与此语言关联的文件后缀数组。与设置中的 `file_types` 不同，这不支持 glob 模式。
+- `line_comments` 是用于识别语言中行注释的字符串数组。这用于 `editor::ToggleComments` 键绑定：{#kb editor::ToggleComments} 用于切换代码行。
+- `tab_size` 定义用于此语言的缩进/制表符大小（默认为 `4`）。
+- `hard_tabs` 是否使用制表符（`true`）或空格（`false`，默认值）进行缩进。
+- `first_line_pattern` 是一个正则表达式，除了 `path_suffixes`（上面）或设置中的 `file_types` 之外，还可以用于匹配应使用此语言的文件。例如，Zed 使用它通过匹配脚本第一行中的 [shebangs 行](https://github.com/zed-industries/zed/blob/main/crates/languages/src/bash/config.toml) 来识别 Shell 脚本。
+- `debuggers` 是用于识别语言中调试器的字符串数组。当启动调试器的 `New Process Modal` 时，Zed 将按此数组中条目的顺序对可用调试器进行排序。
 
 <!--
 TBD: Document `language_name/config.toml` keys
@@ -45,9 +45,9 @@ TBD: Document `language_name/config.toml` keys
 - overrides: `[overrides.element]`, `[overrides.string]`
 -->
 
-## Grammar
+## 语法
 
-Zed uses the [Tree-sitter](https://tree-sitter.github.io) parsing library to provide built-in language-specific features. There are grammars available for many languages, and you can also [develop your own grammar](https://tree-sitter.github.io/tree-sitter/creating-parsers#writing-the-grammar). A growing list of Zed features are built using pattern matching over syntax trees with Tree-sitter queries. As mentioned above, every language that is defined in an extension must specify the name of a Tree-sitter grammar that is used for parsing. These grammars are then registered separately in extensions' `extension.toml` file, like this:
+Zed 使用 [Tree-sitter](https://tree-sitter.github.io) 解析库来提供内置的语言特定功能。有许多语言的语法可用，您也可以[开发自己的语法](https://tree-sitter.github.io/tree-sitter/creating-parsers#writing-the-grammar)。越来越多的 Zed 功能是使用 Tree-sitter 查询在语法树上进行模式匹配构建的。如上所述，在扩展中定义的每种语言必须指定用于解析的 Tree-sitter 语法的名称。然后这些语法在扩展的 `extension.toml` 文件中单独注册，如下所示：
 
 ```toml
 [grammars.gleam]
@@ -55,31 +55,31 @@ repository = "https://github.com/gleam-lang/tree-sitter-gleam"
 rev = "58b7cac8fc14c92b0677c542610d8738c373fa81"
 ```
 
-The `repository` field must specify a repository where the Tree-sitter grammar should be loaded from, and the `rev` field must contain a Git revision to use, such as the SHA of a Git commit. If you're developing an extension locally and want to load a grammar from the local filesystem, you can use a `file://` URL for `repository`. An extension can provide multiple grammars by referencing multiple tree-sitter repositories.
+`repository` 字段必须指定应从其加载 Tree-sitter 语法的存储库，`rev` 字段必须包含要使用的 Git 修订版本，例如 Git 提交的 SHA。如果您在本地开发扩展并希望从本地文件系统加载语法，您可以为 `repository` 使用 `file://` URL。扩展可以通过引用多个 tree-sitter 存储库来提供多个语法。
 
-## Tree-sitter Queries
+## Tree-sitter 查询
 
-Zed uses the syntax tree produced by the [Tree-sitter](https://tree-sitter.github.io) query language to implement
-several features:
+Zed 使用 [Tree-sitter](https://tree-sitter.github.io) 查询语言生成的语法树来实现
+几个功能：
 
-- Syntax highlighting
-- Bracket matching
-- Code outline/structure
-- Auto-indentation
-- Code injections
-- Syntax overrides
-- Text redactions
-- Runnable code detection
-- Selecting classes, functions, etc.
+- 语法高亮
+- 括号匹配
+- 代码大纲/结构
+- 自动缩进
+- 代码注入
+- 语法覆盖
+- 文本脱敏
+- 可运行代码检测
+- 选择类、函数等
 
-The following sections elaborate on how [Tree-sitter queries](https://tree-sitter.github.io/tree-sitter/using-parsers#query-syntax) enable these
-features in Zed, using [JSON syntax](https://www.json.org/json-en.html) as a guiding example.
+以下部分详细说明 [Tree-sitter 查询](https://tree-sitter.github.io/tree-sitter/using-parsers#query-syntax) 如何在 Zed 中启用这些
+功能，使用 [JSON 语法](https://www.json.org/json-en.html) 作为指导示例。
 
-### Syntax highlighting
+### 语法高亮
 
-In Tree-sitter, the `highlights.scm` file defines syntax highlighting rules for a particular syntax.
+在 Tree-sitter 中，`highlights.scm` 文件定义了特定语法的语法高亮规则。
 
-Here's an example from a `highlights.scm` for JSON:
+以下是 JSON 的 `highlights.scm` 示例：
 
 ```scheme
 (string) @string
@@ -90,56 +90,56 @@ Here's an example from a `highlights.scm` for JSON:
 (number) @number
 ```
 
-This query marks strings, object keys, and numbers for highlighting. The following is a comprehensive list of captures supported by themes:
+此查询标记字符串、对象键和数字以进行高亮显示。以下是主题支持的捕获的完整列表：
 
-| Capture                  | Description                            |
+| 捕获                      | 描述                             |
 | ------------------------ | -------------------------------------- |
-| @attribute               | Captures attributes                    |
-| @boolean                 | Captures boolean values                |
-| @comment                 | Captures comments                      |
-| @comment.doc             | Captures documentation comments        |
-| @constant                | Captures constants                     |
-| @constructor             | Captures constructors                  |
-| @embedded                | Captures embedded content              |
-| @emphasis                | Captures emphasized text               |
-| @emphasis.strong         | Captures strongly emphasized text      |
-| @enum                    | Captures enumerations                  |
-| @function                | Captures functions                     |
-| @hint                    | Captures hints                         |
-| @keyword                 | Captures keywords                      |
-| @label                   | Captures labels                        |
-| @link_text               | Captures link text                     |
-| @link_uri                | Captures link URIs                     |
-| @number                  | Captures numeric values                |
-| @operator                | Captures operators                     |
-| @predictive              | Captures predictive text               |
-| @preproc                 | Captures preprocessor directives       |
-| @primary                 | Captures primary elements              |
-| @property                | Captures properties                    |
-| @punctuation             | Captures punctuation                   |
-| @punctuation.bracket     | Captures brackets                      |
-| @punctuation.delimiter   | Captures delimiters                    |
-| @punctuation.list_marker | Captures list markers                  |
-| @punctuation.special     | Captures special punctuation           |
-| @string                  | Captures string literals               |
-| @string.escape           | Captures escaped characters in strings |
-| @string.regex            | Captures regular expressions           |
-| @string.special          | Captures special strings               |
-| @string.special.symbol   | Captures special symbols               |
-| @tag                     | Captures tags                          |
-| @tag.doctype             | Captures doctypes (e.g., in HTML)      |
-| @text.literal            | Captures literal text                  |
-| @title                   | Captures titles                        |
-| @type                    | Captures types                         |
-| @variable                | Captures variables                     |
-| @variable.special        | Captures special variables             |
-| @variant                 | Captures variants                      |
+| @attribute               | 捕获属性                    |
+| @boolean                 | 捕获布尔值                |
+| @comment                 | 捕获注释                      |
+| @comment.doc             | 捕获文档注释        |
+| @constant                | 捕获常量                     |
+| @constructor             | 捕获构造函数                  |
+| @embedded                | 捕获嵌入内容              |
+| @emphasis                | 捕获强调文本               |
+| @emphasis.strong         | 捕获强烈强调文本      |
+| @enum                    | 捕获枚举                  |
+| @function                | 捕获函数                     |
+| @hint                    | 捕获提示                         |
+| @keyword                 | 捕获关键字                      |
+| @label                   | 捕获标签                        |
+| @link_text               | 捕获链接文本                     |
+| @link_uri                | 捕获链接 URI                     |
+| @number                  | 捕获数值                |
+| @operator                | 捕获运算符                     |
+| @predictive              | 捕获预测文本               |
+| @preproc                 | 捕获预处理器指令       |
+| @primary                 | 捕获主要元素              |
+| @property                | 捕获属性                    |
+| @punctuation             | 捕获标点符号                   |
+| @punctuation.bracket     | 捕获括号                      |
+| @punctuation.delimiter   | 捕获分隔符                    |
+| @punctuation.list_marker | 捕获列表标记                  |
+| @punctuation.special     | 捕获特殊标点符号           |
+| @string                  | 捕获字符串字面量               |
+| @string.escape           | 捕获字符串中的转义字符 |
+| @string.regex            | 捕获正则表达式           |
+| @string.special          | 捕获特殊字符串               |
+| @string.special.symbol   | 捕获特殊符号               |
+| @tag                     | 捕获标签                          |
+| @tag.doctype             | 捕获文档类型（例如，在 HTML 中）      |
+| @text.literal            | 捕获字面文本                  |
+| @title                   | 捕获标题                        |
+| @type                    | 捕获类型                         |
+| @variable                | 捕获变量                     |
+| @variable.special        | 捕获特殊变量             |
+| @variant                 | 捕获变体                      |
 
-### Bracket matching
+### 括号匹配
 
-The `brackets.scm` file defines matching brackets.
+`brackets.scm` 文件定义了匹配的括号。
 
-Here's an example from a `brackets.scm` file for JSON:
+以下是 JSON 的 `brackets.scm` 文件示例：
 
 ```scheme
 ("[" @open "]" @close)
@@ -147,59 +147,59 @@ Here's an example from a `brackets.scm` file for JSON:
 ("\"" @open "\"" @close)
 ```
 
-This query identifies opening and closing brackets, braces, and quotation marks.
+此查询识别开括号、闭括号、大括号和引号。
 
-| Capture | Description                                   |
+| 捕获 | 描述                                   |
 | ------- | --------------------------------------------- |
-| @open   | Captures opening brackets, braces, and quotes |
-| @close  | Captures closing brackets, braces, and quotes |
+| @open   | 捕获开括号、大括号和引号 |
+| @close  | 捕获闭括号、大括号和引号 |
 
-### Code outline/structure
+### 代码大纲/结构
 
-The `outline.scm` file defines the structure for the code outline.
+`outline.scm` 文件定义了代码大纲的结构。
 
-Here's an example from an `outline.scm` file for JSON:
+以下是 JSON 的 `outline.scm` 文件示例：
 
 ```scheme
 (pair
   key: (string (string_content) @name)) @item
 ```
 
-This query captures object keys for the outline structure.
+此查询捕获对象键以用于大纲结构。
 
-| Capture        | Description                                                                          |
+| 捕获        | 描述                                                                          |
 | -------------- | ------------------------------------------------------------------------------------ |
-| @name          | Captures the content of object keys                                                  |
-| @item          | Captures the entire key-value pair                                                   |
-| @context       | Captures elements that provide context for the outline item                          |
-| @context.extra | Captures additional contextual information for the outline item                      |
-| @annotation    | Captures nodes that annotate outline item (doc comments, attributes, decorators)[^1] |
+| @name          | 捕获对象键的内容                                                  |
+| @item          | 捕获整个键值对                                                   |
+| @context       | 捕获为大纲项提供上下文的元素                          |
+| @context.extra | 捕获大纲项的额外上下文信息                      |
+| @annotation    | 捕获注释大纲项的节点（文档注释、属性、装饰器）[^1] |
 
-[^1]: These annotations are used by Assistant when generating code modification steps.
+[^1]: 这些注释在 Assistant 生成代码修改步骤时使用。
 
-### Auto-indentation
+### 自动缩进
 
-The `indents.scm` file defines indentation rules.
+`indents.scm` 文件定义了缩进规则。
 
-Here's an example from an `indents.scm` file for JSON:
+以下是 JSON 的 `indents.scm` 文件示例：
 
 ```scheme
 (array "]" @end) @indent
 (object "}" @end) @indent
 ```
 
-This query marks the end of arrays and objects for indentation purposes.
+此查询标记数组和对象的结尾以用于缩进目的。
 
-| Capture | Description                                        |
+| 捕获 | 描述                                        |
 | ------- | -------------------------------------------------- |
-| @end    | Captures closing brackets and braces               |
-| @indent | Captures entire arrays and objects for indentation |
+| @end    | 捕获闭括号和大括号               |
+| @indent | 捕获整个数组和对象以用于缩进 |
 
-### Code injections
+### 代码注入
 
-The `injections.scm` file defines rules for embedding one language within another, such as code blocks in Markdown or SQL queries in Python strings.
+`injections.scm` 文件定义了将一种语言嵌入到另一种语言中的规则，例如 Markdown 中的代码块或 Python 字符串中的 SQL 查询。
 
-Here's an example from an `injections.scm` file for Markdown:
+以下是 Markdown 的 `injections.scm` 文件示例：
 
 ```scheme
 (fenced_code_block
@@ -211,22 +211,22 @@ Here's an example from an `injections.scm` file for Markdown:
  (#set! injection.language "markdown-inline"))
 ```
 
-This query identifies fenced code blocks, capturing the language specified in the info string and the content within the block. It also captures inline content and sets its language to "markdown-inline".
+此查询识别围栏代码块，捕获信息字符串中指定的语言和块内的内容。它还捕获内联内容并将其语言设置为 "markdown-inline"。
 
-| Capture             | Description                                                |
+| 捕获             | 描述                                                |
 | ------------------- | ---------------------------------------------------------- |
-| @injection.language | Captures the language identifier for a code block          |
-| @injection.content  | Captures the content to be treated as a different language |
+| @injection.language | 捕获代码块的语言标识符          |
+| @injection.content  | 捕获要被视为不同语言的内容 |
 
-Note that we couldn't use JSON as an example here because it doesn't support language injections.
+请注意，我们无法在此处使用 JSON 作为示例，因为它不支持语言注入。
 
-### Syntax overrides
+### 语法覆盖
 
-The `overrides.scm` file defines syntactic _scopes_ that can be used to override certain editor settings within specific language constructs.
+`overrides.scm` 文件定义了语法_作用域_，可用于在特定语言构造中覆盖某些编辑器设置。
 
-For example, there is a language-specific setting called `word_characters` that controls which non-alphabetic characters are considered part of a word, for example when you double click to select a variable. In JavaScript, "$" and "#" are considered word characters.
+例如，有一个语言特定设置称为 `word_characters`，它控制哪些非字母字符被视为单词的一部分，例如当您双击选择变量时。在 JavaScript 中，"$" 和 "#" 被视为单词字符。
 
-There is also a language-specific setting called `completion_query_characters` that controls which characters trigger autocomplete suggestions. In JavaScript, when your cursor is within a _string_, "-" is should be considered a completion query character. To achieve this, the JavaScript `overrides.scm` file contains the following pattern:
+还有一个语言特定设置称为 `completion_query_characters`，它控制哪些字符触发自动完成建议。在 JavaScript 中，当您的光标在_字符串_内时，"-" 应被视为完成查询字符。为了实现这一点，JavaScript `overrides.scm` 文件包含以下模式：
 
 ```scheme
 [
@@ -235,7 +235,7 @@ There is also a language-specific setting called `completion_query_characters` t
 ] @string
 ```
 
-And the JavaScript `config.toml` contains this setting:
+而 JavaScript `config.toml` 包含此设置：
 
 ```toml
 word_characters = ["#", "$"]
@@ -244,68 +244,68 @@ word_characters = ["#", "$"]
 completion_query_characters = ["-"]
 ```
 
-You can also disable certain auto-closing brackets in a specific scope. For example, to prevent auto-closing `'` within strings, you could put the following in the JavaScript `config.toml`:
+您还可以在特定作用域中禁用某些自动关闭括号。例如，要防止在字符串内自动关闭 `'`，您可以在 JavaScript `config.toml` 中放入以下内容：
 
 ```toml
 brackets = [
   { start = "'", end = "'", close = true, newline = false, not_in = ["string"] },
-  # other pairs...
+  # 其他对...
 ]
 ```
 
-#### Range inclusivity
+#### 范围包含性
 
-By default, the ranges defined in `overrides.scm` are _exclusive_. So in the case above, if you cursor was _outside_ the quotation marks delimiting the string, the `string` scope would not take effect. Sometimes, you may want to make the range _inclusive_. You can do this by adding the `.inclusive` suffix to the capture name in the query.
+默认情况下，`overrides.scm` 中定义的范围是_排他性的_。因此，在上述情况下，如果您的光标在分隔字符串的引号_之外_，`string` 作用域将不会生效。有时，您可能希望使范围_包含性的_。您可以通过在查询中的捕获名称后添加 `.inclusive` 后缀来实现这一点。
 
-For example, in JavaScript, we also disable auto-closing of single quotes within comments. And the comment scope must extend all the way to the newline after a line comment. To achieve this, the JavaScript `overrides.scm` contains the following pattern:
+例如，在 JavaScript 中，我们还禁用了注释内单引号的自动关闭。注释作用域必须一直延伸到行注释后的换行符。为了实现这一点，JavaScript `overrides.scm` 包含以下模式：
 
 ```scheme
 (comment) @comment.inclusive
 ```
 
-### Text objects
+### 文本对象
 
-The `textobjects.scm` file defines rules for navigating by text objects. This was added in Zed v0.165 and is currently used only in Vim mode.
+`textobjects.scm` 文件定义了按文本对象导航的规则。这是在 Zed v0.165 中添加的，目前仅用于 Vim 模式。
 
-Vim provides two levels of granularity for navigating around files. Section-by-section with `[]` etc., and method-by-method with `]m` etc. Even languages that don't support functions and classes can work well by defining similar concepts. For example CSS defines a rule-set as a method, and a media-query as a class.
+Vim 提供了两个级别的粒度来在文件中导航。使用 `[]` 等逐节导航，以及使用 `]m` 等逐方法导航。即使不支持函数和类的语言也可以通过定义类似的概念来很好地工作。例如，CSS 将规则集定义为方法，将媒体查询定义为类。
 
-For languages with closures, these typically should not count as functions in Zed. This is best-effort however, as languages like JavaScript do not syntactically differentiate syntactically between closures and top-level function declarations.
+对于具有闭包的语言，这些通常不应在 Zed 中计为函数。然而，这是尽力而为的，因为像 JavaScript 这样的语言在语法上不区分闭包和顶级函数声明。
 
-For languages with declarations like C, provide queries that match `@class.around` or `@function.around`. The `if` and `ic` text objects will default to these if there is no inside.
+对于具有类似 C 声明的语言，提供匹配 `@class.around` 或 `@function.around` 的查询。如果没有内部，`if` 和 `ic` 文本对象将默认为这些。
 
-If you are not sure what to put in textobjects.scm, both [nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects), and the [Helix editor](https://github.com/helix-editor/helix) have queries for many languages. You can refer to the Zed [built-in languages](https://github.com/zed-industries/zed/tree/main/crates/languages/src) to see how to adapt these.
+如果您不确定在 textobjects.scm 中放什么，[nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects) 和 [Helix 编辑器](https://github.com/helix-editor/helix) 都有许多语言的查询。您可以参考 Zed [内置语言](https://github.com/zed-industries/zed/tree/main/crates/languages/src) 来了解如何适应这些。
 
-| Capture          | Description                                                             | Vim mode                                         |
+| 捕获          | 描述                                                             | Vim 模式                                         |
 | ---------------- | ----------------------------------------------------------------------- | ------------------------------------------------ |
-| @function.around | An entire function definition or equivalent small section of a file.    | `[m`, `]m`, `[M`,`]M` motions. `af` text object  |
-| @function.inside | The function body (the stuff within the braces).                        | `if` text object                                 |
-| @class.around    | An entire class definition or equivalent large section of a file.       | `[[`, `]]`, `[]`, `][` motions. `ac` text object |
-| @class.inside    | The contents of a class definition.                                     | `ic` text object                                 |
-| @comment.around  | An entire comment (e.g. all adjacent line comments, or a block comment) | `gc` text object                                 |
-| @comment.inside  | The contents of a comment                                               | `igc` text object (rarely supported)             |
+| @function.around | 整个函数定义或文件的等效小部分。    | `[m`, `]m`, `[M`,`]M` 动作。 `af` 文本对象  |
+| @function.inside | 函数体（大括号内的内容）。                        | `if` 文本对象                                 |
+| @class.around    | 整个类定义或文件的等效大部分。       | `[[`, `]]`, `[]`, `][` 动作。 `ac` 文本对象 |
+| @class.inside    | 类定义的内容。                                     | `ic` 文本对象                                 |
+| @comment.around  | 整个注释（例如所有相邻的行注释，或块注释） | `gc` 文本对象                                 |
+| @comment.inside  | 注释的内容                                               | `igc` 文本对象（很少支持）             |
 
-For example:
+例如：
 
 ```scheme
-; include only the content of the method in the function
+; 仅将方法的内容包含在函数中
 (method_definition
     body: (_
         "{"
         (_)* @function.inside
         "}")) @function.around
 
-; match function.around for declarations with no body
+; 为没有主体的声明匹配 function.around
 (function_signature_item) @function.around
 
-; join all adjacent comments into one
+; 将所有相邻的注释合并为一个
 (comment)+ @comment.around
 ```
 
-### Text redactions
+### 文本脱敏
 
-The `redactions.scm` file defines text redaction rules. When collaborating and sharing your screen, it makes sure that certain syntax nodes are rendered in a redacted mode to avoid them from leaking.
+`redactions.scm` 文件定义了文本脱敏规则。在协作和共享屏幕时，它确保某些语法节点以脱敏模式呈现，以避免它们泄露。
 
-Here's an example from a `redactions.scm` file for JSON:
+以下是 JSON 的 `redactions.scm` 文件示例：
 
 ```scheme
 (pair value: (number) @redact)
@@ -314,17 +314,17 @@ Here's an example from a `redactions.scm` file for JSON:
 (array (string) @redact)
 ```
 
-This query marks number and string values in key-value pairs and arrays for redaction.
+此查询标记键值对和数组中的数字和字符串值以进行脱敏。
 
-| Capture | Description                    |
+| 捕获 | 描述                    |
 | ------- | ------------------------------ |
-| @redact | Captures values to be redacted |
+| @redact | 捕获要脱敏的值 |
 
-### Runnable code detection
+### 可运行代码检测
 
-The `runnables.scm` file defines rules for detecting runnable code.
+`runnables.scm` 文件定义了检测可运行代码的规则。
 
-Here's an example from an `runnables.scm` file for JSON:
+以下是 JSON 的 `runnables.scm` 文件示例：
 
 ```scheme
 (
@@ -348,7 +348,7 @@ Here's an example from an `runnables.scm` file for JSON:
 )
 ```
 
-This query detects runnable scripts in package.json and composer.json files.
+此查询检测 package.json 和 composer.json 文件中的可运行脚本。
 
 The `@run` capture specifies where the run button should appear in the editor. Other captures, except those prefixed with an underscore, are exposed as environment variables with a prefix of `ZED_CUSTOM_$(capture_name)` when running the code.
 

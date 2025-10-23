@@ -1,85 +1,85 @@
-# Summary
+# 目录
 
-# General
+# 通用
 
-- [Getting Started](./getting-started.md)
-- [System Requirements](./system-requirements.md)
-- [Accounts](./accounts.md)
+- [入门指南](./getting-started.md)
+- [系统要求](./system-requirements.md)
+- [账户](./accounts.md)
 - [Linux](./linux.md)
 - [Windows](./windows.md)
-- [Telemetry](./telemetry.md)
-- [Workspace Persistence](./workspace-persistence.md)
-- [Troubleshooting](./troubleshooting.md)
-- [Additional Learning Materials](./additional-learning-materials.md)
+- [遥测](./telemetry.md)
+- [工作区持久化](./workspace-persistence.md)
+- [故障排除](./troubleshooting.md)
+- [附加学习材料](./additional-learning-materials.md)
 
-# Configuration
+# 配置
 
-- [Configuring Zed](./configuring-zed.md)
-- [Configuring Languages](./configuring-languages.md)
-  - [Toolchains](./toolchains.md)
-- [Key bindings](./key-bindings.md)
-  - [All Actions](./all-actions.md)
-- [Snippets](./snippets.md)
-- [Themes](./themes.md)
-- [Icon Themes](./icon-themes.md)
-- [Visual Customization](./visual-customization.md)
-- [Vim Mode](./vim.md)
-- [Helix Mode](./helix.md)
+- [配置 Zed](./configuring-zed.md)
+- [配置语言](./configuring-languages.md)
+  - [工具链](./toolchains.md)
+- [快捷键绑定](./key-bindings.md)
+  - [所有操作](./all-actions.md)
+- [代码片段](./snippets.md)
+- [主题](./themes.md)
+- [图标主题](./icon-themes.md)
+- [视觉自定义](./visual-customization.md)
+- [Vim 模式](./vim.md)
+- [Helix 模式](./helix.md)
 
 <!-- - [Globs](./globs.md) -->
-<!-- - [Fonts](./fonts.md) -->
+<!-- - [字体](./fonts.md) -->
 
-# Using Zed
+# 使用 Zed
 
-- [Multibuffers](./multibuffers.md)
-- [Outline Panel](./outline-panel.md)
-- [Code Completions](./completions.md)
-- [Channels](./channels.md)
-- [Collaboration](./collaboration.md)
+- [多缓冲区](./multibuffers.md)
+- [大纲面板](./outline-panel.md)
+- [代码补全](./completions.md)
+- [频道](./channels.md)
+- [协作](./collaboration.md)
 - [Git](./git.md)
-- [Debugger](./debugger.md)
-- [Diagnostics](./diagnostics.md)
-- [Tasks](./tasks.md)
-- [Remote Development](./remote-development.md)
-- [Environment Variables](./environment.md)
+- [调试器](./debugger.md)
+- [诊断](./diagnostics.md)
+- [任务](./tasks.md)
+- [远程开发](./remote-development.md)
+- [环境变量](./environment.md)
 - [REPL](./repl.md)
 
 # AI
 
-- [Overview](./ai/overview.md)
-- [Agent Panel](./ai/agent-panel.md)
-  - [Tools](./ai/tools.md)
-  - [External Agents](./ai/external-agents.md)
-- [Inline Assistant](./ai/inline-assistant.md)
-- [Edit Prediction](./ai/edit-prediction.md)
-- [Text Threads](./ai/text-threads.md)
-- [Rules](./ai/rules.md)
-- [Model Context Protocol](./ai/mcp.md)
-- [Configuration](./ai/configuration.md)
-  - [LLM Providers](./ai/llm-providers.md)
-  - [Agent Settings](./ai/agent-settings.md)
-- [Subscription](./ai/subscription.md)
-  - [Models](./ai/models.md)
-  - [Plans and Usage](./ai/plans-and-usage.md)
-  - [Billing](./ai/billing.md)
-- [Privacy and Security](./ai/privacy-and-security.md)
-  - [AI Improvement](./ai/ai-improvement.md)
+- [概述](./ai/overview.md)
+- [代理面板](./ai/agent-panel.md)
+  - [工具](./ai/tools.md)
+  - [外部代理](./ai/external-agents.md)
+- [内联助手](./ai/inline-assistant.md)
+- [编辑预测](./ai/edit-prediction.md)
+- [文本线程](./ai/text-threads.md)
+- [规则](./ai/rules.md)
+- [模型上下文协议](./ai/mcp.md)
+- [配置](./ai/configuration.md)
+  - [LLM 提供商](./ai/llm-providers.md)
+  - [代理设置](./ai/agent-settings.md)
+- [订阅](./ai/subscription.md)
+  - [模型](./ai/models.md)
+  - [计划和用量](./ai/plans-and-usage.md)
+  - [计费](./ai/billing.md)
+- [隐私和安全](./ai/privacy-and-security.md)
+  - [AI 改进](./ai/ai-improvement.md)
 
-# Extensions
+# 扩展
 
-- [Overview](./extensions.md)
-- [Installing Extensions](./extensions/installing-extensions.md)
-- [Developing Extensions](./extensions/developing-extensions.md)
-- [Language Extensions](./extensions/languages.md)
-- [Debugger Extensions](./extensions/debugger-extensions.md)
-- [Theme Extensions](./extensions/themes.md)
-- [Icon Theme Extensions](./extensions/icon-themes.md)
-- [Slash Command Extensions](./extensions/slash-commands.md)
-- [MCP Server Extensions](./extensions/mcp-extensions.md)
+- [概述](./extensions.md)
+- [安装扩展](./extensions/installing-extensions.md)
+- [开发扩展](./extensions/developing-extensions.md)
+- [语言扩展](./extensions/languages.md)
+- [调试器扩展](./extensions/debugger-extensions.md)
+- [主题扩展](./extensions/themes.md)
+- [图标主题扩展](./extensions/icon-themes.md)
+- [斜杠命令扩展](./extensions/slash-commands.md)
+- [MCP 服务器扩展](./extensions/mcp-extensions.md)
 
-# Language Support
+# 语言支持
 
-- [All Languages](./languages.md)
+- [所有语言](./languages.md)
 - [Ansible](./languages/ansible.md)
 - [AsciiDoc](./languages/asciidoc.md)
 - [Astro](./languages/astro.md)
@@ -150,16 +150,16 @@
 - [Yarn](./languages/yarn.md)
 - [Zig](./languages/zig.md)
 
-# Developing Zed
+# 开发 Zed
 
-- [Developing Zed](./development.md)
+- [开发 Zed](./development.md)
   - [macOS](./development/macos.md)
   - [Linux](./development/linux.md)
   - [Windows](./development/windows.md)
   - [FreeBSD](./development/freebsd.md)
-  - [Local Collaboration](./development/local-collaboration.md)
-  - [Using Debuggers](./development/debuggers.md)
-  - [Glossary](./development/glossary.md)
-- [Release Process](./development/releases.md)
-- [Release Notes](./development/release-notes.md)
-- [Debugging Crashes](./development/debugging-crashes.md)
+  - [本地协作](./development/local-collaboration.md)
+  - [使用调试器](./development/debuggers.md)
+  - [术语表](./development/glossary.md)
+- [发布流程](./development/releases.md)
+- [发布说明](./development/release-notes.md)
+- [调试崩溃](./development/debugging-crashes.md)

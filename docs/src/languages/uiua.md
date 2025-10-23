@@ -1,8 +1,8 @@
 # Uiua
 
-[Uiua](https://www.uiua.org/) is a general purpose, stack-based, array-oriented programming language with a focus on simplicity, beauty, and tacit code.
+[Uiua](https://www.uiua.org/) 是一门面向数组的堆栈式通用编程语言，强调简洁、美感与无参（Tacit）编程风格。
 
-Uiua support is available through the [Uiua extension](https://github.com/zed-extensions/uiua).
+可通过 [Uiua 扩展](https://github.com/zed-extensions/uiua) 在 Zed 中使用 Uiua。
 
-- Tree-sitter: [shnarazk/tree-sitter-uiua](https://github.com/shnarazk/tree-sitter-uiua)
-- Language Server: [uiua-lang/uiua](https://github.com/uiua-lang/uiua/)
+- Tree-sitter：[shnarazk/tree-sitter-uiua](https://github.com/shnarazk/tree-sitter-uiua)
+- 语言服务器：[uiua-lang/uiua](https://github.com/uiua-lang/uiua/)

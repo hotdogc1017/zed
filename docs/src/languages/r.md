@@ -1,28 +1,26 @@
 # R
 
-R support is available via multiple R Zed extensions:
+Zed 上有多个 R 相关扩展可供选择：
 
 - [ocsmit/zed-r](https://github.com/ocsmit/zed-r)
-
-  - Tree-sitter: [r-lib/tree-sitter-r](https://github.com/r-lib/tree-sitter-r)
-  - Language-Server: [REditorSupport/languageserver](https://github.com/REditorSupport/languageserver)
-
+  - Tree-sitter：[r-lib/tree-sitter-r](https://github.com/r-lib/tree-sitter-r)
+  - 语言服务器：[REditorSupport/languageserver](https://github.com/REditorSupport/languageserver)
 - [posit-dev/air](https://github.com/posit-dev/air/tree/main/editors/zed)
-  - Language-Server: [posit-dev/air](https://github.com/posit-dev/air)
+  - 语言服务器：[posit-dev/air](https://github.com/posit-dev/air)
 
-## Installation
+## 安装
 
-1. [Download and Install R](https://cloud.r-project.org/).
-2. Install the R packages `languageserver` and `lintr`:
+1. [下载安装 R](https://cloud.r-project.org/)。
+2. 安装 `languageserver` 与 `lintr` 两个 R 包：
 
 ```R
 install.packages("languageserver")
 install.packages("lintr")
 ```
 
-3. Install the [ocsmit/zed-r](https://github.com/ocsmit/zed-r) through Zed's extensions manager.
+3. 通过 Zed 扩展管理器安装 [ocsmit/zed-r](https://github.com/ocsmit/zed-r)。
 
-For example on macOS:
+以 macOS 为例：
 
 ```sh
 brew install --cask r
@@ -33,11 +31,11 @@ Rscript -e 'packageVersion("languageserver")'
 Rscript -e 'packageVersion("lintr")'
 ```
 
-## Configuration
+## 配置
 
-### Linting
+### Lint
 
-`REditorSupport/languageserver` bundles support for [r-lib/lintr](https://github.com/r-lib/lintr) as a linter. This can be configured via the use of a `.lintr` inside your project (or in your home directory for global defaults).
+`REditorSupport/languageserver` 内置 [r-lib/lintr](https://github.com/r-lib/lintr)。可在项目内（或主目录）创建 `.lintr` 文件自定义规则：
 
 ```r
 linters: linters_with_defaults(
@@ -51,77 +49,20 @@ exclusions: list(
   )
 ```
 
-Or exclude it from linting anything,
+若想完全禁用 lint，可使用：
 
 ```r
 exclusions: list(".")
 ```
 
-See [Using lintr](https://lintr.r-lib.org/articles/lintr.html) for a complete list of options,
+完整配置请参阅 [Using lintr](https://lintr.r-lib.org/articles/lintr.html)。
 
-### Formatting
+### 格式化
 
-`REditorSupport/languageserver` bundles support for [r-lib/styler](https://github.com/r-lib/styler) as a formatter. See [Customizing Styler](https://cran.r-project.org/web/packages/styler/vignettes/customizing_styler.html) for more information on how to customize its behavior.
-
-<!--
-TBD: Get this working
-
-### REditorSupport/languageserver Configuration
-
-You can configure the [R languageserver settings](https://github.com/REditorSupport/languageserver#settings) via Zed Project Settings `.zed/settings.json` or Zed User Settings `~/.config/zed/settings.json`:
-
-For example to disable Lintr linting and suppress code snippet suggestions (both enabled by default):
-
-```json [settings]
-{
-  "lsp": {
-    "r_language_server": {
-      "settings": {
-        "r": {
-          "lsp": {
-            "diagnostics": false,
-            "snippet_support": false
-          }
-        }
-      }
-    }
-  }
-}
-```
-
--->
+`REditorSupport/languageserver` 同样集成 [r-lib/styler](https://github.com/r-lib/styler) 作为 formatter。关于定制化可查阅 [Customizing Styler](https://cran.r-project.org/web/packages/styler/vignettes/customizing_styler.html)。
 
 <!--
-TBD: R REPL Docs
+待补充：语言服务器设置示例
 
-## REPL
-
-### Ark Installation
-
-To use the Zed REPL with R you need to install [Ark](https://github.com/posit-dev/ark), an R Kernel for Jupyter applications.
-You can down the latest version from the [Ark GitHub Releases](https://github.com/posit-dev/ark/releases) and then extract the `ark` binary to a directory in your `PATH`.
-
-For example to install the latest non-debug build:
-
-```sh
-# macOS
-cd /tmp
-curl -L -o ark-latest-darwin.zip \
-    $(curl -s "https://api.github.com/repos/posit-dev/ark/releases/latest" | \
-    jq -r '.assets[] | select(.name | contains("darwin-universal") and (contains("debug") | not)) | .browser_download_url')
-unzip ark-latest-darwin.zip ark
-sudo mv /tmp/ark /usr/local/bin/
-```
-
-```sh
-# Linux X86_64
-cd /tmp
-curl -L -o ark-latest-linux.zip \
-    $(curl -s "https://api.github.com/repos/posit-dev/ark/releases/latest" \
-        | jq -r '.assets[] | select(.name | contains("linux-x64") and (contains("debug") | not)) | .browser_download_url'
-    )
-unzip ark-latest-linux.zip ark
-sudo mv /tmp/ark /usr/local/bin/
-```
-
+待补充：R REPL 相关文档
 -->

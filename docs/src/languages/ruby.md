@@ -1,50 +1,46 @@
 # Ruby
 
-Ruby support is available through the [Ruby extension](https://github.com/zed-extensions/ruby).
+Zed 可通过 [Ruby 扩展](https://github.com/zed-extensions/ruby) 提供 Ruby 支持。
 
-- Tree-sitters:
+- Tree-sitter：
   - [tree-sitter-ruby](https://github.com/tree-sitter/tree-sitter-ruby)
   - [tree-sitter-embedded-template](https://github.com/tree-sitter/tree-sitter-embedded-template)
-- Language Servers:
+- 语言服务器：
   - [ruby-lsp](https://github.com/Shopify/ruby-lsp)
   - [solargraph](https://github.com/castwide/solargraph)
   - [rubocop](https://github.com/rubocop/rubocop)
   - [Herb](https://herb-tools.dev)
-- Debug Adapter: [`rdbg`](https://github.com/ruby/debug)
+- 调试适配器：[`rdbg`](https://github.com/ruby/debug)
 
-The Ruby extension also provides support for ERB files.
+该扩展同样支持 ERB 文件。
 
-## Language Servers
+## 语言服务器
 
-There are multiple language servers available for Ruby. Zed supports the two following:
+Ruby 生态有多种语言服务器，Zed 主要支持以下两款：
 
 - [solargraph](https://github.com/castwide/solargraph)
 - [ruby-lsp](https://github.com/Shopify/ruby-lsp)
 
-They both have an overlapping feature set of autocomplete, diagnostics, code actions, etc. and it's up to you to decide which one you want to use. Note that you can't use both at the same time.
+两者都提供补全、诊断、代码操作等重叠功能，需任选其一，不能同时启用。
 
-In addition to these two language servers, Zed also supports:
+此外，Zed 还支持：
 
-- [rubocop](https://github.com/rubocop/rubocop) which is a static code analyzer and linter for Ruby. Under the hood, it's also used by Zed as a language server, but its functionality is complimentary to that of solargraph and ruby-lsp.
-- [sorbet](https://sorbet.org/) which is a static type checker for Ruby with a custom gradual type system.
-- [steep](https://github.com/soutaro/steep) which is a static type checker for Ruby that leverages Ruby Signature (RBS).
-- [Herb](https://herb-tools.dev) which is a language server for ERB files.
+- [rubocop](https://github.com/rubocop/rubocop)：Ruby 静态分析与 Lint 工具，Zed 将其作为语言服务器使用，以补充 solargraph 与 ruby-lsp。
+- [sorbet](https://sorbet.org/)：Ruby 静态类型检查器，采用渐进类型系统。
+- [steep](https://github.com/soutaro/steep)：使用 RBS 的 Ruby 静态类型检查器。
+- [Herb](https://herb-tools.dev)：用于 ERB 文件的语言服务器。
 
-When configuring a language server, it helps to open the LSP Logs window using the 'dev: Open Language Server Logs' command. You can then choose the corresponding language instance to see any logged information.
+配置语言服务器时，建议通过命令 `dev: Open Language Server Logs` 打开 LSP 日志窗口，选择对应实例即可查看日志。
 
-## Configuring a language server
+## 语言服务器激活规则
 
-The [Ruby extension](https://github.com/zed-extensions/ruby) offers both `solargraph` and `ruby-lsp` language server support.
+[Ruby 扩展](https://github.com/zed-extensions/ruby) 同时支持 `solargraph` 与 `ruby-lsp`。所有 Ruby 相关语言服务器（`solargraph`、`ruby-lsp`、`rubocop`、`sorbet`、`steep`）遵循以下激活顺序：
 
-### Language Server Activation
+1. 若项目 `Gemfile` 中声明了对应语言服务器，则通过 `bundle exec` 启动。
+2. 否则在系统 `PATH` 中寻找可执行文件。
+3. 若仍未找到，扩展会自动将其安装为全局 gem（注意：不会安装到当前 gemset）。
 
-For all supported Ruby language servers (`solargraph`, `ruby-lsp`, `rubocop`, `sorbet`, and `steep`), the Ruby extension follows this activation sequence:
-
-1. If the language server is found in your project's `Gemfile`, it will be used through `bundle exec`.
-2. If not found in the `Gemfile`, the Ruby extension will look for the executable in your system `PATH`.
-3. If the language server is not found in either location, the Ruby extension will automatically install it as a global gem (note: this will not install to your current Ruby gemset).
-
-You can skip step 1 and force using the system executable by setting `use_bundler` to `false` in your settings:
+若想跳过第 1 步，强制使用系统可执行文件，可在设置中将 `use_bundler` 设为 `false`：
 
 ```json [settings]
 {
@@ -58,13 +54,13 @@ You can skip step 1 and force using the system executable by setting `use_bundle
 }
 ```
 
-### Using `solargraph`
+### 使用 `solargraph`
 
-`solargraph` is enabled by default in the Ruby extension.
+扩展默认启用 `solargraph`。
 
-### Using `ruby-lsp`
+### 使用 `ruby-lsp`
 
-To switch to `ruby-lsp`, add the following to your `settings.json`:
+若要切换到 `ruby-lsp`，在 `settings.json` 中添加：
 
 ```json [settings]
 {
@@ -76,13 +72,11 @@ To switch to `ruby-lsp`, add the following to your `settings.json`:
 }
 ```
 
-That disables `solargraph` and `rubocop` and enables `ruby-lsp`.
+此配置会禁用 `solargraph` 与 `rubocop`，启用 `ruby-lsp`。
 
-### Using `rubocop`
+### 使用 `rubocop`
 
-The Ruby extension also provides support for `rubocop` language server for offense detection and autocorrection.
-
-To enable it, add the following to your `settings.json`:
+`rubocop` 可用于检测代码问题并尝试修复。若要启用，可在 `settings.json` 中添加：
 
 ```json [settings]
 {
@@ -94,7 +88,7 @@ To enable it, add the following to your `settings.json`:
 }
 ```
 
-Or, conversely, you can disable `ruby-lsp` and enable `solargraph` and `rubocop` by adding the following to your `settings.json`:
+或者，启用 `solargraph` + `rubocop`，禁用 `ruby-lsp`：
 
 ```json [settings]
 {
@@ -106,9 +100,9 @@ Or, conversely, you can disable `ruby-lsp` and enable `solargraph` and `rubocop`
 }
 ```
 
-## Setting up `solargraph`
+## 配置 `solargraph`
 
-Solargraph has formatting and diagnostics disabled by default. We can tell Zed to enable them by adding the following to your `settings.json`:
+Solargraph 默认关闭格式化与诊断，可在 `settings.json` 启用：
 
 ```json [settings]
 {
@@ -123,13 +117,11 @@ Solargraph has formatting and diagnostics disabled by default. We can tell Zed t
 }
 ```
 
-### Configuration
+其配置文件为项目根目录下的 `.solargraph.yml`，详情请参阅 [官方文档](https://solargraph.org/guides/configuration)。
 
-Solargraph reads its configuration from a file called `.solargraph.yml` in the root of your project. For more information about this file, see the [Solargraph configuration documentation](https://solargraph.org/guides/configuration).
+## 配置 `ruby-lsp`
 
-## Setting up `ruby-lsp`
-
-You can pass Ruby LSP configuration to `initialization_options`, e.g.
+可通过 `initialization_options` 向 Ruby LSP 传递配置，例如：
 
 ```json [settings]
 {
@@ -150,7 +142,7 @@ You can pass Ruby LSP configuration to `initialization_options`, e.g.
 }
 ```
 
-LSP `settings` and `initialization_options` can also be project-specific. For example to use [standardrb/standard](https://github.com/standardrb/standard) as a formatter and linter for a particular project, add this to a `.zed/settings.json` inside your project repo:
+LSP 的 `settings` 与 `initialization_options` 也可按项目单独配置。例如让某个项目使用 [standardrb/standard](https://github.com/standardrb/standard) 作为格式化与 Lint，可在仓库内的 `.zed/settings.json` 写入：
 
 ```json [settings]
 {
@@ -165,15 +157,15 @@ LSP `settings` and `initialization_options` can also be project-specific. For ex
 }
 ```
 
-## Setting up `rubocop` LSP
+## 配置 `rubocop` LSP
 
-Rubocop has unsafe autocorrection disabled by default. We can tell Zed to enable it by adding the following to your `settings.json`:
+Rubocop 默认禁用“不安全”的自动修复，可在 `settings.json` 中启用：
 
 ```json [settings]
 {
   "languages": {
     "Ruby": {
-      // Use ruby-lsp as the primary language server and rubocop as the secondary.
+      // 使用 ruby-lsp 作为主语言服务器，rubocop 作为辅助
       "language_servers": ["ruby-lsp", "rubocop", "!solargraph", "..."]
     }
   },
@@ -194,11 +186,11 @@ Rubocop has unsafe autocorrection disabled by default. We can tell Zed to enable
 }
 ```
 
-## Setting up Sorbet
+## 配置 Sorbet
 
-[Sorbet](https://sorbet.org/) is a popular static type checker for Ruby that includes a language server.
+[Sorbet](https://sorbet.org/) 是广受欢迎的 Ruby 静态类型检查器，也提供语言服务器。
 
-To enable Sorbet, add `\"sorbet\"` to the `language_servers` list for Ruby in your `settings.json`. You may want to disable other language servers if Sorbet is intended to be your primary LSP, or if you plan to use it alongside another LSP for specific features like type checking.
+在 `settings.json` 中把 `"sorbet"` 加入 Ruby 的 `language_servers` 列表即可。若将 Sorbet 作为主语言服务器，建议禁用其他 LSP；或者仅与其它 LSP 搭配以补充类型检查。
 
 ```json [settings]
 {
@@ -216,13 +208,13 @@ To enable Sorbet, add `\"sorbet\"` to the `language_servers` list for Ruby in yo
 }
 ```
 
-For all aspects of installing Sorbet, setting it up in your project, and configuring its behavior, please refer to the [official Sorbet documentation](https://sorbet.org/docs/overview).
+有关 Sorbet 的安装、项目配置、使用方式，请参阅[官方文档](https://sorbet.org/docs/overview)。
 
-## Setting up Steep
+## 配置 Steep
 
-[Steep](https://github.com/soutaro/steep) is a static type checker for Ruby that uses RBS files to define types.
+[Steep](https://github.com/soutaro/steep) 使用 RBS 文件来定义类型。
 
-To enable Steep, add `\"steep\"` to the `language_servers` list for Ruby in your `settings.json`. You may need to adjust the order or disable other LSPs depending on your desired setup.
+同样在 `settings.json` 中将 `"steep"` 加入 Ruby 的 `language_servers`：
 
 ```json [settings]
 {
@@ -240,15 +232,15 @@ To enable Steep, add `\"steep\"` to the `language_servers` list for Ruby in your
 }
 ```
 
-## Setting up Herb
+## 配置 Herb
 
-`Herb` is enabled by default for the `HTML+ERB` language.
+`Herb` 默认对 `HTML+ERB` 语言启用。
 
-## Using the Tailwind CSS Language Server with Ruby
+## Ruby 中使用 Tailwind CSS 语言服务器
 
-It's possible to use the [Tailwind CSS Language Server](https://github.com/tailwindlabs/tailwindcss-intellisense/tree/HEAD/packages/tailwindcss-language-server#readme) in Ruby and ERB files.
+可在 Ruby 与 ERB 文件中启用 [Tailwind CSS 语言服务器](https://github.com/tailwindlabs/tailwindcss-intellisense/tree/HEAD/packages/tailwindcss-language-server#readme)。
 
-In order to do that, you need to configure the language server so that it knows about where to look for CSS classes in Ruby/ERB files by adding the following to your `settings.json`:
+需要在 `settings.json` 中告知语言服务器如何在 Ruby/ERB 中匹配类名：
 
 ```json [settings]
 {
@@ -261,7 +253,7 @@ In order to do that, you need to configure the language server so that it knows 
     "tailwindcss-language-server": {
       "settings": {
         "experimental": {
-          "classRegex": ["\\bclass:\\s*['\"]([^'\"]*)['\"]"]
+          "classRegex": ["\\bclass:\\s*['\"][^'\"]*['\"]"]
         }
       }
     }
@@ -269,26 +261,26 @@ In order to do that, you need to configure the language server so that it knows 
 }
 ```
 
-With these settings you will get completions for Tailwind CSS classes in HTML attributes inside ERB files and inside Ruby/ERB strings that are coming after a `class:` key. Examples:
+配置后，可在 ERB 中的 HTML 属性，以及 Ruby/ERB 字符串中 `class:` 键后获得补全：
 
 ```rb
-# Ruby file:
+# Ruby 文件
 def method
-  div(class: "pl-2 <completion here>") do
-    p(class: "mt-2 <completion here>") { "Hello World" }
+  div(class: "pl-2 <在此补全>") do
+    p(class: "mt-2 <在此补全>") { "Hello World" }
   end
 end
 
-# ERB file:
-<%= link_to "Hello", "/hello", class: "pl-2 <completion here>" %>
-<a href="/hello" class="pl-2 <completion here>">Hello</a>
+# ERB 文件
+<%= link_to "Hello", "/hello", class: "pl-2 <在此补全>" %>
+<a href="/hello" class="pl-2 <在此补全>">Hello</a>
 ```
 
-## Running tests
+## 运行测试
 
-To run tests in your Ruby project, you can set up custom tasks in your local `.zed/tasks.json` configuration file. These tasks can be defined to work with different test frameworks like Minitest, RSpec, quickdraw, and tldr. Below are some examples of how to set up these tasks to run your tests from within your editor.
+可在本地 `.zed/tasks.json` 中创建自定义任务，以运行不同框架的测试（Minitest、RSpec、quickdraw、tldr 等）。以下是示例：
 
-### Minitest with Rails
+### Rails + Minitest
 
 ```json [tasks]
 [
@@ -309,7 +301,7 @@ To run tests in your Ruby project, you can set up custom tasks in your local `.z
 
 ### Minitest
 
-Plain minitest does not support running tests by line number, only by name, so we need to use `$ZED_CUSTOM_RUBY_TEST_NAME` instead:
+纯 Minitest 不支持按行号运行，只能按名称运行，因此使用 `$ZED_CUSTOM_RUBY_TEST_NAME`：
 
 ```json [tasks]
 [
@@ -344,15 +336,15 @@ Plain minitest does not support running tests by line number, only by name, so w
 ]
 ```
 
-Similar task syntax can be used for other test frameworks such as `quickdraw` or `tldr`.
+其他测试框架（如 `quickdraw`、`tldr`）可参照类似写法。
 
-## Debugging
+## 调试
 
-The Ruby extension provides a debug adapter for debugging Ruby code. Zed's name for the adapter (in the UI and `debug.json`) is `rdbg`, and under the hood, it uses the [`debug`](https://github.com/ruby/debug) gem. The extension uses the [same activation logic](#language-server-activation) as the language servers.
+Ruby 扩展提供调试适配器（名称 `rdbg`），底层基于 [`debug`](https://github.com/ruby/debug) gem，并沿用[语言服务器激活规则](#语言服务器激活规则)。
 
-### Examples
+### 示例
 
-#### Debug a Ruby script
+#### 调试 Ruby 脚本
 
 ```json [debug]
 [
@@ -366,7 +358,7 @@ The Ruby extension provides a debug adapter for debugging Ruby code. Zed's name 
 ]
 ```
 
-#### Debug Rails server
+#### 调试 Rails 服务器
 
 ```json [debug]
 [
@@ -384,11 +376,11 @@ The Ruby extension provides a debug adapter for debugging Ruby code. Zed's name 
 ]
 ```
 
-## Formatters
+## 格式化器
 
 ### `erb-formatter`
 
-To format ERB templates, you can use the `erb-formatter` formatter. This formatter uses the [`erb-formatter`](https://rubygems.org/gems/erb-formatter) gem to format ERB templates.
+若需格式化 ERB 模板，可使用 [`erb-formatter`](https://rubygems.org/gems/erb-formatter) gem：
 
 ```json [settings]
 {

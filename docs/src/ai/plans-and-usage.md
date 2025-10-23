@@ -1,31 +1,31 @@
-# Plans and Usage
+# 计划和用量
 
-## Available Plans {#plans}
+## 可用计划 {#plans}
 
-For costs and more information on pricing, visit [Zed’s pricing page](https://zed.dev/pricing).
+有关费用和定价的更多信息，请访问 [Zed 定价页面](https://zed.dev/pricing)。
 
-Please note that if you’re interested in just using Zed as the world’s fastest editor, with no AI or subscription features, you can always do so for free, without [authentication](../accounts.md).
+请注意，如果您只想使用 Zed 作为世界上最快的编辑器，而不使用 AI 或订阅功能，您始终可以免费使用，无需[身份验证](../accounts.md)。
 
-## Usage {#usage}
+## 用量 {#usage}
 
-Usage of Zed's hosted models is measured on a token basis, converted to dollars at the rates lists on [the Models page](./models.md) (list price from the provider, +10%).
+Zed 托管模型的使用量按令牌计量，按照[模型页面](./models.md)上列出的费率转换为美元（提供程序标价 +10%）。
 
-Zed Pro comes with $5 of monthly dollar credit. A trial of Zed Pro includes $20 of credit, usable for 14 days. Monthly included credit resets on your monthly billing date.
+Zed Pro 每月附带 5 美元的信用额度。Zed Pro 试用版包含 20 美元的信用额度，可在 14 天内使用。每月包含的信用额度在您的每月账单日期重置。
 
-To view your current usage, you can visit your account at [zed.dev/account](https://zed.dev/account). Information from our metering and billing provider, Orb, is embedded on that page.
+要查看您当前的用量，您可以访问您的帐户 [zed.dev/account](https://zed.dev/account)。我们的计量和计费提供商 Orb 的信息嵌入在该页面上。
 
-## Spend Limits {#usage-spend-limits}
+## 支出限制 {#usage-spend-limits}
 
-At the top of [the Account page](https://zed.dev/account), you'll find an input for `Maximum Token Spend`. The dollar amount here specifies your _monthly_ limit for spend on tokens, _not counting_ the $5/month included with your Pro subscription.
+在[帐户页面](https://zed.dev/account)的顶部，您会找到一个 `最大令牌支出` 的输入框。这里的美元金额指定了您在令牌上的_每月_限制，_不包括_您的 Pro 订阅中包含的 5 美元/月。
 
-The default value for all Pro users is $10, for a total monthly spend with Zed of $20 ($10 for your Pro subscription, $10 in incremental token spend). This can be set to $0 to limit your spend with Zed to exactly $10/month. If you adjust this limit _higher_ than $10 and consume more than $10 of incremental token spend, you'll be billed via [threshold billing](./billing.md#threshold-billing).
+所有 Pro 用户的默认值为 10 美元，因此 Zed 的每月总支出为 20 美元（10 美元用于您的 Pro 订阅，10 美元用于增量令牌支出）。这可以设置为 0 美元，以将您在 Zed 的支出限制为恰好 10 美元/月。如果您将此限制_提高_到 10 美元以上并消耗超过 10 美元的增量令牌支出，您将通过[阈值计费](./billing.md#threshold-billing)进行计费。
 
-Once the spend limit is hit, we’ll stop any further usage until your token spend limit resets.
+一旦达到支出限制，我们将停止任何进一步的使用，直到您的令牌支出限制重置。
 
-## Business Usage {#business-usage}
+## 商业用途 {#business-usage}
 
-Email [sales@zed.dev](mailto:sales@zed.dev) with any questions on business plans.
+有关商业计划的任何问题，请发送电子邮件至 [sales@zed.dev](mailto:sales@zed.dev)。
 
-## Trials {#trials}
+## 试用 {#trials}
 
-Note that trials will automatically convert to Zed Free plans on termination, and no cancellation is needed to prevent conversion to Zed Pro.
+请注意，试用版将在终止时自动转换为 Zed Free 计划，无需取消即可防止转换为 Zed Pro。

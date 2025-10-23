@@ -1,42 +1,40 @@
-# Key bindings
+# 键位配置
 
-Zed has a very customizable key binding system—you can tweak everything to work exactly how your fingers expect!
+Zed 拥有高度可定制的键位系统，可以根据个人习惯进行全面调整。
 
-## Predefined keymaps
+## 预设键位方案
 
-If you're used to a specific editor's defaults, you can set a `base_keymap` in your [settings file](./configuring-zed.md).
-We currently support:
+如果你习惯某些编辑器的默认布局，可以在 [settings.json](./configuring-zed.md) 中设置 `base_keymap`。当前支持：
 
-- VS Code (default)
+- VS Code（默认）
 - Atom
-- Emacs (Beta)
+- Emacs（测试版）
 - JetBrains
 - Sublime Text
 - TextMate
 - Cursor
-- None (disables _all_ key bindings)
+- None（禁用所有默认绑定）
 
-This setting can also be changed via the command palette through the `zed: toggle base keymap selector` action.
+也可通过命令面板执行 `zed: toggle base keymap selector` 切换方案。
 
-You can also enable `vim_mode` or `helix_mode`, which add modal bindings.
-For more information, see the documentation for [Vim mode](./vim.md) and [Helix mode](./helix.md).
+此外，启用 `vim_mode` 或 `helix_mode` 后会增加模态键位，详见 [Vim 模式](./vim.md) 与 [Helix 模式](./helix.md)。
 
-## User keymaps
+## 用户键位文件
 
-Where Zed looks for your keymap:
+键位文件位置：
 
-- macOS/Linux: `~/.config/zed/keymap.json`
-- Windows: `~\AppData\Roaming\Zed/keymap.json`
+- macOS/Linux：`~/.config/zed/keymap.json`
+- Windows：`%AppData%\Roaming\Zed\keymap.json`
 
-You can open the keymap with the {#action zed::OpenKeymapFile} action from the command palette, or edit it in Zed's Keymap Editor, accessible via the {#action zed::OpenKeymap} action or the {#kb zed::OpenKeymap} keybinding.
+可通过命令 {#action zed::OpenKeymapFile} 直接打开，或使用 {#action zed::OpenKeymap} / {#kb zed::OpenKeymap} 进入内置键位编辑器。
 
-The `keymap.json` file contains a JSON array of objects with `"bindings"`. If no `"context"` is set, the bindings are always active. If it is set, the binding is only active when the [context matches](#contexts).
+`keymap.json` 是对象数组，每个对象包含 `bindings`，可选 `context`。未指定上下文则全局生效，指定时仅在匹配条件下启用（见[上下文](#contexts)）。
 
-Within each binding section, a [key sequence](#keybinding-syntax) is mapped to [an action](#actions). If conflicts are detected, they are resolved as [described below](#precedence).
+每个 binding 将一个[按键序列](#键位语法)映射至一个[动作](#actions)。当存在冲突时，按照[优先级规则](#precedence)处理。
 
-If you are using a non-QWERTY, Latin-character keyboard, you may want to set `use_key_equivalents` to `true`. See [Non-QWERTY keyboards](#non-qwerty-keyboards) for more information.
+若使用非 QWERTY 的拉丁字符键盘，可将 `use_key_equivalents` 设为 `true`，详见[非 QWERTY 键盘](#非-qwerty-键盘)。
 
-For example:
+示例：
 
 ```json [keymap]
 [
@@ -55,231 +53,119 @@ For example:
 ]
 ```
 
-You can see all of Zed's default bindings in the default keymaps for:
+默认键位可参阅：
 
 - [macOS](https://github.com/zed-industries/zed/blob/main/assets/keymaps/default-macos.json)
 - [Windows](https://github.com/zed-industries/zed/blob/main/assets/keymaps/default-windows.json)
-- [Linux](https://github.com/zed-industries/zed/blob/main/assets/keymaps/default-linux.json).
+- [Linux](https://github.com/zed-industries/zed/blob/main/assets/keymaps/default-linux.json)
 
-If you want to debug problems with custom keymaps, you can use `dev: Open Key Context View` from the command palette. Please file [an issue](https://github.com/zed-industries/zed) if you run into something you think should work but isn't.
+若自定义键位出现问题，可使用命令 `dev: Open Key Context View` 调试。如发现 bug，欢迎在 [GitHub](https://github.com/zed-industries/zed) 提交 Issue。
 
-### Keybinding syntax
+## 键位语法
 
-Zed has the ability to match against not just a single keypress, but a sequence of keys typed in order. Each key in the `"bindings"` map is a sequence of keypresses separated with a space.
+Zed 支持匹配按键序列（多个按键依次按下），`bindings` 中的每个键位组合用空格分隔。
 
-Each keypress is a sequence of modifiers followed by a key. The modifiers are:
+每个按键由修饰键 + 键构成，修饰键包括：
 
-- `ctrl-` The control key
-- `cmd-`, `win-` or `super-` for the platform modifier (Command on macOS, Windows key on Windows, and the Super key on Linux).
-- `alt-` for alt (option on macOS)
-- `shift-` The shift key
-- `fn-` The function key
-- `secondary-` Equivalent to `cmd` when Zed is running on macOS and `ctrl` when on Windows and Linux
+- `ctrl-`
+- `cmd-` / `win-` / `super-`（平台键）
+- `alt-`（macOS 对应 Option）
+- `shift-`
+- `fn-`
+- `secondary-`（macOS 等价于 `cmd`，Windows/Linux 等价于 `ctrl`）
 
-The keys can be any single Unicode codepoint that your keyboard generates (for example `a`, `0`, `£` or `ç`), or any named key (`tab`, `f1`, `shift`, or `cmd`). If you are using a non-Latin layout (e.g. Cyrillic), you can bind either to the Cyrillic character or the Latin character that key generates with `cmd` pressed.
+键位可以是键盘生成的任意 Unicode 字符（`a`、`0`、`£`、`ç` 等），也可以是命名键（`tab`、`f1`、`shift`、`cmd` 等）。非拉丁布局（如西里尔文）可以绑定字符本身，也可以绑定按住 `cmd` 时生成的拉丁字符。
 
-A few examples:
+示例：
 
 ```json [settings]
- "bindings": {
-   "cmd-k cmd-s": "zed::OpenKeymap", // matches ⌘-k then ⌘-s
-   "space e": "editor::Complete", // type space then e
-   "ç": "editor::Complete", // matches ⌥-c
-   "shift shift": "file_finder::Toggle", // matches pressing and releasing shift twice
- }
+"bindings": {
+  "cmd-k cmd-s": "zed::OpenKeymap",
+  "space e": "editor::Complete",
+  "ç": "editor::Complete",
+  "shift shift": "file_finder::Toggle"
+}
 ```
 
-The `shift-` modifier can only be used in combination with a letter to indicate the uppercase version. For example, `shift-g` matches typing `G`. Although on many keyboards shift is used to type punctuation characters like `(`, the keypress is not considered to be modified, and so `shift-(` does not match.
+注意：
 
-The `alt-` modifier can be used on many layouts to generate a different key. For example, on a macOS US keyboard, the combination `alt-c` types `ç`. You can match against either in your keymap file, though by convention, Zed spells this combination as `alt-c`.
+- `shift-` 仅用于字母，表示其大写形式，例如 `shift-g` 匹配 `G`。
+- 在许多键盘上，`shift` 常与符号组合输入（如 `(`），此时视为未修饰，因此 `shift-(` 不会匹配。
+- `alt-` 可用于产生新字符，如 macOS US 布局中 `alt-c` 等于 `ç`，可以二者任选。
+- 某些快捷键可绑定单独的修饰键（如 `shift shift`），此类绑定在松开按键时触发。
 
-It is possible to match against typing a modifier key on its own. For example, `shift shift` can be used to implement JetBrains' 'Search Everywhere' shortcut. In this case, the binding happens on key release instead of on keypress.
+## 上下文 {#contexts}
 
-### Contexts
+指定 `"context"` 时，绑定仅在满足上下文的情境下有效。上下文构成树形结构，根节点为 `Workspace`，其下包含 `Pane`、`Panel`、`Editor` 等。使用命令 `dev: open key context view` 可查看当前上下文。
 
-If a binding group has a `"context"` key, it will be matched against the currently active contexts in Zed.
-
-Zed's contexts make up a tree, with the root being `Workspace`. Workspaces contain Panes and Panels, and Panes contain Editors, etc. The easiest way to see what contexts are active at a given moment is the key context view, which you can get to with the `dev: open key context view` command in the command palette.
-
-For example:
+示例：
 
 ```
-# in an editor, it might look like this:
 Workspace os=macos keyboard_layout=com.apple.keylayout.QWERTY
   Pane
     Editor mode=full extension=md vim_mode=insert
 
-# in the project panel
 Workspace os=macos
   Dock
     ProjectPanel not_editing
 ```
 
-Context expressions can contain the following syntax:
+上下文表达式支持：
 
-- `X && Y`, `X || Y` to and/or two conditions
-- `!X` to check that a condition is false
-- `(X)` for grouping
-- `X > Y` to match if an ancestor in the tree matches X and this layer matches Y.
+- `X && Y`、`X || Y`
+- `!X`
+- `(X)`
+- `X > Y`：匹配祖先为 X、当前节点为 Y
 
-For example:
+示例：
 
-- `"context": "Editor"` - matches any editor (including inline inputs)
-- `"context": "Editor && mode=full"` - matches the main editors used for editing code
-- `"context": "!Editor && !Terminal"` - matches anywhere except where an Editor or Terminal is focused
-- `"context": "os=macos > Editor"` - matches any editor on macOS.
+- `"context": "Editor"`：任意编辑器
+- `"context": "Editor && mode=full"`：主编辑器
+- `"context": "!Editor && !Terminal"`：排除编辑器与终端
+- `"context": "os=macos > Editor"`：仅在 macOS 上的编辑器
 
-It's worth noting that attributes are only available on the node they are defined on. This means that if you want to (for example) only enable a keybinding when the debugger is stopped in vim normal mode, you need to do `debugger_stopped > vim_mode == normal`.
+属性仅在定义节点有效，例如想在“调试器暂停”且“Vim 正常模式”下生效，需要写 `debugger_stopped > vim_mode == normal`。
 
-> Note: Before Zed v0.197.x, the `!` operator only looked at one node at a time, and `>` meant "parent" not "ancestor". This meant that `!Editor` would match the context `Workspace > Pane > Editor`, because (confusingly) the Pane matches `!Editor`, and that `os=macos > Editor` did not match the context `Workspace > Pane > Editor` because of the intermediate `Pane` node.
+自 Zed v0.197.x 起，`!` 会递归检测，`>` 表示“祖先”。如果使用 Vim 模式，请参阅 [Vim 模式的上下文说明](./vim.md#contexts)。Helix 模式基于 Vim，上下文规则相同。
 
-If you're using Vim mode, we have information on how [vim modes influence the context](./vim.md#contexts). Helix mode is built on top of Vim mode and uses the same contexts.
+## 动作 {#actions}
 
-### Actions
-
-Almost all of Zed's functionality is exposed as actions.
-Although there is no explicitly documented list, you can find most of them by searching in the command palette, by looking in the default keymaps for [macOS](https://github.com/zed-industries/zed/blob/main/assets/keymaps/default-macos.json), [Windows](https://github.com/zed-industries/zed/blob/main/assets/keymaps/default-windows.json) or [Linux](https://github.com/zed-industries/zed/blob/main/assets/keymaps/default-linux.json), or by using Zed's autocomplete in your keymap file.
-
-Most actions do not require any arguments, and so you can bind them as strings: `"ctrl-a": "language_selector::Toggle"`. Some require a single argument and must be bound as an array: `"cmd-1": ["workspace::ActivatePane", 0]`. Some actions require multiple arguments and are bound as an array of a string and an object: `"ctrl-a": ["pane::DeploySearch", { "replace_enabled": true }]`.
-
-### Precedence
-
-When multiple keybindings have the same keystroke and are active at the same time, precedence is resolved in two ways:
-
-- Bindings that match on lower nodes in the context tree win. This means that if you have a binding with a context of `Editor`, it will take precedence over a binding with a context of `Workspace`. Bindings with no context match at the lowest level in the tree.
-- If there are multiple bindings that match at the same level in the tree, then the binding defined later takes precedence. As user keybindings are loaded after system keybindings, this allows user bindings to take precedence over built-in keybindings.
-
-The other kind of conflict that arises is when you have two bindings, one of which is a prefix of the other. For example, if you have `"ctrl-w":"editor::DeleteToNextWordEnd"` and `"ctrl-w left":"editor::DeleteToEndOfLine"`.
-
-When this happens, and both bindings are active in the current context, Zed will wait for 1 second after you type `ctrl-w` to see if you're about to type `left`. If you don't type anything, or if you type a different key, then `DeleteToNextWordEnd` will be triggered. If you do, then `DeleteToEndOfLine` will be triggered.
-
-### Non-QWERTY keyboards
-
-Zed's support for non-QWERTY keyboards is still a work in progress.
-
-If your keyboard can type the full ASCII range (DVORAK, COLEMAK, etc.), then shortcuts should work as you expect.
-
-Otherwise, read on...
-
-#### macOS
-
-On Cyrillic, Hebrew, Armenian, and other keyboards that are mostly non-ASCII, macOS automatically maps keys to the ASCII range when `cmd` is held. Zed takes this a step further, and it can always match key-presses against either the ASCII layout or the real layout, regardless of modifiers and the `use_key_equivalents` setting. For example, in Thai, pressing `ctrl-ๆ` will match bindings associated with `ctrl-q` or `ctrl-ๆ`.
-
-On keyboards that support extended Latin alphabets (French AZERTY, German QWERTZ, etc.), it is often not possible to type the entire ASCII range without `option`. This introduces an ambiguity: `option-2` produces `@`. To ensure that all the built-in keyboard shortcuts can still be typed on these keyboards, we move key bindings around. For example, shortcuts bound to `@` on QWERTY are moved to `"` on a Spanish layout. This mapping is based on the macOS system defaults and can be seen by running `dev: open key context view` from the command palette.
-
-If you are defining shortcuts in your personal keymap, you can opt into the key equivalent mapping by setting `use_key_equivalents` to `true` in your keymap:
+几乎所有功能都封装为“动作”。可在命令面板搜索，或通过默认键位文件、键位编辑器的补全功能发现。动作通常无需参数，可直接写成字符串。若需要参数，写为数组，例如：
 
 ```json [keymap]
-[
-  {
-    "use_key_equivalents": true,
-    "bindings": {
-      "ctrl->": "editor::Indent" // parsed as ctrl-: when a German QWERTZ keyboard is active
-    }
-  }
-]
+"cmd-1": ["workspace::ActivatePane", 0]
+"ctrl-a": ["pane::DeploySearch", { "replace_enabled": true }]
 ```
 
-### Linux
+## 优先级 {#precedence}
 
-Since v0.196.0, on Linux, if the key that you type doesn't produce an ASCII character, then we use the QWERTY-layout equivalent key for keyboard shortcuts. This means that many shortcuts can be typed on many layouts.
+当多个绑定使用同一按键且同时符合上下文，优先级规则为：
 
-We do not yet move shortcuts around to ensure that all the built-in shortcuts can be typed on every layout, so if there are some ASCII characters that cannot be typed, and your keyboard layout has different ASCII characters on the same keys as would be needed to type them, you may need to add custom key bindings to make this work. We do intend to fix this at some point, and help is very much appreciated!
+1. 越接近叶节点的上下文优先（例如 `Editor` 覆盖 `Workspace`）
+2. 若处于同一层级，则后定义的覆盖先前定义；用户键位在系统键位之后加载，因此会覆盖默认值
 
-## Tips and tricks
+另一类冲突是“前缀”关系，如：
 
-### Disabling a binding
-
-If you'd like a given binding to do nothing in a given context, you can use
-`null` as the action. This is useful if you hit the key binding by accident and
-want to disable it, or if you want to type the character that would be typed by
-the sequence, or if you want to disable multikey bindings starting with that key.
-
-```json [keymap]
-[
-  {
-    "context": "Workspace",
-    "bindings": {
-      "cmd-r": null // cmd-r will do nothing when the Workspace context is active
-    }
-  }
-]
+```json
+"ctrl-w": "editor::DeleteToNextWordEnd"
+"ctrl-w left": "editor::DeleteToEndOfLine"
 ```
 
-A `null` binding follows the same precedence rules as normal actions, so it disables all bindings that would match further up in the tree too. If you'd like a binding that matches further up in the tree to take precedence over a lower binding, you need to rebind it to the action you want in the context you want.
+此时 Zed 会在按下 `ctrl-w` 后等待 1 秒，判断是否继续输入 `left`；若无输入或按其他键，触发第一个动作；若在超时前输入 `left`，触发第二个动作。
 
-This is useful for preventing Zed from falling back to a default key binding when the action you specified is conditional and propagates. For example, `buffer_search::DeployReplace` only triggers when the search bar is not in view. If the search bar is in view, it would propagate and trigger the default action set for that key binding, such as opening the right dock. To prevent this from happening:
+## 非 QWERTY 键盘
 
-```json [keymap]
-[
-  {
-    "context": "Workspace",
-    "bindings": {
-      "cmd-r": null // cmd-r will do nothing when the search bar is in view
-    }
-  },
-  {
-    "context": "Workspace",
-    "bindings": {
-      "cmd-r": "buffer_search::DeployReplace" // cmd-r will deploy replace when the search bar is not in view
-    }
-  }
-]
-```
+非 QWERTY 支持仍在完善中：
 
-### Remapping keys
-
-A common request is to be able to map from a single keystroke to a sequence. You can do this with the `workspace::SendKeystrokes` action.
-
-```json [keymap]
-[
-  {
-    "bindings": {
-      // Move down four times
-      "alt-down": ["workspace::SendKeystrokes", "down down down down"],
-      // Expand the selection (editor::SelectLargerSyntaxNode);
-      // copy to the clipboard; and then undo the selection expansion.
-      "cmd-alt-c": [
-        "workspace::SendKeystrokes",
-        "ctrl-shift-right ctrl-shift-right ctrl-shift-right cmd-c ctrl-shift-left ctrl-shift-left ctrl-shift-left"
-      ]
-    }
-  },
-  {
-    "context": "Editor && vim_mode == insert",
-    "bindings": {
-      "j k": ["workspace::SendKeystrokes", "escape"]
-    }
-  }
-]
-```
-
-There are some limitations to this, notably:
-
-- Any asynchronous operation will not happen until after all your key bindings have been dispatched. For example, this means that while you can use a binding to open a file (as in the `cmd-alt-r` example), you cannot send further keystrokes and hope to have them interpreted by the new view.
-- Other examples of asynchronous things are: opening the command palette, communicating with a language server, changing the language of a buffer, anything that hits the network.
-- There is a limit of 100 simulated keys at a time.
-
-The argument to `SendKeystrokes` is a space-separated list of keystrokes (using the same syntax as above). Due to the way that keystrokes are parsed, any segment that is not recognized as a keypress will be sent verbatim to the currently focused input field.
-
-If the argument to `SendKeystrokes` contains the binding used to trigger it, it will use the next-highest-precedence definition of that binding. This allows you to extend the default behavior of a key binding.
-
-### Forward keys to terminal
-
-If you're on Linux or Windows, you might find yourself wanting to forward key combinations to the built-in terminal instead of them being handled by Zed.
-
-For example, `ctrl-n` creates a new tab in Zed on Linux. If you want to send `ctrl-n` to the built-in terminal when it's focused, add the following to your keymap:
+- 若键盘可直接输出 ASCII（Dvorak、Colemak 等），快捷键将如预期工作。
+- 若布局无法直接输出 ASCII（如 Cyrillic），请将 `use_key_equivalents` 设为 `true`：
 
 ```json [settings]
-{
-  "context": "Terminal",
-  "bindings": {
-    "ctrl-n": ["terminal::SendKeystroke", "ctrl-n"]
-  }
-}
+"use_key_equivalents": true
 ```
 
-### Task Key bindings
+此时按键将映射到对应的 QWERTY 位置；若想保持按键字符本身，请设为 `false`。
 
-You can also bind keys to launch Zed Tasks defined in your `tasks.json`.
-See the [tasks documentation](tasks.md#custom-keybindings-for-tasks) for more.
+> 例如德语键盘上 `-` 与 `ß` 位置不同，将 `use_key_equivalents` 设为 `true` 后，按下 `-` 会触发英文布局下的 `÷`，若想直接绑定符号本身请保持 `false`。
+
+如果仍然遇到无法绑定的情况，请向我们反馈。

@@ -1,92 +1,92 @@
-# Environment Variables
+# 环境变量
 
-_**Note**: The following only applies to Zed 0.152.0 and later._
+_**注意**：以下内容仅适用于 Zed 0.152.0 及更高版本。_
 
-Multiple features in Zed are affected by environment variables:
+Zed 中的多个功能都受到环境变量的影响：
 
-- Tasks
-- Built-in terminal
-- Look-up of language servers
-- Language servers
+- 任务
+- 内置终端
+- 语言服务器的查找
+- 语言服务器
 
-In order to make the best use of these features, it's helpful to understand where Zed gets its environment variables from and how they're used.
+为了充分利用这些功能，了解 Zed 从哪里获取环境变量以及如何使用它们会很有帮助。
 
-## Where does Zed get its environment variables from?
+## Zed 从哪里获取环境变量？
 
-How Zed was started — whether it's icon was clicked in the macOS Dock or in a Linux window manager, or whether it was started via the CLI `zed` that comes with Zed — influences which environment variables Zed can use.
+Zed 的启动方式——无论是通过点击 macOS Dock 或 Linux 窗口管理器中的图标启动，还是通过 Zed 附带的 CLI `zed` 启动——都会影响 Zed 可以使用哪些环境变量。
 
-### Launched from the CLI
+### 通过 CLI 启动
 
-If Zed is opened via the CLI (`zed`), it will inherit the environment variables from the surrounding shell session.
+如果通过 CLI (`zed`) 打开 Zed，它将继承周围 shell 会话的环境变量。
 
-That means if you do
+这意味着如果你执行：
 
 ```
 $ export MY_ENV_VAR=hello
 $ zed .
 ```
 
-the environment variable `MY_ENV_VAR` is now available inside Zed. For example, in the built-in terminal.
+环境变量 `MY_ENV_VAR` 现在在 Zed 内部可用。例如，在内置终端中。
 
-Starting with Zed 0.152.0, the CLI `zed` will _always_ pass along its environment to Zed, regardless of whether a Zed instance was previously running or not. Prior to Zed 0.152.0 this was not the case and only the first Zed instance would inherit the environment variables.
+从 Zed 0.152.0 开始，CLI `zed` 将_始终_将其环境传递给 Zed，无论之前是否有 Zed 实例正在运行。在 Zed 0.152.0 之前，情况并非如此，只有第一个 Zed 实例会继承环境变量。
 
-### Launched via window manager, Dock, or launcher
+### 通过窗口管理器、Dock 或启动器启动
 
-When Zed has been launched via the macOS Dock, or a GNOME or KDE icon on Linux, or an application launcher like Alfred or Raycast, it has no surrounding shell environment from which to inherit its environment variables.
+当 Zed 通过 macOS Dock、Linux 上的 GNOME 或 KDE 图标，或 Alfred 或 Raycast 等应用程序启动器启动时，它没有周围 shell 环境可以继承环境变量。
 
-In order to still have a useful environment, Zed spawns a login shell in the user's home directory and gets its environment. This environment is then set on the Zed _process_. That means all Zed windows and projects will inherit that home directory environment.
+为了仍然拥有有用的环境，Zed 会在用户的主目录中生成一个登录 shell 并获取其环境。然后将此环境设置在 Zed _进程_上。这意味着所有 Zed 窗口和项目都将继承该主目录环境。
 
-Since that can lead to problems for users that require different environment variables for a project (because they use `direnv`, or `asdf`, or `mise`, ... in that project), when opening project, Zed spawns another login shell. This time in the project's directory. The environment from that login shell is _not_ set on the process (because that would mean opening a new project changes the environment for all Zed windows). Instead, the environment is stored and passed along when running tasks, opening terminals, or spawning language servers.
+由于这可能会给需要不同项目环境变量的用户带来问题（因为他们在该项目中使用 `direnv`、`asdf`、`mise` 等），在打开项目时，Zed 会生成另一个登录 shell。这次是在项目的目录中。来自该登录 shell 的环境_不会_设置在进程上（因为这意味着打开新项目会更改所有 Zed 窗口的环境）。相反，环境会被存储并在运行任务、打开终端或生成语言服务器时传递。
 
-## Where and how are environment variables used?
+## 环境变量在哪里以及如何使用？
 
-There are two sets of environment variables:
+有两组环境变量：
 
-1. Environment variables of the Zed process
-2. Environment variables stored per project
+1. Zed 进程的环境变量
+2. 每个项目存储的环境变量
 
-The variables from (1) are always used, since they are stored on the process itself and every spawned process (tasks, terminals, language servers, ...) will inherit them by default.
+来自 (1) 的变量始终被使用，因为它们存储在进程本身上，并且每个生成的进程（任务、终端、语言服务器等）默认都会继承它们。
 
-The variables from (2) are used explicitly, depending on the feature.
+来自 (2) 的变量根据功能显式使用。
 
-### Tasks
+### 任务
 
-Tasks are spawned with an combined environment. In order of precedence (low to high, with the last overwriting the first):
+任务使用组合环境生成。按优先级顺序（从低到高，最后一个覆盖第一个）：
 
-- the Zed process environment
-- if the project was opened from the CLI: the CLI environment
-- if the project was not opened from the CLI: the project environment variables obtained by running a login shell in the project's root folder
-- optional, explicitly configured environment in settings
+- Zed 进程环境
+- 如果项目是通过 CLI 打开的：CLI 环境
+- 如果项目不是通过 CLI 打开的：通过在项目根文件夹中运行登录 shell 获取的项目环境变量
+- 可选的，在设置中显式配置的环境
 
-### Built-in terminal
+### 内置终端
 
-Built-in terminals, like tasks, are spawned with an combined environment. In order of precedence (low to high):
+内置终端与任务一样，使用组合环境生成。按优先级顺序（从低到高）：
 
-- the Zed process environment
-- if the project was opened from the CLI: the CLI environment
-- if the project was not opened from the CLI: the project environment variables obtained by running a login shell in the project's root folder
-- optional, explicitly configured environment in settings
+- Zed 进程环境
+- 如果项目是通过 CLI 打开的：CLI 环境
+- 如果项目不是通过 CLI 打开的：通过在项目根文件夹中运行登录 shell 获取的项目环境变量
+- 可选的，在设置中显式配置的环境
 
-### Look-up of language servers
+### 语言服务器的查找
 
-For some languages the language server adapters lookup the binary in the user's `$PATH`. Examples:
+对于某些语言，语言服务器适配器会在用户的 `$PATH` 中查找二进制文件。示例：
 
 - Go
 - Zig
-- Rust (if [configured to do so](./languages/rust.md#binary))
+- Rust（如果[配置为这样做](./languages/rust.md#binary)）
 - C
 - TypeScript
 
-For this look-up, Zed uses the following the environment:
+对于此查找，Zed 使用以下环境：
 
-- if the project was opened from the CLI: the CLI environment
-- if the project was not opened from the CLI: the project environment variables obtained by running a login shell in the project's root folder
+- 如果项目是通过 CLI 打开的：CLI 环境
+- 如果项目不是通过 CLI 打开的：通过在项目根文件夹中运行登录 shell 获取的项目环境变量
 
-### Language servers
+### 语言服务器
 
-After looking up a language server, Zed starts them.
+查找语言服务器后，Zed 会启动它们。
 
-These language server processes always inherit Zed's process environment. But, depending on the language server look-up, additional environment variables might be set or overwrite the process environment.
+这些语言服务器进程始终继承 Zed 的进程环境。但是，根据语言服务器查找，可能会设置额外的环境变量或覆盖进程环境。
 
-- If the language server was found in the project environment's `$PATH`, then the project environment's is passed along to the language server process. Where the project environment comes from depends on how the project was opened, via CLI or not. See previous point on look-up of language servers.
-- If the language servers was not found in the project environment, Zed tries to install it globally and start it globally. In that case, the process will inherit Zed's process environment, and — if the project was opened via ClI — from the CLI.
+- 如果在项目环境的 `$PATH` 中找到语言服务器，则项目环境会传递给语言服务器进程。项目环境的来源取决于项目是如何打开的，是否通过 CLI。请参阅前一点关于语言服务器查找的内容。
+- 如果在项目环境中未找到语言服务器，Zed 会尝试全局安装并全局启动它。在这种情况下，进程将继承 Zed 的进程环境，并且——如果项目是通过 CLI 打开的——来自 CLI。

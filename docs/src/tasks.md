@@ -1,93 +1,87 @@
-# Tasks
+# 任务（Tasks）
 
-Zed supports ways to spawn (and rerun) commands using its integrated terminal to output the results. These commands can read a limited subset of Zed state (such as a path to the file currently being edited or selected text).
+Zed 支持通过集成终端执行命令，并在需要时重复运行。这些命令可以读取 Zed 提供的少量上下文信息（如当前文件路径、选中文本等）。
 
 ```json [tasks]
 [
   {
     "label": "Example task",
     "command": "for i in {1..5}; do echo \"Hello $i/5\"; sleep 1; done",
-    //"args": [],
-    // Env overrides for the command, will be appended to the terminal's environment from the settings.
+    // "args": [],
+    // 覆盖命令所用环境变量，会在设置中的终端环境基础上追加。
     "env": { "foo": "bar" },
-    // Current working directory to spawn the command into, defaults to current project root.
-    //"cwd": "/path/to/working/directory",
-    // Whether to use a new terminal tab or reuse the existing one to spawn the process, defaults to `false`.
+    // 命令执行时的工作目录，默认使用当前项目根目录。
+    // "cwd": "/path/to/working/directory",
+    // 是否在新的终端标签页中运行任务，默认 false（复用现有标签）。
     "use_new_terminal": false,
-    // Whether to allow multiple instances of the same task to be run, or rather wait for the existing ones to finish, defaults to `false`.
+    // 是否允许多个实例并行运行。默认 false，会等待已有任务完成。
     "allow_concurrent_runs": false,
-    // What to do with the terminal pane and tab, after the command was started:
-    // * `always` — always show the task's pane, and focus the corresponding tab in it (default)
-    // * `no_focus` — always show the task's pane, add the task's tab in it, but don't focus it
-    // * `never` — do not alter focus, but still add/reuse the task's tab in its pane
+    // 任务启动后如何处理终端面板/标签：
+    // * "always" — 总是展示面板并聚焦对应标签（默认）
+    // * "no_focus" — 展示面板并添加标签，但不聚焦
+    // * "never" — 不改变焦点，仅复用或创建标签
     "reveal": "always",
-    // What to do with the terminal pane and tab, after the command has finished:
-    // * `never` — Do nothing when the command finishes (default)
-    // * `always` — always hide the terminal tab, hide the pane also if it was the last tab in it
-    // * `on_success` — hide the terminal tab on task success only, otherwise behaves similar to `always`
+    // 任务结束后如何处理终端面板/标签：
+    // * "never" — 不做任何操作（默认）
+    // * "always" — 隐藏标签，如果是面板内最后一个标签则隐藏面板
+    // * "on_success" — 仅在成功时隐藏标签，其余行为同 "always"
     "hide": "never",
-    // Which shell to use when running a task inside the terminal.
-    // May take 3 values:
-    // 1. (default) Use the system's default terminal configuration in /etc/passwd
-    //      "shell": "system"
-    // 2. A program:
-    //      "shell": {
-    //        "program": "sh"
+    // 指定运行任务所使用的 shell，可选：
+    // 1. "system"（默认）使用 /etc/passwd 中的默认 shell
+    // 2. 指定程序：
+    //    "shell": { "program": "sh" }
+    // 3. 指定程序与参数：
+    //    "shell": {
+    //      "with_arguments": {
+    //        "program": "/bin/bash",
+    //        "args": ["--login"]
     //      }
-    // 3. A program with arguments:
-    //     "shell": {
-    //         "with_arguments": {
-    //           "program": "/bin/bash",
-    //           "args": ["--login"]
-    //         }
-    //     }
+    //    }
     "shell": "system",
-    // Whether to show the task line in the output of the spawned task, defaults to `true`.
+    // 是否在输出中显示任务摘要行，默认 true。
     "show_summary": true,
-    // Whether to show the command line in the output of the spawned task, defaults to `true`.
+    // 是否在输出中显示命令行本身，默认 true。
     "show_command": true
-    // Represents the tags for inline runnable indicators, or spawning multiple tasks at once.
+    // 用于内联 runnable 指示器或同标签批量运行的标签。
     // "tags": []
   }
 ]
 ```
 
-There are two actions that drive the workflow of using tasks: `task: spawn` and `task: rerun`.
-`task: spawn` opens a modal with all available tasks in the current file.
-`task: rerun` reruns the most recently spawned task. You can also rerun tasks from the task modal.
+任务相关的两个核心命令是 `task: spawn` 与 `task: rerun`：
 
-By default, rerunning tasks reuses the same terminal (due to the `"use_new_terminal": false` default) but waits for the previous task to finish before starting (due to the `"allow_concurrent_runs": false` default).
+- `task: spawn` 会弹出任务面板，列出当前可用的所有任务。
+- `task: rerun` 会重新运行最近一次触发的任务，你也可以在任务面板中重新执行某项任务。
 
-Keep `"use_new_terminal": false` and set `"allow_concurrent_runs": true` to allow cancelling previous tasks on rerun.
+默认情况下，重跑任务会复用同一个终端标签页（因为 `"use_new_terminal": false`），并会等待先前的任务结束（因为 `"allow_concurrent_runs": false`）。如果希望重跑时中断旧任务，可以保持 `"use_new_terminal": false`，并设置 `"allow_concurrent_runs": true`。
 
-## Task templates
+## 任务模板
 
-Tasks can be defined:
+任务可定义于以下位置：
 
-- in the global `tasks.json` file; such tasks are available in all Zed projects you work on. This file is usually located in `~/.config/zed/tasks.json`. You can edit them by using the `zed: open tasks` action.
-- in the worktree-specific (local) `.zed/tasks.json` file; such tasks are available only when working on a project with that worktree included. You can edit worktree-specific tasks by using the `zed: open project tasks` action.
-- on the fly with [oneshot tasks](#oneshot-tasks). These tasks are project-specific and do not persist across sessions.
-- by language extension.
+- 全局 `tasks.json`：位于 `~/.config/zed/tasks.json`（或对应平台路径），适用于所有项目。可通过 `zed: open tasks` 打开。
+- 项目本地 `.zed/tasks.json`：仅在该工作区内可用。可通过 `zed: open project tasks` 编辑。
+- [临时任务](#oneshot-任务)：一次性创建，随会话结束而清除。
+- 语言扩展：某些扩展会自带可用任务。
 
-## Variables
+## 变量
 
-Zed tasks act just like your shell; that also means that you can reference environmental variables via sh-esque `$VAR_NAME` syntax. A couple of additional environmental variables are set for your convenience.
-These variables allow you to pull information from the current editor and use it in your tasks. The following variables are available:
+任务执行环境与普通 shell 相同，因此可以使用 `$VAR_NAME` 语法引用环境变量。Zed 会额外提供一些变量，方便在任务中使用当前编辑器上下文：
 
-- `ZED_COLUMN`: current line column
-- `ZED_ROW`: current line row
-- `ZED_FILE`: absolute path of the currently opened file (e.g. `/Users/my-user/path/to/project/src/main.rs`)
-- `ZED_FILENAME`: filename of the currently opened file (e.g. `main.rs`)
-- `ZED_DIRNAME`: absolute path of the currently opened file with file name stripped (e.g. `/Users/my-user/path/to/project/src`)
-- `ZED_RELATIVE_FILE`: path of the currently opened file, relative to `ZED_WORKTREE_ROOT` (e.g. `src/main.rs`)
-- `ZED_RELATIVE_DIR`: path of the currently opened file's directory, relative to `ZED_WORKTREE_ROOT` (e.g. `src`)
-- `ZED_STEM`: stem (filename without extension) of the currently opened file (e.g. `main`)
-- `ZED_SYMBOL`: currently selected symbol; should match the last symbol shown in a symbol breadcrumb (e.g. `mod tests > fn test_task_contexts`)
-- `ZED_SELECTED_TEXT`: currently selected text
-- `ZED_WORKTREE_ROOT`: absolute path to the root of the current worktree. (e.g. `/Users/my-user/path/to/project`)
-- `ZED_CUSTOM_RUST_PACKAGE`: (Rust-specific) name of the parent package of $ZED_FILE source file.
+- `ZED_COLUMN`：当前光标列号
+- `ZED_ROW`：当前光标行号
+- `ZED_FILE`：当前文件的绝对路径
+- `ZED_FILENAME`：当前文件名
+- `ZED_DIRNAME`：当前文件所在目录（绝对路径）
+- `ZED_RELATIVE_FILE`：相对于工作树根目录的文件路径
+- `ZED_RELATIVE_DIR`：相对于工作树根目录的目录路径
+- `ZED_STEM`：文件名（不含扩展名）
+- `ZED_SYMBOL`：当前选中的符号（与面包屑导航一致）
+- `ZED_SELECTED_TEXT`：当前选中文本
+- `ZED_WORKTREE_ROOT`：当前工作树根目录
+- `ZED_CUSTOM_RUST_PACKAGE`：Rust 专用变量，表示源文件所在的父包名称
 
-To use a variable in a task, prefix it with a dollar sign (`$`):
+在任务中使用变量时，以 `$` 前缀：
 
 ```json [settings]
 {
@@ -96,15 +90,11 @@ To use a variable in a task, prefix it with a dollar sign (`$`):
 }
 ```
 
-You can also use verbose syntax that allows specifying a default if a given variable is not available: `${ZED_FILE:default_value}`
+也可以使用 `${VAR:default}` 形式为缺省情况提供默认值。变量同样可用于任务的 `cwd`、`args`、`label` 字段。
 
-These environmental variables can also be used in tasks' `cwd`, `args`, and `label` fields.
+### 变量转义
 
-### Variable Quoting
-
-When working with paths containing spaces or other special characters, please ensure variables are properly escaped.
-
-For example, instead of this (which will fail if the path has a space):
+若变量代表的路径包含空格等特殊字符，请确保正确转义。比如不要直接写：
 
 ```json [settings]
 {
@@ -113,7 +103,7 @@ For example, instead of this (which will fail if the path has a space):
 }
 ```
 
-Provide the following:
+应改为传参：
 
 ```json [settings]
 {
@@ -123,7 +113,7 @@ Provide the following:
 }
 ```
 
-Or explicitly include escaped quotes like so:
+或手动加引号：
 
 ```json [settings]
 {
@@ -132,10 +122,9 @@ Or explicitly include escaped quotes like so:
 }
 ```
 
-### Task filtering based on variables
+### 基于变量过滤任务
 
-Task definitions with variables which are not present at the moment the task list is determined are filtered out.
-For example, the following task will appear in the spawn modal only if there is a text selection:
+若任务模板引用了当下不可用的变量，则这条任务会被过滤掉。例如，下例只有在存在选中文本时才会出现在任务面板：
 
 ```json [settings]
 {
@@ -144,7 +133,7 @@ For example, the following task will appear in the spawn modal only if there is 
 }
 ```
 
-Set default values to such variables to have such tasks always displayed:
+如希望始终显示，可为变量设置默认值：
 
 ```json [settings]
 {
@@ -153,24 +142,17 @@ Set default values to such variables to have such tasks always displayed:
 }
 ```
 
-## Oneshot tasks
+## Oneshot 任务
 
-The same task modal opened via `task: spawn` supports arbitrary bash-like command execution: type a command inside the modal text field, and use `opt-enter` to spawn it.
+通过 `task: spawn` 打开的任务面板也支持直接执行任意命令：在输入框中键入命令，按 `opt-enter` 即可运行。会话期间，这些临时命令会被记住，`task: rerun` 同样可重新执行上一条临时任务。你还可以对任务模板按 `tab` 进行调整，从而以临时任务的方式运行。
 
-The task modal persists these ad-hoc commands for the duration of the session, `task: rerun` will also rerun such tasks if they were the last ones spawned.
+### 临时（Ephemeral）任务
 
-You can also adjust the currently selected task in a modal (`tab` is the default key binding). Doing so will put its command into a prompt that can then be edited & spawned as a oneshot task.
+在任务面板中按住 `cmd`（或 `ctrl`）触发运行，任务将不会增加使用计数（不会被 `task: rerun` 复用，也不会在面板中排序靠前）。适合在持续使用 `task: rerun` 时保持流程顺畅。
 
-### Ephemeral tasks
+### 更多重跑控制
 
-You can use the `cmd` modifier when spawning a task via a modal; tasks spawned this way will not have their usage count increased (thus, they will not be respawned with `task: rerun` and they won't have a high rank in the task modal).
-The intended use of ephemeral tasks is to stay in the flow with continuous `task: rerun` usage.
-
-### More task rerun control
-
-By default, tasks capture their variables into a context once, and this "resolved task" is being rerun always.
-
-This can be controlled with the `"reevaluate_context"` argument to the task: setting it to `true` will force the task to be reevaluated before each run.
+默认情况下，任务在第一次运行时会解析变量并缓存结果，之后重跑将重复使用该上下文。若希望每次重跑都重新解析，可将任务的 `"reevaluate_context"` 设为 `true`：
 
 ```json [keymap]
 {
@@ -181,9 +163,9 @@ This can be controlled with the `"reevaluate_context"` argument to the task: set
 }
 ```
 
-## Custom keybindings for tasks
+## 自定义任务快捷键
 
-You can define your own keybindings for your tasks via an additional argument to `task::Spawn`. If you wanted to bind the aforementioned `echo current file's path` task to `alt-g`, you would add the following snippet in your [`keymap.json`](./key-bindings.md) file:
+可以在 `keymap.json` 中为任务绑定组合键。例如，为上文的 `echo current file's path` 绑定 `alt-g`：
 
 ```json [keymap]
 {
@@ -194,11 +176,10 @@ You can define your own keybindings for your tasks via an additional argument to
 }
 ```
 
-Note that these tasks can also have a 'target' specified to control where the spawned task should show up.
-This could be useful for launching a terminal application that you want to use in the center area:
+任务还可指定 `reveal_target` 来控制输出位置，如在中央区域启动终端应用：
 
 ```json [tasks]
-// In tasks.json
+// tasks.json
 {
   "label": "start lazygit",
   "command": "lazygit -p $ZED_WORKTREE_ROOT"
@@ -206,7 +187,7 @@ This could be useful for launching a terminal application that you want to use i
 ```
 
 ```json [keymap]
-// In keymap.json
+// keymap.json
 {
   "context": "Workspace",
   "bindings": {
@@ -218,15 +199,15 @@ This could be useful for launching a terminal application that you want to use i
 }
 ```
 
-## Binding runnable tags to task templates
+## 将 runnable 标签绑定到任务模板
 
-Zed supports overriding the default action for inline runnable indicators via workspace-local and global `tasks.json` file with the following precedence hierarchy:
+Zed 允许通过工作区或全局 `tasks.json` 重写内联 runnable 指示器的默认动作，优先级如下：
 
-1. Workspace `tasks.json`
-2. Global `tasks.json`
-3. Language-provided tag bindings (default).
+1. 工作区 `tasks.json`
+2. 全局 `tasks.json`
+3. 语言扩展默认绑定
 
-To tag a task, add the runnable tag name to the `tags` field on the task template:
+在任务模板中增加 `tags` 字段即可为其绑定标签：
 
 ```json [settings]
 {
@@ -236,8 +217,8 @@ To tag a task, add the runnable tag name to the `tags` field on the task templat
 }
 ```
 
-In doing so, you can change which task is shown in the runnables indicator.
+这样即可替换某个 runnable 指示器默认触发的任务。
 
-## Keybindings to run tasks bound to runnables
+## 通过快捷键运行 runnable 对应任务
 
-When you have a task definition that is bound to the runnable, you can quickly run it using [Code Actions](https://zed.dev/docs/configuring-languages?#code-actions) that you can trigger either via `editor: Toggle Code Actions` command or by the `cmd-.`/`ctrl-.` shortcut. Your task will be the first in the dropdown. The task will run immediately if there are no additional Code Actions for this line.
+当任务与某个 runnable 标签关联后，你可以通过 [代码操作](https://zed.dev/docs/configuring-languages?#code-actions) 快速执行：使用 `editor: Toggle Code Actions` 或 `cmd-.`/`ctrl-.` 打开菜单，任务会排在首位；如无其他候选项会直接执行。

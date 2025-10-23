@@ -1,20 +1,20 @@
-# Diagnostics
+# 诊断
 
-Zed gets its diagnostics from the language servers and supports both push and pull variants of the LSP which makes it compatible with all existing language servers.
+Zed 从语言服务器获取其诊断信息，并支持 LSP 的推送和拉取变体，这使得它与所有现有的语言服务器兼容。
 
-# Regular diagnostics
+# 常规诊断
 
-By default, Zed displays all diagnostics as underlined text in the editor and the scrollbar.
+默认情况下，Zed 在编辑器和滚动条中将所有诊断显示为带下划线的文本。
 
-Editor diagnostics could be filtered with the
+编辑器诊断可以通过以下编辑器设置进行过滤：
 
 ```json [settings]
 "diagnostics_max_severity": null
 ```
 
-editor setting (possible values: `"off"`, `"error"`, `"warning"`, `"info"`, `"hint"`, `null` (default, all diagnostics)).
+（可能的值：`"off"`、`"error"`、`"warning"`、`"info"`、`"hint"`、`null`（默认，所有诊断））
 
-The scrollbar ones are configured with the
+滚动条诊断通过以下配置进行配置：
 
 ```json [settings]
 "scrollbar": {
@@ -22,32 +22,32 @@ The scrollbar ones are configured with the
 }
 ```
 
-configuration (possible values: `"none"`, `"error"`, `"warning"`, `"information"`, `"all"` (default))
+（可能的值：`"none"`、`"error"`、`"warning"`、`"information"`、`"all"`（默认））
 
-The diagnostics could be hovered to display a tooltip with full, rendered diagnostic message.
-Or, `editor::GoToDiagnostic` and `editor::GoToPreviousDiagnostic` could be used to navigate between diagnostics in the editor, showing a popover for the currently active diagnostic.
+可以悬停在诊断上以显示包含完整渲染诊断消息的工具提示。
+或者，可以使用 `editor::GoToDiagnostic` 和 `editor::GoToPreviousDiagnostic` 在编辑器中的诊断之间导航，为当前活动的诊断显示弹出窗口。
 
-# Inline diagnostics (Error lens)
+# 内联诊断（错误透镜）
 
-Zed supports showing diagnostic as lens to the right of the code.
-This is disabled by default, but can either be temporarily turned on (or off) using the editor menu, or permanently, using the
+Zed 支持在代码右侧将诊断显示为透镜。
+默认情况下禁用此功能，但可以使用编辑器菜单临时打开（或关闭），或使用以下设置永久启用：
 
 ```json [settings]
 "diagnostics": {
   "inline": {
     "enabled": true,
-    "max_severity": null, // same values as the `diagnostics_max_severity` from the editor settings
+    "max_severity": null, // 与编辑器设置中的 `diagnostics_max_severity` 相同的值
   }
 }
 ```
 
-# Other UI places
+# 其他 UI 位置
 
-## Project Panel
+## 项目面板
 
-Project panel can have its entries coloured based on the severity of the diagnostics in the file.
+项目面板可以根据文件中诊断的严重程度为其条目着色。
 
-To configure, use
+要配置，请使用：
 
 ```json [settings]
 "project_panel": {
@@ -55,11 +55,11 @@ To configure, use
 }
 ```
 
-configuration (possible values: `"off"`, `"errors"`, `"all"` (default))
+配置（可能的值：`"off"`、`"errors"`、`"all"`（默认））
 
-## Editor tabs
+## 编辑器标签
 
-Similar to the project panel, editor tabs can be colorized with the
+与项目面板类似，编辑器标签可以使用以下配置进行着色：
 
 ```json [settings]
 "tabs": {
@@ -67,4 +67,4 @@ Similar to the project panel, editor tabs can be colorized with the
 }
 ```
 
-configuration (possible values: `"off"` (default), `"errors"`, `"all"`)
+配置（可能的值：`"off"`（默认）、`"errors"`、`"all"`）

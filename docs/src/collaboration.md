@@ -1,103 +1,103 @@
-# Collaboration
+# 协作
 
-Only collaborate with people that you trust. Since sharing a project gives them access to your local file system, you should not share projects with people you do not trust; they could potentially do some nasty things.
+仅与您信任的人协作。由于共享项目会让他们访问您的本地文件系统，您不应与您不信任的人共享项目；他们可能会做一些恶意的事情。
 
-In the future, we will do more to prevent this type of access beyond the shared project and add more control over what collaborators can do, but for now, only collaborate with people you trust.
+将来，我们将采取更多措施来防止超出共享项目的此类访问，并增加对协作者可以执行的操作的更多控制，但目前，仅与您信任的人协作。
 
-## Adding a collaborator to a call
+## 向通话添加协作者
 
-Before you can collaborate, you'll need to add a collaborator to your contacts. To do this:
+在您协作之前，您需要将协作者添加到您的联系人中。为此：
 
-1. Open the contacts menu by clicking on the `Show contacts menu` button in the upper right-hand corner of the window or by running `collab: toggle contacts menu` (`cmd-shift-c`).
-2. Click the add button to the right of the search box.
-3. Search for the contact you want to add using their GitHub handle. Note: the person you are trying to add as a contact must be an existing Zed user.
+1. 通过点击窗口右上角的 `显示联系人菜单` 按钮或运行 `collab: toggle contacts menu` (`cmd-shift-c`) 来打开联系人菜单。
+2. 点击搜索框右侧的添加按钮。
+3. 使用他们的 GitHub 句柄搜索要添加的联系人。注意：您尝试添加为联系人的人必须是现有的 Zed 用户。
 
-### Inviting a collaborator
+### 邀请协作者
 
-You can add an existing Zed user as a contact from the contacts menu, deployed from the `Show contacts menu` button in the upper right-hand corner of the window or by `collab: toggle contacts menu` (`cmd-shift-c`) and then clicking the `Search for new contact` button to the right of the search box.
+您可以从联系人菜单中将现有的 Zed 用户添加为联系人，该菜单通过窗口右上角的 `显示联系人菜单` 按钮或 `collab: toggle contacts menu` (`cmd-shift-c`) 部署，然后点击搜索框右侧的 `搜索新联系人` 按钮。
 
-![Inviting a collaborator to the current project](https://zed.dev/img/collaboration/add-a-collaborator.png)
+![邀请协作者到当前项目](https://zed.dev/img/collaboration/add-a-collaborator.png)
 
-When you invite a collaborator to a project not in a call they will receive a notification to join, and a new call is created.
+当您邀请协作者到不在通话中的项目时，他们将收到加入通知，并创建一个新的通话。
 
-![Receiving an invite to join a call](https://zed.dev/img/collaboration/receiving-an-invite.jpg)
+![收到加入通话的邀请](https://zed.dev/img/collaboration/receiving-an-invite.jpg)
 
-### Inviting non-Zed users
+### 邀请非 Zed 用户
 
-If someone you want to collaborate with has not yet signed up for Zed, they will need to [download the app](https://zed.dev/download) and sign in for the first time before you can add them. Identity is tied to GitHub accounts, so new users will need to authenticate with GitHub in order to sign into Zed.
+如果您想与之协作的人尚未注册 Zed，他们需要[下载应用程序](https://zed.dev/download)并首次登录，然后您才能添加他们。身份与 GitHub 账户绑定，因此新用户需要通过 GitHub 进行身份验证才能登录 Zed。
 
-### Voice chat
+### 语音聊天
 
-When joining a call, Zed will automatically share your microphone with other users in the call, if your OS allows it. This isn't tied to your project. You can disable this for your client via the [`mute_on_join`](./configuring-zed.md#calls) setting.
+加入通话时，如果您的操作系统允许，Zed 会自动与通话中的其他用户共享您的麦克风。这与您的项目无关。您可以通过 [`mute_on_join`](./configuring-zed.md#calls) 设置为您客户端禁用此功能。
 
-## Collaborating on a project
+## 在项目上协作
 
-### Share a project
+### 共享项目
 
-When you invite a collaborator to join your project, a new call begins. Your Zed windows will show the call participants in the title bar of the window.
+当您邀请协作者加入您的项目时，一个新的通话开始。您的 Zed 窗口将在窗口的标题栏中显示通话参与者。
 
-![A new Zed call with two collaborators](https://zed.dev/img/collaboration/new-call.png)
+![有两个协作者的新 Zed 通话](https://zed.dev/img/collaboration/new-call.png)
 
-Collaborators in the same project as you are in color, and have a cursor color. Collaborators in other projects are shown in gray. Collaborators that have access to the current project will have their own cursor color under their avatar.
+与您在同一项目中的协作者显示为彩色，并有光标颜色。其他项目中的协作者显示为灰色。有权访问当前项目的协作者将在其头像下拥有自己的光标颜色。
 
-We aim to eliminate the distinction between local and remote projects as much as possible. Collaborators can open, edit, and save files, perform searches, interact with the language server, etc. Guests have a read-only view of the project, including access to language server info.
+我们旨在尽可能消除本地项目和远程项目之间的区别。协作者可以打开、编辑和保存文件，执行搜索，与语言服务器交互等。访客对项目具有只读视图，包括访问语言服务器信息。
 
-#### Unshared Projects
+#### 未共享项目
 
-If a collaborator is currently in a project that is not shared, you will not be able to jump to their project or follow them until they either share the project or return to a project that is shared.
+如果协作者当前在未共享的项目中，您将无法跳转到他们的项目或跟随他们，直到他们共享项目或返回到共享的项目。
 
-If you are in a project that isn't shared, others will not be able to join it or see its contents.
+如果您在未共享的项目中，其他人将无法加入它或查看其内容。
 
-### Follow a collaborator
+### 跟随协作者
 
-To follow a collaborator, click on their avatar in the top right of the window. You can also cycle through collaborators using `workspace: follow next collaborator` (`ctrl-alt-cmd-f`).
+要跟随协作者，请点击窗口右上角的他们的头像。您也可以使用 `workspace: follow next collaborator` (`ctrl-alt-cmd-f`) 循环切换协作者。
 
-When you join a project, you'll immediately start following the collaborator that invited you.
+当您加入项目时，您将立即开始跟随邀请您的协作者。
 
-![Automatically following the person inviting us to a project](https://zed.dev/img/collaboration/joining-a-call.png)
+![自动跟随邀请我们到项目的人](https://zed.dev/img/collaboration/joining-a-call.png)
 
-When you are in a pane that is following a collaborator, you will:
+当您在跟随协作者的窗格中时，您将：
 
-- follow their cursor and scroll position
-- follow them to other files in the same project
-- instantly swap to viewing their screen in that pane, if they are sharing their screen and leave the project
+- 跟随他们的光标和滚动位置
+- 跟随他们到同一项目中的其他文件
+- 如果他们正在共享屏幕并离开项目，立即切换到在该窗格中查看他们的屏幕
 
-If you move your cursor or make an edit in that pane, you will stop following.
+如果您在该窗格中移动光标或进行编辑，您将停止跟随。
 
-To start following again, you can click on a collaborator's avatar or cycle through following different participants by pressing `workspace: follow next collaborator` (`ctrl-alt-cmd-f`).
+要重新开始跟随，您可以点击协作者的头像或通过按 `workspace: follow next collaborator` (`ctrl-alt-cmd-f`) 循环切换跟随不同的参与者。
 
-#### How following works
+#### 跟随工作原理
 
-Following is confined to a particular pane. When a pane is following a collaborator, it is outlined in their cursor color.
+跟随仅限于特定窗格。当窗格跟随协作者时，它会被他们的光标颜色勾勒出来。
 
-This pane-specific behavior allows you to follow someone in one pane while navigating independently in another and can be an effective layout for some collaboration styles.
+这种特定于窗格的行为允许您在一个窗格中跟随某人，同时在另一个窗格中独立导航，对于某些协作风格来说，这可能是一种有效的布局。
 
-### Sharing your screen
+### 共享您的屏幕
 
-Share your screen with collaborators in the current call by clicking on the `Share screen` button in the top right of the window.
+通过点击窗口右上角的 `共享屏幕` 按钮，与当前通话中的协作者共享您的屏幕。
 
-Collaborators will see your screen if they are following you and you start viewing a window outside Zed or a project that is not shared.
+如果协作者正在跟随您，并且您开始查看 Zed 之外的窗口或未共享的项目，他们将看到您的屏幕。
 
-Collaborators can see your entire screen when you are screen sharing, so be careful not to share anything you don't want to share. Remember to stop screen sharing when you are finished.
+当您共享屏幕时，协作者可以看到您的整个屏幕，因此请小心不要共享任何您不想共享的内容。完成后记得停止屏幕共享。
 
-Call participants can open a dedicated tab for your screen share by opening the contacts menu in the top right and clicking on the `Screen` entry if you are sharing your screen.
+如果您正在共享屏幕，通话参与者可以通过打开右上角的联系人菜单并点击 `屏幕` 条目来为您的屏幕共享打开专用标签。
 
-### Adding a project
+### 添加项目
 
-You can add a project to a call by clicking on the `Share` button next to the project name in the title bar.
+您可以通过点击标题栏中项目名称旁边的 `共享` 按钮将项目添加到通话中。
 
-### Removing a project
+### 移除项目
 
-You can remove a project from a call by clicking on the `Unshare` button next to the project name in the title bar.
+您可以通过点击标题栏中项目名称旁边的 `取消共享` 按钮从通话中移除项目。
 
-Collaborators that are currently in that project will be disconnected from the project and will not be able to rejoin it unless you share it again.
+当前在该项目中的协作者将从项目中断开连接，除非您再次共享它，否则无法重新加入。
 
-### Following a collaborator's terminal
+### 跟随协作者的终端
 
-You can follow what a collaborator is doing in their terminal by having them share their screen and following it.
+您可以通过让他们共享屏幕并跟随它来跟随协作者在终端中正在做什么。
 
-In the future, we plan to allow you to collaborate in the terminal directly in a shared project.
+将来，我们计划允许您在共享项目中直接在终端中协作。
 
-### Leave call
+### 离开通话
 
-You can leave a call by opening the contacts menu in the top right and clicking on the `Leave call` button.
+您可以通过打开右上角的联系人菜单并点击 `离开通话` 按钮来离开通话。

@@ -1,22 +1,22 @@
-# Building Zed for Windows
+# 为 Windows 构建 Zed
 
-> The following commands may be executed in any shell.
+> 以下命令可以在任何 shell 中执行。
 
-## Repository
+## 存储库
 
-Clone down the [Zed repository](https://github.com/zed-industries/zed).
+克隆 [Zed 存储库](https://github.com/zed-industries/zed)。
 
-## Dependencies
+## 依赖项
 
-- Install [rustup](https://www.rust-lang.org/tools/install)
+- 安装 [rustup](https://www.rust-lang.org/tools/install)
 
-- Install either [Visual Studio](https://visualstudio.microsoft.com/downloads/) with the optional components `MSVC v*** - VS YYYY C++ x64/x86 build tools` and `MSVC v*** - VS YYYY C++ x64/x86 Spectre-mitigated libs (latest)` (`v***` is your VS version and `YYYY` is year when your VS was released. Pay attention to the architecture and change it to yours if needed.)
-- Or, if you prefer to have a slimmer installer of only the MSVC compiler tools, you can install the [build tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) (+libs as above) and the "Desktop development with C++" workload.
-  But beware this installation is not automatically picked up by rustup. You must initialize your environment variables by first launching the "developer" shell (cmd/powershell) this installation places in the start menu or in Windows Terminal and then compile.
-- Install Windows 11 or 10 SDK depending on your system, but ensure that at least `Windows 10 SDK version 2104 (10.0.20348.0)` is installed on your machine. You can download it from the [Windows SDK Archive](https://developer.microsoft.com/windows/downloads/windows-sdk/)
-- Install [CMake](https://cmake.org/download) (required by [a dependency](https://docs.rs/wasmtime-c-api-impl/latest/wasmtime_c_api/)). Or you can install it through Visual Studio Installer, then manually add the `bin` directory to your `PATH`, for example: `C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin`.
+- 安装 [Visual Studio](https://visualstudio.microsoft.com/downloads/) 并选择可选组件 `MSVC v*** - VS YYYY C++ x64/x86 build tools` 和 `MSVC v*** - VS YYYY C++ x64/x86 Spectre-mitigated libs (latest)`（`v***` 是您的 VS 版本，`YYYY` 是您的 VS 发布年份。注意架构并根据需要更改为您的架构。）
+- 或者，如果您更喜欢仅包含 MSVC 编译器工具的较精简安装程序，可以安装 [build tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)（+上述库）和 "Desktop development with C++" 工作负载。
+  但请注意此安装不会被 rustup 自动识别。您必须首先启动此安装放置在开始菜单或 Windows Terminal 中的 "developer" shell（cmd/powershell）来初始化环境变量，然后编译。
+- 根据您的系统安装 Windows 11 或 10 SDK，但确保您的机器上至少安装了 `Windows 10 SDK version 2104 (10.0.20348.0)`。您可以从 [Windows SDK Archive](https://developer.microsoft.com/windows/downloads/windows-sdk/) 下载它
+- 安装 [CMake](https://cmake.org/download)（由 [一个依赖项](https://docs.rs/wasmtime-c-api-impl/latest/wasmtime_c_api/) 需要）。或者您可以通过 Visual Studio Installer 安装它，然后手动将 `bin` 目录添加到您的 `PATH` 中，例如：`C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin`。
 
-If you can't compile Zed, make sure that you have at least the following components installed in case of a Visual Studio installation:
+如果您无法编译 Zed，请确保在 Visual Studio 安装的情况下至少安装了以下组件：
 
 ```json [settings]
 {
@@ -34,7 +34,7 @@ If you can't compile Zed, make sure that you have at least the following compone
 }
 ```
 
-Or if in case of just Build Tools, the following components:
+或者如果只是 Build Tools，则安装以下组件：
 
 ```json [settings]
 {
@@ -60,19 +60,19 @@ Or if in case of just Build Tools, the following components:
 }
 ```
 
-The list can be obtained as follows:
+可以按以下方式获取列表：
 
-- Open the Visual Studio Installer
-- Click on `More` in the `Installed` tab
-- Click on `Export configuration`
+- 打开 Visual Studio Installer
+- 在 `Installed` 选项卡中单击 `More`
+- 单击 `Export configuration`
 
-### Backend Dependencies (optional) {#backend-dependencies}
+### 后端依赖（可选） {#backend-dependencies}
 
-If you are looking to develop Zed collaboration features using a local collaboration server, please see: [Local Collaboration](./local-collaboration.md) docs.
+如果您希望使用本地协作服务器开发 Zed 协作功能，请参阅：[本地协作](./local-collaboration.md) 文档。
 
-### Notes
+### 注意事项
 
-You should modify the `pg_hba.conf` file in the `data` directory to use `trust` instead of `scram-sha-256` for the `host` method. Otherwise, the connection will fail with the error `password authentication failed`. The `pg_hba.conf` file typically locates at `C:\Program Files\PostgreSQL\17\data\pg_hba.conf`. After the modification, the file should look like this:
+您应该修改 `data` 目录中的 `pg_hba.conf` 文件，将 `host` 方法使用 `trust` 而不是 `scram-sha-256`。否则，连接将失败并出现错误 `password authentication failed`。`pg_hba.conf` 文件通常位于 `C:\Program Files\PostgreSQL\17\data\pg_hba.conf`。修改后，文件应如下所示：
 
 ```conf
 # IPv4 local connections:
@@ -81,61 +81,61 @@ host    all             all             127.0.0.1/32            trust
 host    all             all             ::1/128                 trust
 ```
 
-Also, if you are using a non-latin Windows version, you must modify the`lc_messages` parameter in the `postgresql.conf` file in the `data` directory to `English_United States.1252` (or whatever UTF8-compatible encoding you have). Otherwise, the database will panic. The `postgresql.conf` file should look like this:
+此外，如果您使用的是非拉丁语 Windows 版本，必须将 `data` 目录中 `postgresql.conf` 文件中的 `lc_messages` 参数修改为 `English_United States.1252`（或您拥有的任何 UTF8 兼容编码）。否则，数据库将崩溃。`postgresql.conf` 文件应如下所示：
 
 ```conf
 # lc_messages = 'Chinese (Simplified)_China.936' # locale for system error message strings
 lc_messages = 'English_United States.1252'
 ```
 
-After this, you should restart the `postgresql` service. Press the `win` key + `R` to launch the `Run` window. Type the `services.msc` and hit the `OK` button to open the Services Manager. Then, find the `postgresql-x64-XX` service, right-click on it, and select `Restart`.
+之后，您应该重新启动 `postgresql` 服务。按 `win` 键 + `R` 启动 `Run` 窗口。输入 `services.msc` 并按 `OK` 按钮打开服务管理器。然后，找到 `postgresql-x64-XX` 服务，右键单击它，然后选择 `Restart`。
 
-## Building from source
+## 从源代码构建
 
-Once you have the dependencies installed, you can build Zed using [Cargo](https://doc.rust-lang.org/cargo/).
+一旦安装了依赖项，您可以使用 [Cargo](https://doc.rust-lang.org/cargo/) 构建 Zed。
 
-For a debug build:
+对于调试构建：
 
 ```sh
 cargo run
 ```
 
-For a release build:
+对于发布构建：
 
 ```sh
 cargo run --release
 ```
 
-And to run the tests:
+要运行测试：
 
 ```sh
 cargo test --workspace
 ```
 
-## Installing from msys2
+## 从 msys2 安装
 
-Zed does not support unofficial MSYS2 Zed packages built for Mingw-w64. Please report any issues you may have with [mingw-w64-zed](https://packages.msys2.org/base/mingw-w64-zed) to [msys2/MINGW-packages/issues](https://github.com/msys2/MINGW-packages/issues?q=is%3Aissue+is%3Aopen+zed).
+Zed 不支持为 Mingw-w64 构建的非官方 MSYS2 Zed 包。请将您可能遇到的任何与 [mingw-w64-zed](https://packages.msys2.org/base/mingw-w64-zed) 相关的问题报告给 [msys2/MINGW-packages/issues](https://github.com/msys2/MINGW-packages/issues?q=is%3Aissue+is%3Aopen+zed)。
 
-Please refer to [MSYS2 documentation](https://www.msys2.org/docs/ides-editors/#zed) first.
+请首先参考 [MSYS2 文档](https://www.msys2.org/docs/ides-editors/#zed)。
 
-## Troubleshooting
+## 故障排除
 
-### Setting `RUSTFLAGS` env var breaks builds
+### 设置 `RUSTFLAGS` 环境变量会破坏构建
 
-If you set the `RUSTFLAGS` env var, it will override the `rustflags` settings in `.cargo/config.toml` which is required to properly build Zed.
+如果您设置了 `RUSTFLAGS` 环境变量，它将覆盖 `.cargo/config.toml` 中的 `rustflags` 设置，这些设置是正确构建 Zed 所必需的。
 
-Since these settings can vary from time to time, the build errors you receive may vary from linker errors, to other stranger errors.
+由于这些设置可能随时变化，您收到的构建错误可能从链接器错误到其他奇怪的错误不等。
 
-If you'd like to add extra rust flags, you may do 1 of the following in `.cargo/config.toml`:
+如果您想添加额外的 rust 标志，可以在 `.cargo/config.toml` 中执行以下操作之一：
 
-Add your flags in the build section
+在构建部分添加您的标志
 
 ```toml
 [build]
 rustflags = ["-C", "symbol-mangling-version=v0", "--cfg", "tokio_unstable"]
 ```
 
-Add your flags in the windows target section
+在 windows 目标部分添加您的标志
 
 ```toml
 [target.'cfg(target_os = "windows")']
@@ -147,12 +147,12 @@ rustflags = [
 ]
 ```
 
-Or, you can create a new `.cargo/config.toml` in the same folder as the Zed repo (see below). This is particularly useful if you are doing CI builds since you don't have to edit the original `.cargo/config.toml`.
+或者，您可以在与 Zed 存储库相同的文件夹中创建一个新的 `.cargo/config.toml`（见下文）。如果您正在进行 CI 构建，这特别有用，因为您不必编辑原始的 `.cargo/config.toml`。
 
 ```
 upper_dir
-├── .cargo          // <-- Make this folder
-│   └── config.toml // <-- Make this file
+├── .cargo          // <-- 创建此文件夹
+│   └── config.toml // <-- 创建此文件
 └── zed
     ├── .cargo
     │   └── config.toml
@@ -161,28 +161,28 @@ upper_dir
         └── ...
 ```
 
-In the new (above) `.cargo/config.toml`, if we wanted to add `--cfg gles` to our rustflags, it would look like this
+在新的（上面的）`.cargo/config.toml` 中，如果我们想将 `--cfg gles` 添加到我们的 rustflags 中，它将如下所示
 
 ```toml
 [target.'cfg(all())']
 rustflags = ["--cfg", "gles"]
 ```
 
-### Cargo errors claiming that a dependency is using unstable features
+### Cargo 错误声称依赖项使用不稳定功能
 
-Try `cargo clean` and `cargo build`.
+尝试 `cargo clean` 和 `cargo build`。
 
 ### `STATUS_ACCESS_VIOLATION`
 
-This error can happen if you are using the "rust-lld.exe" linker. Consider trying a different linker.
+如果您使用 "rust-lld.exe" 链接器，可能会发生此错误。考虑尝试不同的链接器。
 
-If you are using a global config, consider moving the Zed repository to a nested directory and add a `.cargo/config.toml` with a custom linker config in the parent directory.
+如果您使用全局配置，考虑将 Zed 存储库移动到嵌套目录，并在父目录中添加带有自定义链接器配置的 `.cargo/config.toml`。
 
-See this issue for more information [#12041](https://github.com/zed-industries/zed/issues/12041)
+有关更多信息，请参阅此问题 [#12041](https://github.com/zed-industries/zed/issues/12041)
 
-### Invalid RC path selected
+### 选择了无效的 RC 路径
 
-Sometimes, depending on the security rules applied to your laptop, you may get the following error while compiling Zed:
+有时，根据应用于您的笔记本电脑的安全规则，您可能在编译 Zed 时收到以下错误：
 
 ```
 error: failed to run custom build command for `zed(C:\Users\USER\src\zed\crates\zed)`
@@ -202,14 +202,14 @@ Caused by:
 warning: build failed, waiting for other jobs to finish...
 ```
 
-In order to fix this issue, you can manually set the `ZED_RC_TOOLKIT_PATH` environment variable to the RC toolkit path. Usually, you can set it to:
-`C:\Program Files (x86)\Windows Kits\10\bin\<SDK_version>\x64`.
+要解决此问题，您可以手动将 `ZED_RC_TOOLKIT_PATH` 环境变量设置为 RC 工具包路径。通常，您可以将其设置为：
+`C:\Program Files (x86)\Windows Kits\10\bin\<SDK_version>\x64`。
 
-See this [issue](https://github.com/zed-industries/zed/issues/18393) for more information.
+有关更多信息，请参阅此 [issue](https://github.com/zed-industries/zed/issues/18393)。
 
-### Build fails: Path too long
+### 构建失败：路径太长
 
-You may receive an error like the following when building
+构建时您可能会收到类似以下的错误
 
 ```
 error: failed to get `pet` as a dependency of package `languages v0.1.0 (D:\a\zed-windows-builds\zed-windows-builds\crates\languages)`
@@ -224,36 +224,36 @@ Caused by:
   path too long: 'C:/Users/runneradmin/.cargo/git/checkouts/python-environment-tools-903993894b37a7d2/ffcbf3f/crates/pet-conda/tests/unix/conda_env_without_manager_but_found_in_history/some_other_location/conda_install/conda-meta/python-fastjsonschema-2.16.2-py310hca03da5_0.json'; class=Filesystem (30)
 ```
 
-In order to solve this, you can enable longpath support for git and Windows.
+要解决此问题，您可以为 git 和 Windows 启用长路径支持。
 
-For git: `git config --system core.longpaths true`
+对于 git：`git config --system core.longpaths true`
 
-And for Windows with this PS command:
+对于 Windows，使用此 PS 命令：
 
 ```powershell
 New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
 ```
 
-For more information on this, please see [win32 docs](https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=powershell)
+有关此问题的更多信息，请参阅 [win32 文档](https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=powershell)
 
-(note that you will need to restart your system after enabling longpath support)
+（请注意，启用长路径支持后需要重新启动系统）
 
-### Graphics issues
+### 图形问题
 
-#### Zed fails to launch
+#### Zed 无法启动
 
-Currently, Zed uses Vulkan as its graphics API on Windows. However, Vulkan isn't always the most reliable on Windows, so if Zed fails to launch, it's likely a Vulkan-related issue.
+目前，Zed 在 Windows 上使用 Vulkan 作为其图形 API。然而，Vulkan 在 Windows 上并不总是最可靠的，因此如果 Zed 无法启动，很可能是与 Vulkan 相关的问题。
 
-You can check the Zed log at:
+您可以在以下位置检查 Zed 日志：
 `C:\Users\YOU\AppData\Local\Zed\logs\Zed.log`
 
-If you see messages like:
+如果您看到类似以下的消息：
 
 - `Zed failed to open a window: NoSupportedDeviceFound`
 - `ERROR_INITIALIZATION_FAILED`
 - `GPU Crashed`
 - `ERROR_SURFACE_LOST_KHR`
 
-Then Vulkan might not be working properly on your system. In most cases, updating your GPU drivers may help resolve this.
+那么 Vulkan 可能无法在您的系统上正常工作。在大多数情况下，更新您的 GPU 驱动程序可能有助于解决此问题。
 
-If there's nothing Vulkan-related in the logs and you happen to have Bandicam installed, try uninstalling it. Zed is currently not compatible with Bandicam.
+如果日志中没有与 Vulkan 相关的内容，而您恰好安装了 Bandicam，请尝试卸载它。Zed 目前与 Bandicam 不兼容。

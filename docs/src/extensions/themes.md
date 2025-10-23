@@ -1,53 +1,53 @@
-# Themes
+# 主题
 
-The `themes` directory in an extension should contain one or more theme files.
+扩展中的 `themes` 目录应包含一个或多个主题文件。
 
-Each theme file should adhere to the JSON schema specified at [`https://zed.dev/schema/themes/v0.2.0.json`](https://zed.dev/schema/themes/v0.2.0.json).
+每个主题文件应遵守在 [`https://zed.dev/schema/themes/v0.2.0.json`](https://zed.dev/schema/themes/v0.2.0.json) 指定的 JSON 模式。
 
-See [this blog post](https://zed.dev/blog/user-themes-now-in-preview) for more details about creating themes.
+有关创建主题的更多详细信息，请参阅[此博客文章](https://zed.dev/blog/user-themes-now-in-preview)。
 
-## Theme JSON Structure
+## 主题 JSON 结构
 
-The structure of a Zed theme is defined in the [Zed Theme JSON Schema](https://zed.dev/schema/themes/v0.2.0.json).
+Zed 主题的结构在 [Zed 主题 JSON 模式](https://zed.dev/schema/themes/v0.2.0.json) 中定义。
 
-A Zed theme consists of a Theme Family object including:
+Zed 主题由主题族对象组成，包括：
 
-- `name`: The name for the theme family
-- `author`: The name of the author of the theme family
-- `themes`: An array of Themes belonging to the theme family
+- `name`：主题族的名称
+- `author`：主题族作者的名称
+- `themes`：属于主题族的主题数组
 
-The core components a Theme object include:
+主题对象的核心组件包括：
 
-1. Theme Metadata:
+1. 主题元数据：
 
-   - `name`: The name of the theme
-   - `appearance`: Either "light" or "dark"
+   - `name`：主题的名称
+   - `appearance`："light" 或 "dark"
 
-2. Style Properties under the `style`, such as:
+2. `style` 下的样式属性，例如：
 
-   - `background`: The main background color
-   - `foreground`: The main text color
-   - `accent`: The accent color used for highlighting and emphasis
+   - `background`：主背景颜色
+   - `foreground`：主文本颜色
+   - `accent`：用于高亮和强调的重音颜色
 
-3. Syntax Highlighting:
+3. 语法高亮：
 
-   - `syntax`: An object containing color definitions for various syntax elements (e.g., keywords, strings, comments)
+   - `syntax`：包含各种语法元素（例如，关键字、字符串、注释）颜色定义的对象
 
-4. UI Elements:
+4. UI 元素：
 
-   - Colors for various UI components such as:
-     - `element.background`: Background color for UI elements
-     - `border`: Border colors for different states (normal, focused, selected)
-     - `text`: Text colors for different states (normal, muted, accent)
+   - 各种 UI 组件的颜色，例如：
+     - `element.background`：UI 元素的背景颜色
+     - `border`：不同状态（正常、聚焦、选中）的边框颜色
+     - `text`：不同状态（正常、静音、重音）的文本颜色
 
-5. Editor-specific Colors:
+5. 编辑器特定颜色：
 
-   - Colors for editor-related elements such as:
-     - `editor.background`: Editor background color
-     - `editor.gutter`: Gutter colors
-     - `editor.line_number`: Line number colors
+   - 与编辑器相关的元素的颜色，例如：
+     - `editor.background`：编辑器背景颜色
+     - `editor.gutter`：装订线颜色
+     - `editor.line_number`：行号颜色
 
-6. Terminal Colors:
-   - ANSI color definitions for the integrated terminal
+6. 终端颜色：
+   - 集成终端的 ANSI 颜色定义
 
-We recommend looking at our [existing themes](https://github.com/zed-industries/zed/tree/main/assets/themes) to get a more comprehensive idea of what can be styled.
+我们建议查看我们的[现有主题](https://github.com/zed-industries/zed/tree/main/assets/themes) 以更全面地了解可以设置样式的元素。

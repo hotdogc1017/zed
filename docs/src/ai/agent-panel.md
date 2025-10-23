@@ -1,17 +1,17 @@
-# Agent Panel
+# 代理面板
 
-The Agent Panel allows you to interact with many LLMs and coding agents that can help with in various types of tasks, such as generating code, codebase understanding, and other general inquiries like writing emails, documentation, and more.
+代理面板允许您与许多 LLM 和编码代理交互，这些代理可以帮助完成各种类型的任务，例如生成代码、理解代码库以及其他一般查询，如编写电子邮件、文档等。
 
-To open it, use the `agent: new thread` action in [the Command Palette](../getting-started.md#command-palette) or click the ✨ (sparkles) icon in the status bar.
+要打开它，请在[命令面板](../getting-started.md#command-palette)中使用 `agent: new thread` 操作，或点击状态栏中的 ✨（火花）图标。
 
-## Getting Started
+## 开始使用
 
-If you're using the Agent Panel for the first time, you need to have at least one LLM provider or external agent configured.
-You can do that by:
+如果您是第一次使用代理面板，您需要配置至少一个 LLM 提供商或外部代理。
+您可以通过以下方式实现：
 
-1. [subscribing to our Pro plan](https://zed.dev/pricing), so you have access to our hosted models
-2. [using your own API keys](./llm-providers.md#use-your-own-keys), either from model providers like Anthropic or model gateways like OpenRouter.
-3. using an external agent like [Gemini CLI](./external-agents.md#gemini-cli) or [Claude Code](./external-agents.md#claude-code)
+1. [订阅我们的 Pro 计划](https://zed.dev/pricing)，以便访问我们的托管模型
+2. [使用您自己的 API 密钥](./llm-providers.md#use-your-own-keys)，可以来自模型提供商如 Anthropic 或模型网关如 OpenRouter
+3. 使用外部代理，如 [Gemini CLI](./external-agents.md#gemini-cli) 或 [Claude Code](./external-agents.md#claude-code)
 
 ## Overview {#overview}
 

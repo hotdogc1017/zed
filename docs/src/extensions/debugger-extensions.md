@@ -1,20 +1,20 @@
-# Debugger Extensions
+# 调试器扩展
 
-[Debug Adapter Protocol](https://microsoft.github.io/debug-adapter-protocol) Servers can be exposed as extensions for use in the [debugger](../debugger.md).
+[调试适配器协议](https://microsoft.github.io/debug-adapter-protocol) 服务器可以作为扩展暴露，用于 [调试器](../debugger.md)。
 
-## Defining Debugger Extensions
+## 定义调试器扩展
 
-A given extension may provide one or more DAP servers.
-Each DAP server must be registered in the `extension.toml`:
+给定的扩展可以提供一个或多个 DAP 服务器。
+每个 DAP 服务器必须在 `extension.toml` 中注册：
 
 ```toml
 [debug_adapters.my-debug-adapter]
-# Optional relative path to the JSON schema for the debug adapter configuration schema. Defaults to `debug_adapter_schemas/$DEBUG_ADAPTER_NAME_ID.json`.
-# Note that while this field is optional, a schema is mandatory.
+# 调试适配器配置模式的 JSON 模式的可选相对路径。默认为 `debug_adapter_schemas/$DEBUG_ADAPTER_NAME_ID.json`。
+# 请注意，虽然此字段是可选的，但模式是必需的。
 schema_path = "relative/path/to/schema.json"
 ```
 
-Then, in the Rust code for your extension, implement the `get_dap_binary` method on your extension:
+然后，在扩展的 Rust 代码中，在扩展上实现 `get_dap_binary` 方法：
 
 ```rust
 impl zed::Extension for MyExtension {
@@ -28,12 +28,12 @@ impl zed::Extension for MyExtension {
 }
 ```
 
-This method should return the command to start up a debug adapter protocol server, along with any arguments or environment variables necessary for it to function.
+此方法应返回启动调试适配器协议服务器的命令，以及使其正常运行所需的任何参数或环境变量。
 
-If you need to download the DAP server from an external source—like GitHub Releases or npm—you can also do that in this function. Make sure to check for updates only periodically, as this function is called whenever a user spawns a new debug session with your debug adapter.
+如果您需要从外部源（如 GitHub Releases 或 npm）下载 DAP 服务器，也可以在此函数中执行。请确保仅定期检查更新，因为每当用户使用您的调试适配器生成新的调试会话时都会调用此函数。
 
-You must also implement `dap_request_kind`. This function is used to determine whether a given debug scenario will _launch_ a new debuggee or _attach_ to an existing one.
-We also use it to determine that a given debug scenario requires running a _locator_.
+您还必须实现 `dap_request_kind`。此函数用于确定给定的调试场景将_启动_新的调试对象还是_附加_到现有的调试对象。
+我们还使用它来确定给定的调试场景需要运行_定位器_。
 
 ```rust
 impl zed::Extension for MyExtension {
@@ -45,7 +45,7 @@ impl zed::Extension for MyExtension {
 }
 ```
 
-These two functions are sufficient to expose your debug adapter in `debug.json`-based user workflows, but you should strongly consider implementing `dap_config_to_scenario` as well.
+这两个函数足以在基于 `debug.json` 的用户工作流中暴露您的调试适配器，但您应该强烈考虑也实现 `dap_config_to_scenario`。
 
 ```rust
 impl zed::Extension for MyExtension {
@@ -56,27 +56,27 @@ impl zed::Extension for MyExtension {
 }
 ```
 
-`dap_config_to_scenario` is used when the user spawns a session via new process modal UI. At a high level, it takes a generic debug configuration (that isn't specific to any
-debug adapter) and tries to turn it into a concrete debug scenario for your adapter.
-Put another way, it is supposed to answer the question: "Given a program, a list of arguments, current working directory and environment variables, what would the configuration for spawning this debug adapter look like?".
+`dap_config_to_scenario` 在用户通过新进程模态 UI 生成会话时使用。在高层次上，它接受一个通用的调试配置（不特定于任何
+调试适配器）并尝试将其转换为您的适配器的具体调试场景。
+换句话说，它应该回答这个问题："给定一个程序、参数列表、当前工作目录和环境变量，生成此调试适配器的配置会是什么样子？"。
 
-## Defining Debug Locators
+## 定义调试定位器
 
-Zed offers an automatic way to create debug scenarios with _debug locators_.
-A locator locates the debug target and figures out how to spawn a debug session for it. Thanks to locators, we can automatically convert existing user tasks (e.g. `cargo run`) and convert them into debug scenarios (e.g. `cargo build` followed by spawning a debugger with `target/debug/my_program` as the program to debug).
+Zed 提供了一种使用_调试定位器_自动创建调试场景的方法。
+定位器定位调试目标并找出如何为其生成调试会话。由于定位器，我们可以自动转换现有的用户任务（例如 `cargo run`）并将其转换为调试场景（例如 `cargo build`，然后使用 `target/debug/my_program` 作为要调试的程序生成调试器）。
 
-> Your extension can define its own debug locators even if it does not expose a debug adapter. We strongly recommend doing so when your extension already exposes language tasks, as it allows users to spawn a debug session without having to manually configure the debug adapter.
+> 即使您的扩展不暴露调试适配器，也可以定义自己的调试定位器。当您的扩展已经暴露语言任务时，我们强烈建议这样做，因为它允许用户生成调试会话而无需手动配置调试适配器。
 
-Locators can (but don't have to) be agnostic to the debug adapter they are used with. They are simply responsible for locating the debug target and figuring out how to spawn a debug session for it. This allows for a more flexible and extensible debugging experience.
+定位器可以（但不必须）对它们使用的调试适配器不可知。它们仅负责定位调试目标并找出如何为其生成调试会话。这允许更灵活和可扩展的调试体验。
 
-Your extension can define one or more debug locators. Each debug locator must be registered in the `extension.toml`:
+您的扩展可以定义一个或多个调试定位器。每个调试定位器必须在 `extension.toml` 中注册：
 
 ```toml
 [debug_locators.my-debug-locator]
 ```
 
-Locators have two components.
-First, each locator is ran on each available task to figure out if any of the available locators can provide a debug scenario for a given task. This is done by calling `dap_locator_create_scenario`.
+定位器有两个组件。
+首先，每个定位器在每个可用任务上运行，以确定是否有任何可用定位器可以为给定任务提供调试场景。这是通过调用 `dap_locator_create_scenario` 完成的。
 
 ```rust
 impl zed::Extension for MyExtension {
@@ -90,8 +90,8 @@ impl zed::Extension for MyExtension {
 }
 ```
 
-This function should return `Some` debug scenario when that scenario defines a debugging counterpart to a given user task.
-Note that a `DebugScenario` can include a [build task](../debugger.md#build-tasks). If there is one, we will execute `run_dap_locator` after a build task is finished successfully.
+当该场景定义了给定用户任务的调试对应项时，此函数应返回 `Some` 调试场景。
+请注意，`DebugScenario` 可以包含一个[构建任务](../debugger.md#build-tasks)。如果有，我们将在构建任务成功完成后执行 `run_dap_locator`。
 
 ```rust
 impl zed::Extension for MyExtension {
@@ -103,15 +103,15 @@ impl zed::Extension for MyExtension {
 }
 ```
 
-`run_dap_locator` is useful in case you cannot determine a build target deterministically. Some build systems may produce artifacts whose names are not known up-front.
-Note however that you do _not_ need to go through a 2-phase resolution; if you can determine the full debug configuration with just `dap_locator_create_scenario`, you can omit `build` property on a returned `DebugScenario`. Please also note that your locator **will be** called with tasks it's unlikely to accept; thus you should take some effort to return `None` early before performing any expensive operations.
+如果您无法确定性地确定构建目标，`run_dap_locator` 很有用。某些构建系统可能会产生名称事先未知的工件。
+但请注意，您_不需要_经过两阶段解析；如果您可以仅使用 `dap_locator_create_scenario` 确定完整的调试配置，则可以省略返回的 `DebugScenario` 上的 `build` 属性。另请注意，您的定位器**将**被调用它不太可能接受的任务；因此您应该努力在执行任何昂贵操作之前尽早返回 `None`。
 
-## Available Extensions
+## 可用扩展
 
-Check out all the DAP servers that have already been exposed as extensions [on Zed's site](https://zed.dev/extensions?filter=debug-adapters).
+查看所有已作为扩展暴露的 DAP 服务器 [在 Zed 网站上](https://zed.dev/extensions?filter=debug-adapters)。
 
-We recommend taking a look at their repositories as a way to understand how they are generally created and structured.
+我们建议查看它们的存储库，以了解它们通常是如何创建和构建的。
 
-## Testing
+## 测试
 
-To test your new Debug Adapter Protocol server extension, you can [install it as a dev extension](./developing-extensions.md#developing-an-extension-locally).
+要测试您的新调试适配器协议服务器扩展，您可以[将其安装为开发扩展](./developing-extensions.md#developing-an-extension-locally)。

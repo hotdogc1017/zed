@@ -1,67 +1,67 @@
-# Models
+# 模型
 
-Zed’s plans offer hosted versions of major LLMs, generally with higher rate limits than using your API keys.
-We’re working hard to expand the models supported by Zed’s subscription offerings, so please check back often.
+Zed 的计划提供主要 LLM 的托管版本，通常比使用您的 API 密钥具有更高的速率限制。
+我们正在努力扩展 Zed 订阅产品支持的模型，因此请经常回来查看。
 
-| Model                  | Provider  | Token Type          | Provider Price per 1M tokens | Zed Price per 1M tokens |
+| 模型                  | 提供程序  | 令牌类型          | 提供程序每 100 万令牌价格 | Zed 每 100 万令牌价格 |
 | ---------------------- | --------- | ------------------- | ---------------------------- | ----------------------- |
-| Claude Opus 4.1        | Anthropic | Input               | $15.00                       | $16.50                  |
-|                        | Anthropic | Output              | $75.00                       | $82.50                  |
-|                        | Anthropic | Input - Cache Write | $18.75                       | $20.625                 |
-|                        | Anthropic | Input - Cache Read  | $1.50                        | $1.65                   |
-| Claude Sonnet 4.5      | Anthropic | Input               | $3.00                        | $3.30                   |
-|                        | Anthropic | Output              | $15.00                       | $16.50                  |
-|                        | Anthropic | Input - Cache Write | $3.75                        | $4.125                  |
-|                        | Anthropic | Input - Cache Read  | $0.30                        | $0.33                   |
-| Claude Sonnet 4        | Anthropic | Input               | $3.00                        | $3.30                   |
-|                        | Anthropic | Output              | $15.00                       | $16.50                  |
-|                        | Anthropic | Input - Cache Write | $3.75                        | $4.125                  |
-|                        | Anthropic | Input - Cache Read  | $0.30                        | $0.33                   |
-| Claude Sonnet 3.7      | Anthropic | Input               | $3.00                        | $3.30                   |
-|                        | Anthropic | Output              | $15.00                       | $16.50                  |
-|                        | Anthropic | Input - Cache Write | $3.75                        | $4.125                  |
-|                        | Anthropic | Input - Cache Read  | $0.30                        | $0.33                   |
-| Claude Haiku 4.5       | Anthropic | Input               | $1.00                        | $1.10                   |
-|                        | Anthropic | Output              | $5.00                        | $5.50                   |
-|                        | Anthropic | Input - Cache Write | $1.25                        | $1.375                  |
-|                        | Anthropic | Input - Cache Read  | $0.10                        | $0.11                   |
-| GPT-5                  | OpenAI    | Input               | $1.25                        | $1.375                  |
-|                        | OpenAI    | Output              | $10.00                       | $11.00                  |
-|                        | OpenAI    | Cached Input        | $0.125                       | $0.1375                 |
-| GPT-5 mini             | OpenAI    | Input               | $0.25                        | $0.275                  |
-|                        | OpenAI    | Output              | $2.00                        | $2.20                   |
-|                        | OpenAI    | Cached Input        | $0.025                       | $0.0275                 |
-| GPT-5 nano             | OpenAI    | Input               | $0.05                        | $0.055                  |
-|                        | OpenAI    | Output              | $0.40                        | $0.44                   |
-|                        | OpenAI    | Cached Input        | $0.005                       | $0.0055                 |
-| Gemini 2.5 Pro         | Google    | Input               | $1.25                        | $1.375                  |
-|                        | Google    | Output              | $10.00                       | $11.00                  |
-| Gemini 2.5 Flash       | Google    | Input               | $0.30                        | $0.33                   |
-|                        | Google    | Output              | $2.50                        | $2.75                   |
-| Grok 4                 | X.ai      | Input               | $3.00                        | $3.30                   |
-|                        | X.ai      | Output              | $15.00                       | $16.5                   |
-|                        | X.ai      | Cached Input        | $0.75                        | $0.825                  |
-| Grok 4 Fast            | X.ai      | Input               | $0.20                        | $0.22                   |
-|                        | X.ai      | Output              | $0.50                        | $0.55                   |
-|                        | X.ai      | Cached Input        | $0.05                        | $0.055                  |
-| Grok 4 (Non-Reasoning) | X.ai      | Input               | $0.20                        | $0.22                   |
-|                        | X.ai      | Output              | $0.50                        | $0.55                   |
-|                        | X.ai      | Cached Input        | $0.05                        | $0.055                  |
-| Grok Code Fast 1       | X.ai      | Input               | $0.20                        | $0.22                   |
-|                        | X.ai      | Output              | $1.50                        | $1.65                   |
-|                        | X.ai      | Cached Input        | $0.02                        | $0.022                  |
+| Claude Opus 4.1        | Anthropic | 输入               | $15.00                       | $16.50                  |
+|                        | Anthropic | 输出              | $75.00                       | $82.50                  |
+|                        | Anthropic | 输入 - 缓存写入 | $18.75                       | $20.625                 |
+|                        | Anthropic | 输入 - 缓存读取  | $1.50                        | $1.65                   |
+| Claude Sonnet 4.5      | Anthropic | 输入               | $3.00                        | $3.30                   |
+|                        | Anthropic | 输出              | $15.00                       | $16.50                  |
+|                        | Anthropic | 输入 - 缓存写入 | $3.75                        | $4.125                  |
+|                        | Anthropic | 输入 - 缓存读取  | $0.30                        | $0.33                   |
+| Claude Sonnet 4        | Anthropic | 输入               | $3.00                        | $3.30                   |
+|                        | Anthropic | 输出              | $15.00                       | $16.50                  |
+|                        | Anthropic | 输入 - 缓存写入 | $3.75                        | $4.125                  |
+|                        | Anthropic | 输入 - 缓存读取  | $0.30                        | $0.33                   |
+| Claude Sonnet 3.7      | Anthropic | 输入               | $3.00                        | $3.30                   |
+|                        | Anthropic | 输出              | $15.00                       | $16.50                  |
+|                        | Anthropic | 输入 - 缓存写入 | $3.75                        | $4.125                  |
+|                        | Anthropic | 输入 - 缓存读取  | $0.30                        | $0.33                   |
+| Claude Haiku 4.5       | Anthropic | 输入               | $1.00                        | $1.10                   |
+|                        | Anthropic | 输出              | $5.00                        | $5.50                   |
+|                        | Anthropic | 输入 - 缓存写入 | $1.25                        | $1.375                  |
+|                        | Anthropic | 输入 - 缓存读取  | $0.10                        | $0.11                   |
+| GPT-5                  | OpenAI    | 输入               | $1.25                        | $1.375                  |
+|                        | OpenAI    | 输出              | $10.00                       | $11.00                  |
+|                        | OpenAI    | 缓存输入        | $0.125                       | $0.1375                 |
+| GPT-5 mini             | OpenAI    | 输入               | $0.25                        | $0.275                  |
+|                        | OpenAI    | 输出              | $2.00                        | $2.20                   |
+|                        | OpenAI    | 缓存输入        | $0.025                       | $0.0275                 |
+| GPT-5 nano             | OpenAI    | 输入               | $0.05                        | $0.055                  |
+|                        | OpenAI    | 输出              | $0.40                        | $0.44                   |
+|                        | OpenAI    | 缓存输入        | $0.005                       | $0.0055                 |
+| Gemini 2.5 Pro         | Google    | 输入               | $1.25                        | $1.375                  |
+|                        | Google    | 输出              | $10.00                       | $11.00                  |
+| Gemini 2.5 Flash       | Google    | 输入               | $0.30                        | $0.33                   |
+|                        | Google    | 输出              | $2.50                        | $2.75                   |
+| Grok 4                 | X.ai      | 输入               | $3.00                        | $3.30                   |
+|                        | X.ai      | 输出              | $15.00                       | $16.5                   |
+|                        | X.ai      | 缓存输入        | $0.75                        | $0.825                  |
+| Grok 4 Fast            | X.ai      | 输入               | $0.20                        | $0.22                   |
+|                        | X.ai      | 输出              | $0.50                        | $0.55                   |
+|                        | X.ai      | 缓存输入        | $0.05                        | $0.055                  |
+| Grok 4 (Non-Reasoning) | X.ai      | 输入               | $0.20                        | $0.22                   |
+|                        | X.ai      | 输出              | $0.50                        | $0.55                   |
+|                        | X.ai      | 缓存输入        | $0.05                        | $0.055                  |
+| Grok Code Fast 1       | X.ai      | 输入               | $0.20                        | $0.22                   |
+|                        | X.ai      | 输出              | $1.50                        | $1.65                   |
+|                        | X.ai      | 缓存输入        | $0.02                        | $0.022                  |
 
-## Usage {#usage}
+## 使用 {#usage}
 
-Any usage of a Zed-hosted model will be billed at the Zed Price (rightmost column above). See [Plans and Usage](./plans-and-usage.md) for details on Zed's plans and limits for use of hosted models.
+任何使用 Zed 托管模型的行为都将按 Zed 价格（上表最右列）计费。有关 Zed 的计划和使用托管模型的限制的详细信息，请参阅 [计划和用法](./plans-and-usage.md)。
 
-> We encourage you to think through what model is best for your needs before leaving the Agent Panel to work. All LLMs can "spiral" and occasionally enter unending loops that require user intervention.
+> 我们鼓励您在离开代理面板工作之前仔细考虑哪种模型最适合您的需求。所有 LLM 都可能"螺旋"并偶尔进入需要用户干预的无尽循环。
 
-## Context Windows {#context-windows}
+## 上下文窗口 {#context-windows}
 
-A context window is the maximum span of text and code an LLM can consider at once, including both the input prompt and output generated by the model.
+上下文窗口是 LLM 可以一次考虑的最大文本和代码范围，包括输入提示和模型生成的输出。
 
-| Model             | Provider  | Zed-Hosted Context Window |
+| 模型             | 提供程序  | Zed 托管上下文窗口 |
 | ----------------- | --------- | ------------------------- |
 | Claude Opus 4.1   | Anthropic | 200k                      |
 | Claude Sonnet 4   | Anthropic | 200k                      |
@@ -73,13 +73,13 @@ A context window is the maximum span of text and code an LLM can consider at onc
 | Gemini 2.5 Pro    | Google    | 200k                      |
 | Gemini 2.5 Flash  | Google    | 200k                      |
 
-> We're planning on expanding supported context windows for hosted Sonnet 4 and Gemini 2.5 Pro/Flash in the near future. Stay tuned!
+> 我们计划在不久的将来扩展托管 Sonnet 4 和 Gemini 2.5 Pro/Flash 支持的上下文窗口。敬请期待！
 
-Each Agent thread and text thread in Zed maintains its own context window.
-The more prompts, attached files, and responses included in a session, the larger the context window grows.
+Zed 中的每个代理线程和文本线程都维护自己的上下文窗口。
+会话中包含的提示、附加文件和响应越多，上下文窗口就越大。
 
-For best results, it’s recommended you take a purpose-based approach to Agent thread management, starting a new thread for each unique task.
+为了获得最佳结果，建议您采用基于目的的方法来管理代理线程，为每个独特任务启动一个新线程。
 
-## Tool Calls {#tool-calls}
+## 工具调用 {#tool-calls}
 
-Models can use [tools](./tools.md) to interface with your code, search the web, and perform other useful functions.
+模型可以使用 [工具](./tools.md) 与您的代码交互、搜索网络并执行其他有用的功能。

@@ -1,52 +1,52 @@
-# Channels
+# 频道
 
-At Zed we believe that great things are built by great people working together. We have designed Zed to help every individual work faster and to help teams of people work together more effectively.
+在 Zed，我们相信伟大的事物是由伟大的人们共同构建的。我们设计了 Zed 来帮助每个人更快地工作，并帮助团队更有效地协作。
 
-## Overview
+## 概述
 
-Channels provide a way to streamline collaborating for software engineers in many ways, but particularly:
+频道为软件工程师提供了多种方式来简化协作，特别是：
 
-- Pairing – when working on something together, you both have your own screen, mouse, and keyboard.
-- Mentoring – it’s easy to jump in to someone else’s context, and help them get unstuck, without the friction of pushing code up.
-- Refactoring – you can have multiple people join in on large refactoring without fear of conflict.
-- Ambient awareness – you can see what everyone else is working on with no need for status emails or meetings.
+- 结对编程 – 当一起工作时，你们都有自己的屏幕、鼠标和键盘。
+- 指导 – 很容易跳入别人的上下文，帮助他们摆脱困境，而无需推送代码的摩擦。
+- 重构 – 您可以让多个人参与大型重构，而不必担心冲突。
+- 环境感知 – 您可以看到其他人在做什么，无需状态邮件或会议。
 
-## Channels
+## 频道
 
-To open the collaboration panel hit {#kb collab_panel::ToggleFocus} or `collab panel: toggle focus`.
+要打开协作面板，请按 {#kb collab_panel::ToggleFocus} 或 `collab panel: toggle focus`。
 
-Each channel corresponds to an ongoing project or work-stream. You can see who’s in a channel as their avatars will show up in the sidebar. This makes it easy to see what everyone is doing and where to find them if needed.
+每个频道对应一个正在进行的项目或工作流。您可以看到谁在频道中，因为他们的头像会显示在侧边栏中。这使得很容易看到每个人在做什么以及在需要时在哪里找到他们。
 
-You can create as many channels as you need. As in the example above, you can mix channels for your day job, as well as side-projects in one instance of Zed.
+您可以根据需要创建任意数量的频道。如上例所示，您可以在一个 Zed 实例中混合用于日常工作的频道以及副项目。
 
-Joining a channel adds you to a shared room where you can work on projects together.
+加入频道会将您添加到一个共享房间，您可以在其中一起处理项目。
 
-## Sharing projects
+## 共享项目
 
-After joining a channel, you can `Share` a project with the other people there. This will enable them to edit the code hosted on your machine as though they had it checked out locally.
+加入频道后，您可以将项目 `共享` 给那里的其他人。这将使他们能够编辑您机器上托管的代码，就像他们在本地检出一样。
 
-When you are editing someone else’s project, you still have the full power of the editor at your fingertips, you can jump to definitions, use the AI assistant, and see any diagnostic errors. This is extremely powerful for pairing, as one of you can be implementing the current method while the other is reading and researching the correct solution to the next problem. And, because you have your own config running, it feels like you’re using your own machine.
+当您编辑别人的项目时，您仍然拥有编辑器的全部功能，您可以跳转到定义，使用 AI 助手，并查看任何诊断错误。这对于结对编程非常强大，因为你们中的一个人可以实现当前方法，而另一个人可以阅读和研究下一个问题的正确解决方案。而且，因为您运行着自己的配置，感觉就像在使用自己的机器。
 
-See [our collaboration documentation](./collaboration.md) for more details about how this works.
+有关此工作原理的更多详细信息，请参阅[我们的协作文档](./collaboration.md)。
 
-## Notes
+## 笔记
 
-Each channel has a notes file associated with it to keep track of current status, new ideas, or to collaborate on building out the design for the feature that you’re working on before diving into code.
+每个频道都有一个与之关联的笔记文件，用于跟踪当前状态、新想法，或者在深入代码之前协作构建您正在处理的功能的设计。
 
-This is similar to a Google Doc, except powered by Zed's collaborative software and persisted to our servers.
+这类似于 Google 文档，但由 Zed 的协作软件提供支持并持久保存到我们的服务器。
 
-## Inviting people
+## 邀请人员
 
-By default, channels you create can only be accessed by you. You can invite collaborators by right clicking and selecting `Manage members`.
+默认情况下，您创建的频道只能由您访问。您可以通过右键单击并选择 `管理成员` 来邀请协作者。
 
-When you have channels nested under each other, permissions are inherited. For instance, in the example above, we only need to add people to the `#zed` channel, and they will automatically gain access to `#core-editor`, `#new-languages`, and `#stability`.
+当您有相互嵌套的频道时，权限是继承的。例如，在上面的示例中，我们只需要将人员添加到 `#zed` 频道，他们将自动获得对 `#core-editor`、`#new-languages` 和 `#stability` 的访问权限。
 
-Once you have added someone, they can either join your channel by clicking on it in their Zed sidebar, or you can share the link to the channel so that they can join directly.
+添加某人后，他们可以通过在其 Zed 侧边栏中点击来加入您的频道，或者您可以共享频道链接，以便他们可以直接加入。
 
-## Livestreaming & Guests
+## 直播和访客
 
-A Channel can also be made Public. This allows anyone to join the channel by clicking on the link.
+频道也可以设为公开。这允许任何人通过点击链接加入频道。
 
-Guest users in channels can hear and see everything that is happening, and have read only access to projects and channel notes.
+频道中的访客用户可以听到和看到正在发生的一切，并对项目和频道笔记具有只读访问权限。
 
-If you'd like to invite a guest to participate in a channel for the duration of a call you can do so by right clicking on them in the Collaboration Panel. "Allowing Write Access" will allow them to edit any projects shared into the call, and to use their microphone and share their screen if they wish.
+如果您想邀请访客在通话期间参与频道，可以通过在协作面板中右键单击他们来实现。"允许写入访问"将允许他们编辑通话中共享的任何项目，并在他们愿意时使用他们的麦克风和共享他们的屏幕。

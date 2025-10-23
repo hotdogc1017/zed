@@ -1,13 +1,13 @@
 # YAML
 
-YAML support is available natively in Zed.
+Zed 原生支持 YAML。
 
-- Tree-sitter: [zed-industries/tree-sitter-yaml](https://github.com/zed-industries/tree-sitter-yaml)
-- Language Server: [redhat-developer/yaml-language-server](https://github.com/redhat-developer/yaml-language-server)
+- Tree-sitter：[zed-industries/tree-sitter-yaml](https://github.com/zed-industries/tree-sitter-yaml)
+- 语言服务器：[redhat-developer/yaml-language-server](https://github.com/redhat-developer/yaml-language-server)
 
-## Configuration
+## 配置
 
-You can configure various [yaml-language-server settings](https://github.com/redhat-developer/yaml-language-server?tab=readme-ov-file#language-server-settings) by adding them to your Zed settings.json in a `yaml-language-server` block under the `lsp` key. For example:
+可在 `settings.json` 的 `lsp.yaml-language-server` 段中配置各项 [yaml-language-server 设置](https://github.com/redhat-developer/yaml-language-server?tab=readme-ov-file#language-server-settings)。示例：
 
 ```json [settings]
   "lsp": {
@@ -19,8 +19,8 @@ You can configure various [yaml-language-server settings](https://github.com/red
             "singleQuote": true
           },
           "schemas": {
-              "http://json.schemastore.org/composer": ["/*"],
-              "../relative/path/schema.json": ["/config*.yaml"]
+            "http://json.schemastore.org/composer": ["/*"],
+            "../relative/path/schema.json": ["/config*.yaml"]
           }
         }
       }
@@ -28,15 +28,15 @@ You can configure various [yaml-language-server settings](https://github.com/red
   }
 ```
 
-Note, settings keys must be nested, so `yaml.keyOrdering` becomes `{"yaml": { "keyOrdering": true }}`.
+注意：设置键需按层级嵌套，例如 `yaml.keyOrdering` 写作 `{ "yaml": { "keyOrdering": true } }`。
 
-## Formatting
+## 格式化
 
-By default, Zed uses Prettier for formatting YAML files.
+默认情况下，Zed 使用 Prettier 格式化 YAML。
 
-### Prettier Formatting
+### Prettier 格式化
 
-You can customize the formatting behavior of Prettier. For example to use single-quotes in yaml files add the following to your `.prettierrc` configuration file:
+可在 `.prettierrc` 定制行为，例如关闭单引号：
 
 ```json [settings]
 {
@@ -51,9 +51,9 @@ You can customize the formatting behavior of Prettier. For example to use single
 }
 ```
 
-### yaml-language-server Formatting
+### 使用 yaml-language-server 格式化
 
-To use `yaml-language-server` instead of Prettier for YAML formatting, add the following to your Zed `settings.json`:
+若想用 `yaml-language-server` 取代 Prettier：
 
 ```json [settings]
   "languages": {
@@ -63,11 +63,11 @@ To use `yaml-language-server` instead of Prettier for YAML formatting, add the f
   }
 ```
 
-## Schemas
+## Schema
 
-By default yaml-language-server will attempt to determine the correct schema for a given yaml file and retrieve the appropriate JSON Schema from [Json Schema Store](https://schemastore.org/).
+`yaml-language-server` 默认会尝试自动检测并从 [JSON Schema Store](https://schemastore.org/) 获取合适的 Schema。
 
-You can override any auto-detected schema via the `schemas` settings key (demonstrated above) or by providing an [inlined schema](https://github.com/redhat-developer/yaml-language-server#using-inlined-schema) reference via a modeline comment at the top of your yaml file:
+如需覆盖自动匹配，可通过 `schemas` 设置（见上例），或在文件顶部使用行内 Schema：
 
 ```yaml
 # yaml-language-server: $schema=https://json.schemastore.org/github-action.json
@@ -77,7 +77,7 @@ on:
     types: [opened]
 ```
 
-You can disable the automatic detection and retrieval of schemas from the JSON Schema if desired:
+也可以禁用自动检测与下载：
 
 ```json [settings]
   "lsp": {
@@ -93,11 +93,11 @@ You can disable the automatic detection and retrieval of schemas from the JSON S
   }
 ```
 
-## Custom Tags
+## 自定义标签
 
-Yaml-language-server supports [custom tags](https://github.com/redhat-developer/yaml-language-server#adding-custom-tags) which can be used to inject custom application functionality at runtime into your yaml files.
+yaml-language-server 支持[自定义标签](https://github.com/redhat-developer/yaml-language-server#adding-custom-tags)，可用于在运行时扩展 YAML 功能。
 
-For example Amazon CloudFormation YAML uses a number of custom tags, to support these you can add the following to your settings.json:
+例如，为支持 AWS CloudFormation 特有标签，可在设置中添加：
 
 ```json [settings]
   "lsp": {

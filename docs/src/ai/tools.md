@@ -1,75 +1,75 @@
-# Tools
+# 工具
 
-Zed's Agent has access to a variety of tools that allow it to interact with your codebase and perform tasks.
+Zed 的代理可以访问各种工具，使其能够与您的代码库交互并执行任务。
 
-## Read & Search Tools
+## 读取和搜索工具
 
 ### `diagnostics`
 
-Gets errors and warnings for either a specific file or the entire project, useful after making edits to determine if further changes are needed.
+获取特定文件或整个项目的错误和警告，在编辑后确定是否需要进一步更改时很有用。
 
 ### `fetch`
 
-Fetches a URL and returns the content as Markdown. Useful for providing docs as context.
+获取 URL 并将内容返回为 Markdown。用于提供文档作为上下文很有用。
 
 ### `find_path`
 
-Quickly finds files by matching glob patterns (like "\*_/_.js"), returning matching file paths alphabetically.
+通过匹配 glob 模式（如 "\*_/_.js"）快速查找文件，按字母顺序返回匹配的文件路径。
 
 ### `grep`
 
-Searches file contents across the project using regular expressions, preferred for finding symbols in code without knowing exact file paths.
+使用正则表达式在项目中搜索文件内容，在不知道确切文件路径的情况下查找代码中的符号时首选。
 
 ### `list_directory`
 
-Lists files and directories in a given path, providing an overview of filesystem contents.
+列出给定路径中的文件和目录，提供文件系统内容的概览。
 
 ### `now`
 
-Returns the current date and time.
+返回当前日期和时间。
 
 ### `open`
 
-Opens a file or URL with the default application associated with it on the user's operating system.
+使用用户操作系统上关联的默认应用程序打开文件或 URL。
 
 ### `read_file`
 
-Reads the content of a specified file in the project, allowing access to file contents.
+读取项目中指定文件的内容，允许访问文件内容。
 
 ### `thinking`
 
-Allows the Agent to work through problems, brainstorm ideas, or plan without executing actions, useful for complex problem-solving.
+允许代理在不执行操作的情况下解决问题、集思广益或制定计划，对于复杂的问题解决很有用。
 
 ### `web_search`
 
-Searches the web for information, providing results with snippets and links from relevant web pages, useful for accessing real-time information.
+在网络上搜索信息，提供来自相关网页的片段和链接的结果，对于访问实时信息很有用。
 
-## Edit Tools
+## 编辑工具
 
 ### `copy_path`
 
-Copies a file or directory recursively in the project, more efficient than manually reading and writing files when duplicating content.
+在项目中递归复制文件或目录，在复制内容时比手动读写文件更高效。
 
 ### `create_directory`
 
-Creates a new directory at the specified path within the project, creating all necessary parent directories (similar to `mkdir -p`).
+在项目中的指定路径创建新目录，创建所有必要的父目录（类似于 `mkdir -p`）。
 
 ### `create_file`
 
-Creates a new file at a specified path with given text content, the most efficient way to create new files or completely replace existing ones.
+在指定路径创建具有给定文本内容的新文件，是创建新文件或完全替换现有文件的最有效方式。
 
 ### `delete_path`
 
-Deletes a file or directory (including contents recursively) at the specified path and confirms the deletion.
+删除指定路径的文件或目录（包括递归内容）并确认删除。
 
 ### `edit_file`
 
-Edits files by replacing specific text with new content.
+通过用新内容替换特定文本来编辑文件。
 
 ### `move_path`
 
-Moves or renames a file or directory in the project, performing a rename if only the filename differs.
+在项目中移动或重命名文件或目录，如果只有文件名不同则执行重命名。
 
 ### `terminal`
 
-Executes shell commands and returns the combined output, creating a new shell process for each invocation.
+执行 shell 命令并返回组合输出，为每次调用创建新的 shell 进程。

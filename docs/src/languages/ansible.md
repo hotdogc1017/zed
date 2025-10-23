@@ -1,15 +1,15 @@
 # Ansible
 
-Support for Ansible in Zed is provided via a community-maintained [Ansible extension](https://github.com/kartikvashistha/zed-ansible).
+Zed 对 Ansible 的支持由社区维护的 [Ansible 扩展](https://github.com/kartikvashistha/zed-ansible) 提供。
 
-- Tree-sitter: [zed-industries/tree-sitter-yaml](https://github.com/zed-industries/tree-sitter-yaml)
-- Language Server: [ansible/vscode-ansible](https://github.com/ansible/vscode-ansible/tree/main/packages/ansible-language-server)
+- Tree-sitter：[zed-industries/tree-sitter-yaml](https://github.com/zed-industries/tree-sitter-yaml)
+- 语言服务器：[ansible/vscode-ansible](https://github.com/ansible/vscode-ansible/tree/main/packages/ansible-language-server)
 
-## Setup
+## 设置
 
-### File detection
+### 文件检测
 
-To avoid mishandling non-Ansible YAML files, the Ansible Language is not associated with any file extensions by default. To change this behavior you can add a `"file_types"` section to Zed settings inside your project (`.zed/settings.json`) or your Zed user settings (`~/.config/zed/settings.json`) to match your folder/naming conventions. For example:
+为了避免将非 Ansible 的 YAML 文件误判成 Ansible，本语言默认不与任何文件扩展名关联。若要更改这一行为，可以在项目内的 Zed 设置（`.zed/settings.json`）或全局用户设置（`~/.config/zed/settings.json`）中添加 "file_types" 配置，以契合你的目录结构或命名约定。例如：
 
 ```json [settings]
 "file_types": {
@@ -36,19 +36,19 @@ To avoid mishandling non-Ansible YAML files, the Ansible Language is not associa
   }
 ```
 
-Feel free to modify this list as per your needs.
+你可以根据自己的需要调整上述列表。
 
-#### Inventory
+#### 清单文件（Inventory）
 
-If your inventory file is in the YAML format, you can either:
+如果你的清单文件是 YAML 格式，可以选择以下任意一种方式：
 
-- Append the `ansible-lint` inventory json schema to it via the following comment at the top of your inventory file:
+- 在清单文件顶部添加如下注释，将 `ansible-lint` 的清单 JSON Schema 附加到该文件：
 
 ```yml
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/inventory.json
 ```
 
-- Or configure the yaml language server settings to set this schema for all your inventory files, that match your inventory pattern, under your Zed settings ([ref](https://zed.dev/docs/languages/yaml)):
+- 或者在 Zed 设置中配置 YAML 语言服务器，让它为符合你清单匹配模式的文件都使用该 Schema（[参考](https://zed.dev/docs/languages/yaml)）：
 
 ```json [settings]
 "lsp": {
@@ -67,9 +67,9 @@ If your inventory file is in the YAML format, you can either:
 },
 ```
 
-### LSP Configuration
+### LSP 配置
 
-By default, the following default config is passed to the Ansible language server. It conveniently mirrors the defaults set by [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig/blob/03bc581e05e81d33808b42b2d7e76d70adb3b595/lua/lspconfig/configs/ansiblels.lua) for the Ansible language server:
+默认情况下，Zed 会向 Ansible 语言服务器传递以下配置。它与 [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig/blob/03bc581e05e81d33808b42b2d7e76d70adb3b595/lua/lspconfig/configs/ansiblels.lua) 中的默认值保持一致：
 
 ```json [settings]
 {
@@ -95,14 +95,14 @@ By default, the following default config is passed to the Ansible language serve
 ```
 
 > [!NOTE]
-> In order for linting to work, ensure that `ansible-lint` is installed and discoverable on your PATH
+> 若要启用 Lint，请确保 `ansible-lint` 已安装并且可通过 PATH 查找到。
 
-When desired, any of the above default settings can be overridden under the `"lsp"` section of your Zed settings file. For example:
+如有需要，可以在 Zed 设置文件的 "lsp" 部分覆盖上述默认配置。例如：
 
 ```json [settings]
 "lsp": {
-  // Note, the Zed Ansible extension prefixes all settings with `ansible`
-  // so instead of using `ansible.ansible.path` use `ansible.path`.
+  // 注意，Zed 的 Ansible 扩展会为所有设置添加 `ansible` 前缀，
+  // 因此请使用 `ansible.path` 而不要使用 `ansible.ansible.path`。
   "ansible-language-server": {
     "settings": {
       "ansible": {
@@ -115,9 +115,9 @@ When desired, any of the above default settings can be overridden under the `"ls
         "interpreterPath": "python3"
       },
       "validation": {
-        "enabled": false, // disable validation
+        "enabled": false, // 禁用验证
         "lint": {
-          "enabled": false, // disable ansible-lint
+          "enabled": false, // 禁用 ansible-lint
           "path": "ansible-lint"
         }
       }
@@ -126,5 +126,4 @@ When desired, any of the above default settings can be overridden under the `"ls
 }
 ```
 
-A full list of options/settings, that can be passed to the server, can be found at the project's page [here](https://github.com/ansible/vscode-ansible/blob/5a89836d66d470fb9d20e7ea8aa2af96f12f61fb/docs/als/settings.md).
-Feel free to modify option values as needed.
+更多可传递给语言服务器的选项可以在项目页面的[文档](https://github.com/ansible/vscode-ansible/blob/5a89836d66d470fb9d20e7ea8aa2af96f12f61fb/docs/als/settings.md)中找到，可根据实际需求调整参数。

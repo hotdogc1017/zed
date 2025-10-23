@@ -1,61 +1,57 @@
-# Globs
+# 通配符（Globs）
 
-Zed supports the use of [glob](<https://en.wikipedia.org/wiki/Glob_(programming)>) patterns that are the formal name for Unix shell-style path matching wildcards like `*.md` or `docs/src/**/*.md` supported by sh, bash, zsh, etc. A glob is similar but distinct from a [regex (regular expression)](https://en.wikipedia.org/wiki/Regular_expression). You may be In Zed these are commonly used when matching filenames.
+Zed 支持 [Glob](<https://en.wikipedia.org/wiki/Glob_(programming)>) 模式，即 Unix Shell 常用的路径通配符（如 `*.md`、`docs/src/**/*.md`）。它与 [正则表达式](https://en.wikipedia.org/wiki/Regular_expression) 类似但不相同，在 Zed 中主要用于匹配文件名。
 
-## Glob Flavor
+## 实现口味
 
-Zed uses two different rust crates for matching glob patterns:
+Zed 使用两个 Rust crate 处理通配符：
 
-- [ignore crate](https://docs.rs/ignore/latest/ignore/) for matching glob patterns stored in `.gitignore` files
-- [glob crate](https://docs.rs/glob/latest/glob/) for matching file paths in Zed
+- [`ignore`](https://docs.rs/ignore/latest/ignore/)：解析 `.gitignore` 文件
+- [`glob`](https://docs.rs/glob/latest/glob/)：用于 Zed 内部的路径匹配
 
-While simple expressions are portable across environments (e.g. running `ls *.py` or `*.tmp` in a gitignore) there is significant divergence in the support for and syntax of more advanced features varies (character classes, exclusions, `**`, etc) across implementations. For the rest of this document we will be describing globs as supported in Zed via the `glob` crate implementation. Please see [References](#references) below for documentation links for glob pattern syntax for `.gitignore`, shells and other programming languages.
+简单模式跨环境通常兼容，但高级语法（字符集、排除、`**` 等）差异较大。本文介绍 Zed 中 `glob` crate 的行为。其他环境请参考[参考资料](#参考资料)。`glob` crate 完全由 Rust 实现，不依赖平台的 `glob/fnmatch`，因此跨平台行为一致。
 
-The `glob` crate is implemented entirely in rust and does not rely on the `glob` / `fnmatch` interfaces provided by your platforms libc. This means that globs in Zed should behave similarly with across platforms.
+## 基础
 
-## Introduction
+Glob 模式用于匹配文件名或完整路径。例如在“全局搜索” {#kb project_search::ToggleFocus} 中点击漏斗按钮（或 {#kb project_search::ToggleFilters}）即可在 Include/Exclude 文本框里输入通配符过滤路径。
 
-A glob "pattern" is used to match a file name or complete file path. For example, when using "Search all files" {#kb project_search::ToggleFocus} you can click the funnel shaped Toggle Filters" button or {#kb project_search::ToggleFilters} and it will show additional search fields for "Include" and "Exclude" which support specifying glob patterns for matching file paths and file names.
+可用特殊字符如下：
 
-When creating a glob pattern you can use one or multiple special characters:
+| 符号     | 含义                                       |
+| -------- | ------------------------------------------ |
+| `?`      | 匹配任意单个字符                          |
+| `*`      | 匹配任意长度的字符序列（可为空）          |
+| `**`     | 匹配当前目录及任意子目录                  |
+| `[abc]`  | 匹配方括号内任一字符                      |
+| `[a-z]`  | 匹配字符范围（按 Unicode 排序）           |
+| `[!...]` | 匹配不在方括号中的字符                    |
 
-| Special Character | Meaning                                                           |
-| ----------------- | ----------------------------------------------------------------- |
-| `?`               | Matches any single character                                      |
-| `*`               | Matches any (possibly empty) sequence of characters               |
-| `**`              | Matches the current directory and arbitrary subdirectories        |
-| `[abc]`           | Matches any one character in the brackets                         |
-| `[a-z]`           | Matches any of a range of characters (ordered by Unicode)         |
-| `[!...]`          | The negation of `[...]` (matches a character not in the brackets) |
+注意：
 
-Notes:
+1. 不支持 Shell 样式的 `{a,b,c}` 花括号展开。
+2. 匹配字面量 `-` 时需放在首位 `[-abc]` 或末尾 `[abc-]`。
+3. 匹配 `[` 可写 `[[]` 或放在字符集首位 `[[abc]`。
+4. 匹配 `]` 可写 `[]]` 或放在末尾 `[abc]]`。
 
-1. Shell-style brace-expansions like `{a,b,c}` are not supported.
-2. To match a literal `-` character inside brackets it must come first `[-abc]` or last `[abc-]`.
-3. To match the literal `[` character use `[[]` or put it as the first character in the group `[[abc]`.
-4. To match the literal `]` character use `[]]` or put it as the last character in the group `[abc]]`.
+## 示例
 
-## Examples
+### 匹配扩展名
 
-### Matching file extensions
+若只搜索 Markdown 文件，可在 Include 中输入 `*.md`。
 
-If you wanted to only search Markdown files add `*.md` to the "Include" search field.
+### 大小写敏感
 
-### Case insensitive matching
+Glob 在 Zed 中区分大小写，即使在大小写不敏感的文件系统上，`*.c` 也不会匹配 `main.C`。可以使用字符集 `*.[cC]` 同时匹配大小写。
 
-Globs in Zed are case-sensitive, so `*.c` will not match `main.C` (even on case-insensitive filesystems like HFS+/APFS on macOS). Instead use brackets to match characters. So instead of `*.c` use `*.[cC]`.
+### 匹配目录
 
-### Matching directories
+若在 Zed 仓库中寻找配置语言服务器的示例，可在 Include 输入 `docs/**/*.md`，仅匹配 `docs` 目录及其子目录下的 `.md` 文件。若只需语言文档，可用更精确的 `docs/src/languages/*.md`。
 
-If you wanted to search the [zed repository](https://github.com/zed-industries/zed) for examples of [Configuring Language Servers](https://zed.dev/docs/configuring-languages#configuring-language-servers) (under `"lsp"` in Zed settings.json) you could search for `"lsp"` and in the "Include" filter specify `docs/**/*.md`. This would only match files whose path was under the `docs` directory or any nested subdirectories `**/` of that folder with a filename that ends in `.md`.
+### 隐式通配
 
-If instead you wanted to restrict yourself only to [Zed Language-Specific Documentation](https://zed.dev/docs/languages) pages you could define a narrower pattern of: `docs/src/languages/*.md` this would match [`docs/src/languages/rust.md`](https://github.com/zed-industries/zed/blob/main/docs/src/languages/rust.md) and [`docs/src/languages/cpp.md`](https://github.com/zed-industries/zed/blob/main/docs/src/languages/cpp.md) but not [`docs/src/configuring-languages.md`](https://github.com/zed-industries/zed/blob/main/docs/src/configuring-languages.md).
+项目搜索中的 Include/Exclude 会自动在两侧补上 `**`。例如在 Exclude 输入 `license`，实际匹配 `**license**`，因此 `license.*`、`*.license`、`license` 目录等都会被排除。这使得快速筛选 `*.ts` 无需每次输入 `**/*.ts`。
 
-### Implicit Wildcards
-
-When using the "Include" / "Exclude" filters on a Project Search each glob is wrapped in implicit wildcards. For example to exclude any files with license in the path or filename from your search just type type `license` in the exclude box. Behind the scenes Zed transforms `license` to `**license**`. This means that files named `license.*`, `*.license` or inside a `license` subdirectory will all be filtered out. This enables users to easily filter for `*.ts` without having to remember to type `**/*.ts` every time.
-
-Alternatively, if in your Zed settings you wanted a [`file_types`](./configuring-zed.md#file-types) override which only applied to a certain directory you must explicitly include the wildcard globs. For example, if you had a directory of template files with the `html` extension that you wanted to recognize as Jinja2 template you could use the following:
+若在配置中使用 [`file_types`](./configuring-zed.md#file-types) 限定路径，则需显式写出通配符。例如将 `templates` 目录下的 `.html` 识别为 Jinja2 模板：
 
 ```json [settings]
 {
@@ -66,15 +62,15 @@ Alternatively, if in your Zed settings you wanted a [`file_types`](./configuring
 }
 ```
 
-## References
+## 参考资料
 
-While globs in Zed are implemented as described above, when writing code using globs in other languages, please reference your platform's glob documentation:
+在其他环境使用通配符时，请查阅相应文档：
 
-- [macOS fnmatch](https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/fnmatch.3.html) (BSD C Standard Library)
-- [Linux fnmatch](https://www.gnu.org/software/libc/manual/html_node/Wildcard-Matching.html) (GNU C Standard Library)
-- [POSIX fnmatch](https://pubs.opengroup.org/onlinepubs/9699919799/functions/fnmatch.html) (POSIX Specification)
-- [node-glob](https://github.com/isaacs/node-glob) (Node.js `glob` package)
-- [Python glob](https://docs.python.org/3/library/glob.html) (Python Standard Library)
-- [Golang glob](https://pkg.go.dev/path/filepath#Match) (Go Standard Library)
-- [gitignore patterns](https://git-scm.com/docs/gitignore) (Gitignore Pattern Format)
-- [PowerShell: About Wildcards](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_wildcards) (Wildcards in PowerShell)
+- [macOS fnmatch](https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/fnmatch.3.html)
+- [Linux fnmatch](https://www.gnu.org/software/libc/manual/html_node/Wildcard-Matching.html)
+- [POSIX fnmatch](https://pubs.opengroup.org/onlinepubs/9699919799/functions/fnmatch.html)
+- [node-glob](https://github.com/isaacs/node-glob)
+- [Python glob](https://docs.python.org/3/library/glob.html)
+- [Go filepath.Match](https://pkg.go.dev/path/filepath#Match)
+- [gitignore 模式](https://git-scm.com/docs/gitignore)
+- [PowerShell 通配符](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_wildcards)

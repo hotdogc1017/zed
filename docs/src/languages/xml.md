@@ -1,12 +1,12 @@
 # XML
 
-XML support is available through the [XML extension](https://github.com/sweetppro/zed-xml/).
+可以通过 [XML 扩展](https://github.com/sweetppro/zed-xml/) 在 Zed 中使用 XML。
 
-- Tree-sitter: [tree-sitter-grammars/tree-sitter-xml](https://github.com/tree-sitter-grammars/tree-sitter-xml)
+- Tree-sitter：[tree-sitter-grammars/tree-sitter-xml](https://github.com/tree-sitter-grammars/tree-sitter-xml)
 
-## Configuration
+## 配置
 
-If you have additional file extensions that are not being automatically recognized as XML just add them to [file_types](../configuring-zed.md#file-types) in your Zed settings:
+若有其他扩展名未被自动识别为 XML，可在 Zed 设置的 [file_types](../configuring-zed.md#file-types) 中添加：
 
 ```json [settings]
   "file_types": {

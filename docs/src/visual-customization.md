@@ -1,14 +1,10 @@
-# Visual Customization
+# 视觉自定义
 
-Various aspects of Zed's visual layout can be configured via Zed settings.json which you can access via {#action zed::OpenSettings} ({#kb zed::OpenSettings}).
+可以通过 {#action zed::OpenSettings}（{#kb zed::OpenSettings}）打开 `settings.json`，调整 Zed 的界面布局与外观。更多非视觉设置请参阅[《配置 Zed》](./configuring-zed.md)。
 
-See [Configuring Zed](./configuring-zed.md) for additional information and other non-visual settings.
+## 主题
 
-## Themes
-
-Use may install zed extensions providing [Themes](./themes.md) and [Icon Themes](./icon-themes.md) via {#action zed::Extensions} from the command palette or menu.
-
-You can preview/choose amongst your installed themes and icon themes with {#action theme_selector::Toggle} ({#kb theme_selector::Toggle}) and ({#action icon_theme_selector::Toggle}) which will modify the following settings:
+可使用 {#action zed::Extensions} 安装提供 [主题](./themes.md) 和 [图标主题](./icon-themes.md) 的扩展。安装后，可用 {#action theme_selector::Toggle}（{#kb theme_selector::Toggle}）或 {#action icon_theme_selector::Toggle} 预览并切换主题，系统会自动写入：
 
 ```json [settings]
 {
@@ -17,202 +13,153 @@ You can preview/choose amongst your installed themes and icon themes with {#acti
 }
 ```
 
-If you would like to use distinct themes for light mode/dark mode that can be set with:
+若需要为浅色/深色模式分别设置主题，可写：
 
 ```json [settings]
 {
   "theme": {
     "dark": "One Dark",
     "light": "One Light",
-    // Mode to use (dark, light) or "system" to follow the OS's light/dark mode (default)
-    "mode": "system"
+    "mode": "system" // dark / light / system
   },
   "icon_theme": {
     "dark": "Zed (Default)",
     "light": "Zed (Default)",
-    // Mode to use (dark, light) or "system" to follow the OS's light/dark mode (default)
     "mode": "system"
   }
 }
 ```
 
-## Fonts
+## 字体
 
 ```json [settings]
-  // UI Font. Use ".SystemUIFont" to use the default system font (SF Pro on macOS),
-  // or ".ZedSans" for the bundled default (currently IBM Plex)
+  // UI 字体，".SystemUIFont" 使用系统默认字体，".ZedSans" 为自带字体（IBM Plex）
   "ui_font_family": ".SystemUIFont",
-  "ui_font_weight": 400, // Font weight in standard CSS units from 100 to 900.
+  "ui_font_weight": 400,
   "ui_font_size": 16,
 
-  // Buffer Font - Used by editor buffers
-  // use ".ZedMono" for the bundled default monospace (currently Lilex)
-  "buffer_font_family": "Berkeley Mono", // Font name for editor buffers
-  "buffer_font_size": 15,                 // Font size for editor buffers
-  "buffer_font_weight": 400,              // Font weight in CSS units [100-900]
-  // Line height "comfortable" (1.618), "standard" (1.3) or custom: `{ "custom": 2 }`
-  "buffer_line_height": "comfortable",
+  // 编辑器字体（缓冲区），".ZedMono" 为自带等宽字体（Lilex）
+  "buffer_font_family": "Berkeley Mono",
+  "buffer_font_size": 15,
+  "buffer_font_weight": 400,
+  "buffer_line_height": "comfortable", // 1.618，可设 standard 或 { "custom": 2 }
 
-  // Terminal Font Settings
+  // 终端字体
   "terminal": {
     "font_family": "",
     "font_size": 15,
-    // Terminal line height: comfortable (1.618), standard(1.3) or `{ "custom": 2 }`
-    "line_height": "standard",
+    "line_height": "standard"
   },
 
-  // Agent Panel Font Settings
+  // AI 面板字体大小
   "agent_font_size": 15
 ```
 
-### Font ligatures
+### 字体连字
 
-By default Zed enable font ligatures which will visually combines certain adjacent characters.
-
-For example `=>` will be displayed as `→` and `!=` will be `≠`. This is purely cosmetic and the individual characters remain unchanged.
-
-To disable this behavior use:
+默认开启字体连字，视觉上会将特定字符组合成符号，例如 `=>` 显示为 `→`、`!=` 显示为 `≠`。这仅影响显示，实际字符不会改变。若想关闭：
 
 ```json [settings]
 {
   "buffer_font_features": {
-    "calt": false // Disable ligatures
+    "calt": false
   }
 }
 ```
 
-### Status Bar
+### 状态栏
 
 ```json [settings]
 {
-  // Whether to show full labels in line indicator or short ones
-  //   - `short`: "2 s, 15 l, 32 c"
-  //   - `long`: "2 selections, 15 lines, 32 characters"
-  "line_indicator_format": "long"
+  "line_indicator_format": "long" // "short" 为简写，“2 s, 15 l, 32 c”
 
-  // Individual status bar icons can be hidden:
-  // "project_panel": {"button": false },
-  // "outline_panel": {"button": false },
-  // "collaboration_panel": {"button": false },
-  // "git_panel": {"button": false },
-  // "notification_panel": {"button": false },
-  // "agent": {"button": false },
-  // "debugger": {"button": false },
-  // "diagnostics": {"button": false },
-  // "search": {"button": false },
+  // 可逐项隐藏状态栏按钮：
+  // "project_panel": {"button": false},
+  // "outline_panel": {"button": false},
+  // "collaboration_panel": {"button": false},
+  // "git_panel": {"button": false},
+  // "notification_panel": {"button": false},
+  // "agent": {"button": false},
+  // "debugger": {"button": false},
+  // "diagnostics": {"button": false},
+  // "search": {"button": false}
 }
 ```
 
-### Titlebar
+### 标题栏
 
 ```json [settings]
-  // Control which items are shown/hidden in the title bar
   "title_bar": {
-    "show_branch_icon": false,      // Show/hide branch icon beside branch switcher
-    "show_branch_name": true,       // Show/hide branch name
-    "show_project_items": true,     // Show/hide project host and name
-    "show_onboarding_banner": true, // Show/hide onboarding banners
-    "show_user_picture": true,      // Show/hide user avatar
-    "show_sign_in": true,           // Show/hide sign-in button
-    "show_menus": false             // Show/hide menus
+    "show_branch_icon": false,
+    "show_branch_name": true,
+    "show_project_items": true,
+    "show_onboarding_banner": true,
+    "show_user_picture": true,
+    "show_sign_in": true,
+    "show_menus": false
   },
 ```
 
-## Workspace
+## 工作区
 
 ```json [settings]
 {
-  // Force usage of Zed build in path prompts (file and directory pickers)
-  // instead of OS native pickers (false).
+  // 是否使用系统文件选择器（true）或内置选择器（false）
   "use_system_path_prompts": true,
-  // Force usage of Zed built in confirmation prompts ("Do you want to save?")
-  // instead of OS native prompts (false). On linux this is ignored (always false).
+  // 是否使用系统确认弹窗，Linux 始终使用内置
   "use_system_prompts": true,
 
-  // Active pane styling settings.
   "active_pane_modifiers": {
-    // Inset border size of the active pane, in pixels.
     "border_size": 0.0,
-    // Opacity of the inactive panes. 0 means transparent, 1 means opaque.
     "inactive_opacity": 1.0
   },
 
-  // Layout mode of the bottom dock: contained, full, left_aligned, right_aligned
+  // 底部停靠布局：contained / full / left_aligned / right_aligned
   "bottom_dock_layout": "contained",
 
-  // Whether to resize all the panels in a dock when resizing the dock.
-  // Can be a combination of "left", "right" and "bottom".
+  // 调整停靠栏时是否联动所有面板，可包含 "left"、"right"、"bottom"
   "resize_all_panels_in_dock": ["left"]
 }
 ```
 
-<!--
-TBD: Centered layout related settings
-```json [settings]
-    "centered_layout": {
-    // The relative width of the left padding of the central pane from the
-    // workspace when the centered layout is used.
-    "left_padding": 0.2,
-    // The relative width of the right padding of the central pane from the
-    // workspace when the centered layout is used.
-    "right_padding": 0.2
-    },
-```
--->
-
-## Editor
+## 编辑器
 
 ```json [settings]
-  // Whether the cursor blinks in the editor.
   "cursor_blink": true,
-
-  // Cursor shape for the default editor: bar, block, underline, hollow
-  "cursor_shape": null,
-
-  // Highlight the current line in the editor: none, gutter, line, all
-  "current_line_highlight": "all",
-
-  // When does the mouse cursor hide: never, on_typing, on_typing_and_movement
+  "cursor_shape": null,            // bar / block / underline / hollow
+  "current_line_highlight": "all",// none / gutter / line / all
   "hide_mouse": "on_typing_and_movement",
-
-  // Whether to highlight all occurrences of the selected text in an editor.
   "selection_highlight": true,
 
-  // Visually show tabs and spaces  (none, all, selection, boundary, trailing)
-  "show_whitespaces": "selection",
-  "whitespace_map": { // Which characters to show when `show_whitespaces` enabled
+  "show_whitespaces": "selection",// none / all / selection / boundary / trailing
+  "whitespace_map": {
     "space": "•",
     "tab": "→"
   },
 
-  "unnecessary_code_fade": 0.3, // How much to fade out unused code.
-
-  // Hide the values of in variables from visual display in private files
+  "unnecessary_code_fade": 0.3,
   "redact_private_values": false,
 
-  // Soft-wrap and rulers
-  "soft_wrap": "none",          // none, editor_width, preferred_line_length, bounded
-  "preferred_line_length": 80,  // Column to soft-wrap
-  "show_wrap_guides": true,     // Show/hide wrap guides (vertical rulers)
-  "wrap_guides": [],            // Where to position wrap_guides (character counts)
+  "soft_wrap": "none",
+  "preferred_line_length": 80,
+  "show_wrap_guides": true,
+  "wrap_guides": [],
 
-  // Gutter Settings
   "gutter": {
-    "line_numbers": true,         // Show/hide line numbers in the gutter.
-    "runnables": true,            // Show/hide runnables buttons in the gutter.
-    "breakpoints": true,          // Show/hide show breakpoints in the gutter.
-    "folds": true,                // Show/hide show fold buttons in the gutter.
-    "min_line_number_digits": 4   // Reserve space for N digit line numbers
+    "line_numbers": true,
+    "runnables": true,
+    "breakpoints": true,
+    "folds": true,
+    "min_line_number_digits": 4
   },
-  "relative_line_numbers": false, // Show relative line numbers in gutter
+  "relative_line_numbers": false,
 
-  // Indent guides
   "indent_guides": {
     "enabled": true,
-    "line_width": 1,                  // Width of guides in pixels [1-10]
-    "active_line_width": 1,           // Width of active guide in pixels [1-10]
-    "coloring": "fixed",              // disabled, fixed, indent_aware
-    "background_coloring": "disabled" // disabled, indent_aware
+    "line_width": 1,
+    "active_line_width": 1,
+    "coloring": "fixed",
+    "background_coloring": "disabled"
   }
 ```
 
@@ -221,180 +168,136 @@ TBD: Centered layout related settings
 ```json [settings]
   "git": {
     "inline_blame": {
-      "enabled": true,             // Show/hide inline blame
-      "delay_ms": 0,                  // Show after delay (ms)
-      "min_column": 0,             // Minimum column to inline display blame
-      "padding": 7,                // Padding between code and inline blame (em)
-      "show_commit_summary": false // Show/hide commit summary
+      "enabled": true,
+      "delay_ms": 0,
+      "min_column": 0,
+      "padding": 7,
+      "show_commit_summary": false
     },
-    "hunk_style": "staged_hollow"  // staged_hollow, unstaged_hollow
+    "hunk_style": "staged_hollow"
   }
 ```
 
-### Editor Toolbar
+### 编辑器工具栏
 
 ```json [settings]
-  // Editor toolbar related settings
   "toolbar": {
-    "breadcrumbs": true, // Whether to show breadcrumbs.
-    "quick_actions": true, // Whether to show quick action buttons.
-    "selections_menu": true, // Whether to show the Selections menu
-    "agent_review": true, // Whether to show agent review buttons
-    "code_actions": false // Whether to show code action buttons
+    "breadcrumbs": true,
+    "quick_actions": true,
+    "selections_menu": true,
+    "agent_review": true,
+    "code_actions": false
   }
 ```
 
-### Editor Scrollbar and Minimap {#editor-scrollbar}
+### 滚动条与迷你图 {#editor-scrollbar}
 
 ```json [settings]
-  // Scrollbar related settings
   "scrollbar": {
-    // When to show the scrollbar in the editor (auto, system, always, never)
     "show": "auto",
-    "cursors": true,          // Show cursor positions in the scrollbar.
-    "git_diff": true,         // Show git diff indicators in the scrollbar.
-    "search_results": true,   // Show buffer search results in the scrollbar.
-    "selected_text": true,    // Show selected text occurrences in the scrollbar.
-    "selected_symbol": true,  // Show selected symbol occurrences in the scrollbar.
-    "diagnostics": "all",     // Show diagnostics (none, error, warning, information, all)
+    "cursors": true,
+    "git_diff": true,
+    "search_results": true,
+    "selected_text": true,
+    "selected_symbol": true,
+    "diagnostics": "all",
     "axes": {
-      "horizontal": true,     // Show/hide the horizontal scrollbar
-      "vertical": true        // Show/hide the vertical scrollbar
+      "horizontal": true,
+      "vertical": true
     }
   },
 
-  // Minimap related settings
   "minimap": {
-    "show": "never",                // When to show (auto, always, never)
-    "display_in": "active_editor",  // Where to show (active_editor, all_editor)
-    "thumb": "always",              // When to show thumb (always, hover)
-    "thumb_border": "left_open",    // Thumb border (left_open, right_open, full, none)
-    "max_width_columns": 80,        // Maximum width of minimap
-    "current_line_highlight": null  // Highlight current line (null, line, gutter)
+    "show": "never",
+    "display_in": "active_editor",
+    "thumb": "always",
+    "thumb_border": "left_open",
+    "max_width_columns": 80,
+    "current_line_highlight": null
   },
 
-  // Control Editor scroll beyond the last line: off, one_page, vertical_scroll_margin
   "scroll_beyond_last_line": "one_page",
-  // Lines to keep above/below the cursor when scrolling with the keyboard
   "vertical_scroll_margin": 3,
-  // The number of characters to keep on either side when scrolling with the mouse
   "horizontal_scroll_margin": 5,
-  // Scroll sensitivity multiplier
   "scroll_sensitivity": 1.0,
-  // Scroll sensitivity multiplier for fast scrolling (hold alt while scrolling)
   "fast_scroll_sensitivity": 4.0,
 ```
 
-### Editor Tabs
+### 标签与标签栏
 
 ```json [settings]
-  // Maximum number of tabs per pane. Unset for unlimited.
   "max_tabs": null,
-
-  // Customize the tab bar appearance
   "tab_bar": {
-    "show": true,                     // Show/hide the tab bar
-    "show_nav_history_buttons": true, // Show/hide history buttons on tab bar
-    "show_tab_bar_buttons": true      // Show hide buttons (new, split, zoom)
+    "show": true,
+    "show_nav_history_buttons": true,
+    "show_tab_bar_buttons": true
   },
   "tabs": {
-    "git_status": false,              // Color to show git status
-    "close_position": "right",        // Close button position (left, right, hidden)
-    "show_close_button": "hover",     // Close button shown (hover, always, hidden)
-    "file_icons": false,              // Icon showing file type
-    // Show diagnostics in file icon (off, errors, all). Requires file_icons=true
+    "git_status": false,
+    "close_position": "right",
+    "show_close_button": "hover",
+    "file_icons": false,
     "show_diagnostics": "off"
   }
 ```
 
-### Status Bar
+### 状态栏
 
 ```json [settings]
   "status_bar": {
-    // Show/hide a button that displays the active buffer's language.
-    // Clicking the button brings up the language selector.
-    // Defaults to true.
     "active_language_button": true,
-    // Show/hide a button that displays the cursor's position.
-    // Clicking the button brings up an input for jumping to a line and column.
-    // Defaults to true.
     "cursor_position_button": true,
-    // Show/hide a button that displays the buffer's line-ending mode.
-    // Clicking the button brings up the line-ending selector.
-    // Defaults to false.
     "line_endings_button": false
   },
   "global_lsp_settings": {
-    // Show/hide the LSP button in the status bar.
-    // Activity from the LSP is still shown.
-    // Button is not shown if "enable_language_server" if false.
     "button": true
-  },
+  }
 ```
 
-### Multibuffer
+### 多缓冲区
 
 ```json [settings]
 {
-  // The default number of lines to expand excerpts in the multibuffer by.
   "expand_excerpt_lines": 5,
-  // The default number of lines of context provided for excerpts in the multibuffer by.
   "excerpt_context_lines": 2
 }
 ```
 
-### Editor Completions, Snippets, Actions, Diagnostics {#editor-lsp}
+### 补全 / 片段 / 操作 / 诊断 {#editor-lsp}
 
 ```json [settings]
-  "snippet_sort_order": "inline",        // Snippets completions: top, inline, bottom, none
-  "show_completions_on_input": true,     // Show completions while typing
-  "show_completion_documentation": true, // Show documentation in completions
-  "auto_signature_help": false,          // Show method signatures inside parentheses
-
-  // Whether to show the signature help after completion or a bracket pair inserted.
-  // If `auto_signature_help` is enabled, this setting will be treated as enabled also.
+  "snippet_sort_order": "inline",
+  "show_completions_on_input": true,
+  "show_completion_documentation": true,
+  "auto_signature_help": false,
   "show_signature_help_after_edits": false,
-
-  // Whether to show code action button at start of buffer line.
   "inline_code_actions": true,
-
-  // Which level to use to filter out diagnostics displayed in the editor:
-  "diagnostics_max_severity": null,      // off, error, warning, info, hint, null (all)
-
-  // How to render LSP `textDocument/documentColor` colors in the editor.
-  "lsp_document_colors": "inlay",        // none, inlay, border, background
+  "diagnostics_max_severity": null,
+  "lsp_document_colors": "inlay"
 ```
 
-### Edit Predictions {#editor-ai}
+### 编辑预测 {#editor-ai}
 
 ```json [settings]
   "edit_predictions": {
-    "mode": "eager",                // Automatically show (eager) or hold-alt (subtle)
-    "enabled_in_text_threads": true // Show/hide predictions in agent text threads
+    "mode": "eager",
+    "enabled_in_text_threads": true
   },
-  "show_edit_predictions": true     // Show/hide predictions in editor
+  "show_edit_predictions": true
 ```
 
-### Editor Inlay Hints
+### 内联提示
 
 ```json [settings]
 {
   "inlay_hints": {
     "enabled": false,
-    // Toggle certain types of hints on and off, all switched on by default.
     "show_type_hints": true,
     "show_parameter_hints": true,
     "show_other_hints": true,
-
-    // Whether to show a background for inlay hints (theme `hint.background`)
-    "show_background": false, //
-
-    // Time to wait after editing before requesting hints (0 to disable debounce)
+    "show_background": false,
     "edit_debounce_ms": 700,
-    // Time to wait after scrolling before requesting hints (0 to disable debounce)
     "scroll_debounce_ms": 50,
-
-    // A set of modifiers which, when pressed, will toggle the visibility of inlay hints.
     "toggle_on_modifiers_press": {
       "control": false,
       "shift": false,
@@ -406,166 +309,131 @@ TBD: Centered layout related settings
 }
 ```
 
-## File Finder
+## 文件查找器
 
 ```json [settings]
-  // File Finder Settings
   "file_finder": {
-    "file_icons": true,         // Show/hide file icons
-    "modal_max_width": "small", // Horizontal size: small, medium, large, xlarge, full
-    "git_status": true,         // Show the git status for each entry
-    "include_ignored": null     // gitignored files in results: true, false, null
+    "file_icons": true,
+    "modal_max_width": "small",
+    "git_status": true,
+    "include_ignored": null
   },
 ```
 
-## Project Panel
+## 项目面板
 
-Project panel can be shown/hidden with {#action project_panel::ToggleFocus} ({#kb project_panel::ToggleFocus}) or with {#action pane::RevealInProjectPanel} ({#kb pane::RevealInProjectPanel}).
+可通过 {#action project_panel::ToggleFocus}（{#kb project_panel::ToggleFocus}）或 {#action pane::RevealInProjectPanel}（{#kb pane::RevealInProjectPanel}）显示/隐藏：
 
 ```json [settings]
-  // Project Panel Settings
   "project_panel": {
-    "button": true,                 // Show/hide button in the status bar
-    "default_width": 240,           // Default panel width
-    "dock": "left",                 // Position of the dock (left, right)
-    "entry_spacing": "comfortable", // Vertical spacing (comfortable, standard)
-    "file_icons": true,             // Show/hide file icons
-    "folder_icons": true,           // Show/hide folder icons
-    "git_status": true,             // Indicate new/updated files
-    "indent_size": 20,              // Pixels for each successive indent
-    "auto_reveal_entries": true,    // Show file in panel when activating its buffer
-    "auto_fold_dirs": true,         // Fold dirs with single subdir
-    "sticky_scroll": true,          // Stick parent directories at top of the project panel.
-    "drag_and_drop": true,          // Whether drag and drop is enabled
-    "scrollbar": {                  // Project panel scrollbar settings
-      "show": null                  // Show/hide: (auto, system, always, never)
+    "button": true,
+    "default_width": 240,
+    "dock": "left",
+    "entry_spacing": "comfortable",
+    "file_icons": true,
+    "folder_icons": true,
+    "git_status": true,
+    "indent_size": 20,
+    "auto_reveal_entries": true,
+    "auto_fold_dirs": true,
+    "sticky_scroll": true,
+    "drag_and_drop": true,
+    "scrollbar": {
+      "show": null
     },
-    "show_diagnostics": "all",      //
-    // Settings related to indent guides in the project panel.
+    "show_diagnostics": "all",
     "indent_guides": {
-      // When to show indent guides in the project panel. (always, never)
       "show": "always"
     },
-    // Whether to hide the root entry when only one folder is open in the window.
     "hide_root": false,
-    // Whether to hide the hidden entries in the project panel.
     "hide_hidden": false
   }
 ```
 
-## Agent Panel
+## AI 面板
 
 ```json [settings]
   "agent": {
     "version": "2",
-    "enabled": true,        // Enable/disable the agent
-    "button": true,         // Show/hide the icon in the status bar
-    "dock": "right",        // Where to dock: left, right, bottom
-    "default_width": 640,   // Default width (left/right docked)
-    "default_height": 320,  // Default height (bottom docked)
+    "enabled": true,
+    "button": true,
+    "dock": "right",
+    "default_width": 640,
+    "default_height": 320
   },
   "agent_font_size": 16
 ```
 
-See [Zed AI Documentation](./ai/overview.md) for additional non-visual AI settings.
+更多 AI 相关设置见 [Zed AI 概览](./ai/overview.md)。
 
-## Terminal Panel
+## 终端面板
 
 ```json [settings]
-  // Terminal Panel Settings
   "terminal": {
-    "dock": "bottom",                   // Where to dock: left, right, bottom
-    "button": true,                     // Show/hide status bar icon
-    "default_width": 640,               // Default width (left/right docked)
-    "default_height": 320,              // Default height (bottom docked)
-
-    // Set the cursor blinking behavior in the terminal (on, off, terminal_controlled)
+    "dock": "bottom",
+    "button": true,
+    "default_width": 640,
+    "default_height": 320,
     "blinking": "terminal_controlled",
-    // Default cursor shape for the terminal cursor (block, bar, underline, hollow)
     "cursor_shape": "block",
-
-    // Environment variables to add to terminal's process environment
-    "env": {
-      // "KEY": "value"
-    },
-
-    // Terminal scrollbar
+    "env": {},
     "scrollbar": {
-      "show": null                       // Show/hide: (auto, system, always, never)
+      "show": null
     },
-    // Terminal Font Settings
     "font_family": "Fira Code",
     "font_size": 15,
     "font_weight": 400,
-    // Terminal line height: comfortable (1.618), standard(1.3) or `{ "custom": 2 }`
     "line_height": "comfortable",
-
-    "max_scroll_history_lines": 10000,   // Scrollback history (0=disable, max=100000)
+    "max_scroll_history_lines": 10000
   }
 ```
 
-See [Terminal settings](./configuring-zed.md#terminal) for additional non-visual customization options.
+更多终端设置可参考[配置 Zed > 终端](./configuring-zed.md#terminal)。
 
-### Other Panels
+### 其他面板
 
 ```json [settings]
-  // Git Panel
   "git_panel": {
-    "button": true,               // Show/hide status bar icon
-    "dock": "left",               // Where to dock: left, right
-    "default_width": 360,         // Default width of the git panel.
-    "status_style": "icon",       // label_color, icon
-    "sort_by_path": false,        // Sort by path (false) or status (true)
-    "scrollbar": {
-      "show": null                // Show/hide: (auto, system, always, never)
-    }
+    "button": true,
+    "dock": "left",
+    "default_width": 360,
+    "status_style": "icon",
+    "sort_by_path": false,
+    "scrollbar": { "show": null }
   },
-
-  // Debugger Panel
   "debugger": {
-    "dock": "bottom",             // Where to dock: left, right, bottom
-    "button": true                // Show/hide status bar icon
+    "dock": "bottom",
+    "button": true
   },
-
-  // Outline Panel
   "outline_panel": {
-    "button": true,               // Show/hide status bar icon
-    "default_width": 300,         // Default width of the git panel
-    "dock": "left",               // Where to dock: left, right
-    "file_icons": true,           // Show/hide file_icons
-    "folder_icons": true,         // Show file_icons (true), chevrons (false) for dirs
-    "git_status": true,           // Show git status
-    "indent_size": 20,            // Indentation for nested items (pixels)
-    "indent_guides": {
-      "show": "always"            // Show indent guides (always, never)
-    },
-    "auto_reveal_entries": true,  // Show file in panel when activating its buffer
-    "auto_fold_dirs": true,       // Fold dirs with single subdir
-    "scrollbar": {                // Project panel scrollbar settings
-      "show": null                // Show/hide: (auto, system, always, never)
-    }
+    "button": true,
+    "default_width": 300,
+    "dock": "left",
+    "file_icons": true,
+    "folder_icons": true,
+    "git_status": true,
+    "indent_size": 20,
+    "indent_guides": { "show": "always" },
+    "auto_reveal_entries": true,
+    "auto_fold_dirs": true,
+    "scrollbar": { "show": null }
   }
 ```
 
-## Collaboration Panels
+## 协作与通知面板
 
 ```json [settings]
 {
-  // Collaboration Panel
   "collaboration_panel": {
-    "button": true, // Show/hide status bar icon
-    "dock": "left", // Where to dock: left, right
-    "default_width": 240 // Default width of the collaboration panel.
-  },
-  "show_call_status_icon": true, // Shown call status in the OS status bar.
-
-  // Notification Panel
-  "notification_panel": {
-    // Whether to show the notification panel button in the status bar.
     "button": true,
-    // Where to dock the notification panel. Can be 'left' or 'right'.
+    "dock": "left",
+    "default_width": 240
+  },
+  "show_call_status_icon": true,
+
+  "notification_panel": {
+    "button": true,
     "dock": "right",
-    // Default width of the notification panel.
     "default_width": 380
   }
 }

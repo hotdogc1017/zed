@@ -1,20 +1,20 @@
-# LLM Providers
+# LLM 提供程序
 
-To use AI in Zed, you need to have at least one large language model provider set up.
+要在 Zed 中使用 AI，您需要至少设置一个大型语言模型提供程序。
 
-You can do that by either subscribing to [one of Zed's plans](./plans-and-usage.md), or by using API keys you already have for the supported providers.
+您可以通过订阅 [Zed 的某个计划](./plans-and-usage.md)，或使用您已有的受支持提供程序的 API 密钥来实现。
 
-## Use Your Own Keys {#use-your-own-keys}
+## 使用您自己的密钥 {#use-your-own-keys}
 
-If you already have an API key for an existing LLM provider, like Anthropic or OpenAI, you can add them to Zed and use the full power of the Agent Panel **_for free_**.
+如果您已经拥有现有 LLM 提供程序（如 Anthropic 或 OpenAI）的 API 密钥，您可以将它们添加到 Zed 中，并**_免费_**使用代理面板的全部功能。
 
-To add an existing API key to a given provider, go to the Agent Panel settings (`agent: open settings`), look for the desired provider, paste the key into the input, and hit enter.
+要将现有 API 密钥添加到给定的提供程序，请转到代理面板设置（`agent: open settings`），找到所需的提供程序，将密钥粘贴到输入框中，然后按回车键。
 
-> Note: API keys are _not_ stored as plain text in your `settings.json`, but rather in your OS's secure credential storage.
+> 注意：API 密钥_不会_以纯文本形式存储在您的 `settings.json` 中，而是存储在您操作系统的安全凭据存储中。
 
-## Supported Providers
+## 支持的提供程序
 
-Zed offers an extensive list of "use your own key" LLM providers
+Zed 提供广泛的"使用您自己的密钥" LLM 提供程序列表
 
 - [Amazon Bedrock](#amazon-bedrock)
 - [Anthropic](#anthropic)
@@ -25,23 +25,23 @@ Zed offers an extensive list of "use your own key" LLM providers
 - [Mistral](#mistral)
 - [Ollama](#ollama)
 - [OpenAI](#openai)
-- [OpenAI API Compatible](#openai-api-compatible)
+- [OpenAI API 兼容](#openai-api-compatible)
 - [OpenRouter](#openrouter)
 - [Vercel](#vercel-v0)
 - [xAI](#xai)
 
 ### Amazon Bedrock {#amazon-bedrock}
 
-> Supports tool use with models that support streaming tool use.
-> More details can be found in the [Amazon Bedrock's Tool Use documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference-supported-models-features.html).
+> 支持使用支持流式工具使用的模型的工具使用。
+> 更多详细信息可以在 [Amazon Bedrock 的工具使用文档](https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference-supported-models-features.html) 中找到。
 
-To use Amazon Bedrock's models, an AWS authentication is required.
-Ensure your credentials have the following permissions set up:
+要使用 Amazon Bedrock 的模型，需要 AWS 身份验证。
+确保您的凭据设置了以下权限：
 
 - `bedrock:InvokeModelWithResponseStream`
 - `bedrock:InvokeModel`
 
-Your IAM policy should look similar to:
+您的 IAM 策略应类似于：
 
 ```json [settings]
 {
@@ -59,12 +59,12 @@ Your IAM policy should look similar to:
 }
 ```
 
-With that done, choose one of the two authentication methods:
+完成后，选择两种身份验证方法之一：
 
-#### Authentication via Named Profile (Recommended)
+#### 通过命名配置文件进行身份验证（推荐）
 
-1. Ensure you have the AWS CLI installed and configured with a named profile
-2. Open your `settings.json` (`zed: open settings`) and include the `bedrock` key under `language_models` with the following settings:
+1. 确保您已安装 AWS CLI 并使用命名配置文件配置
+2. 打开您的 `settings.json`（`zed: open settings`）并在 `language_models` 下包含 `bedrock` 键，使用以下设置：
    ```json [settings]
    {
      "language_models": {
@@ -77,48 +77,48 @@ With that done, choose one of the two authentication methods:
    }
    ```
 
-#### Authentication via Static Credentials
+#### 通过静态凭据进行身份验证
 
-While it's possible to configure through the Agent Panel settings UI by entering your AWS access key and secret directly, we recommend using named profiles instead for better security practices.
-To do this:
+虽然可以通过在代理面板设置 UI 中直接输入您的 AWS 访问密钥和密钥来配置，但我们建议使用命名配置文件以获得更好的安全实践。
+为此：
 
-1. Create an IAM User that you can assume in the [IAM Console](https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/users).
-2. Create security credentials for that User, save them and keep them secure.
-3. Open the Agent Configuration with (`agent: open settings`) and go to the Amazon Bedrock section
-4. Copy the credentials from Step 2 into the respective **Access Key ID**, **Secret Access Key**, and **Region** fields.
+1. 在 [IAM 控制台](https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/users) 中创建一个您可以承担的 IAM 用户。
+2. 为该用户创建安全凭据，保存并妥善保管。
+3. 使用 (`agent: open settings`) 打开代理配置并转到 Amazon Bedrock 部分
+4. 将步骤 2 中的凭据复制到相应的 **访问密钥 ID**、**秘密访问密钥** 和 **区域** 字段中。
 
-#### Cross-Region Inference
+#### 跨区域推理
 
-The Zed implementation of Amazon Bedrock uses [Cross-Region inference](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html) for all the models and region combinations that support it.
-With Cross-Region inference, you can distribute traffic across multiple AWS Regions, enabling higher throughput.
+Zed 的 Amazon Bedrock 实现对所有支持它的模型和区域组合使用[跨区域推理](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html)。
+通过跨区域推理，您可以将流量分布到多个 AWS 区域，从而实现更高的吞吐量。
 
-For example, if you use `Claude Sonnet 3.7 Thinking` from `us-east-1`, it may be processed across the US regions, namely: `us-east-1`, `us-east-2`, or `us-west-2`.
-Cross-Region inference requests are kept within the AWS Regions that are part of the geography where the data originally resides.
-For example, a request made within the US is kept within the AWS Regions in the US.
+例如，如果您从 `us-east-1` 使用 `Claude Sonnet 3.7 Thinking`，它可能会在美国区域之间处理，即：`us-east-1`、`us-east-2` 或 `us-west-2`。
+跨区域推理请求保持在数据原始所在地理位置的 AWS 区域内。
+例如，在美国内发出的请求保持在美国的 AWS 区域内。
 
-Although the data remains stored only in the source Region, your input prompts and output results might move outside of your source Region during cross-Region inference.
-All data will be transmitted encrypted across Amazon's secure network.
+尽管数据仅存储在源区域中，但您的输入提示和输出结果在跨区域推理期间可能会移动到源区域之外。
+所有数据将通过 Amazon 的安全网络加密传输。
 
-We will support Cross-Region inference for each of the models on a best-effort basis, please refer to the [Cross-Region Inference method Code](https://github.com/zed-industries/zed/blob/main/crates/bedrock/src/models.rs#L297).
+我们将尽最大努力支持每个模型的跨区域推理，请参阅 [跨区域推理方法代码](https://github.com/zed-industries/zed/blob/main/crates/bedrock/src/models.rs#L297)。
 
-For the most up-to-date supported regions and models, refer to the [Supported Models and Regions for Cross Region inference](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html).
+有关最新支持的地区和模型，请参阅 [跨区域推理支持的模型和区域](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html)。
 
 ### Anthropic {#anthropic}
 
-You can use Anthropic models by choosing them via the model dropdown in the Agent Panel.
+您可以通过在代理面板的模型下拉菜单中选择 Anthropic 模型来使用它们。
 
-1. Sign up for Anthropic and [create an API key](https://console.anthropic.com/settings/keys)
-2. Make sure that your Anthropic account has credits
-3. Open the settings view (`agent: open settings`) and go to the Anthropic section
-4. Enter your Anthropic API key
+1. 注册 Anthropic 并[创建 API 密钥](https://console.anthropic.com/settings/keys)
+2. 确保您的 Anthropic 账户有积分
+3. 打开设置视图（`agent: open settings`）并转到 Anthropic 部分
+4. 输入您的 Anthropic API 密钥
 
-Even if you pay for Claude Pro, you will still have to [pay for additional credits](https://console.anthropic.com/settings/plans) to use it via the API.
+即使您为 Claude Pro 付费，您仍然需要[支付额外积分](https://console.anthropic.com/settings/plans)才能通过 API 使用它。
 
-Zed will also use the `ANTHROPIC_API_KEY` environment variable if it's defined.
+如果定义了 `ANTHROPIC_API_KEY` 环境变量，Zed 也会使用它。
 
-#### Custom Models {#anthropic-custom-models}
+#### 自定义模型 {#anthropic-custom-models}
 
-You can add custom models to the Anthropic provider by adding the following to your Zed `settings.json`:
+您可以通过将以下内容添加到您的 Zed `settings.json` 中来向 Anthropic 提供程序添加自定义模型：
 
 ```json [settings]
 {
@@ -127,7 +127,7 @@ You can add custom models to the Anthropic provider by adding the following to y
       "available_models": [
         {
           "name": "claude-3-5-sonnet-20240620",
-          "display_name": "Sonnet 2024-June",
+          "display_name": "Sonnet 2024-六月",
           "max_tokens": 128000,
           "max_output_tokens": 2560,
           "cache_configuration": {
@@ -143,9 +143,9 @@ You can add custom models to the Anthropic provider by adding the following to y
 }
 ```
 
-Custom models will be listed in the model dropdown in the Agent Panel.
+自定义模型将列在代理面板的模型下拉菜单中。
 
-You can configure a model to use [extended thinking](https://docs.anthropic.com/en/docs/about-claude/models/extended-thinking-models) (if it supports it) by changing the mode in your model's configuration to `thinking`, for example:
+您可以通过将模型配置中的模式更改为 `thinking` 来配置模型使用[扩展思维](https://docs.anthropic.com/en/docs/about-claude/models/extended-thinking-models)（如果支持），例如：
 
 ```json [settings]
 {
@@ -161,18 +161,18 @@ You can configure a model to use [extended thinking](https://docs.anthropic.com/
 
 ### DeepSeek {#deepseek}
 
-1. Visit the DeepSeek platform and [create an API key](https://platform.deepseek.com/api_keys)
-2. Open the settings view (`agent: open settings`) and go to the DeepSeek section
-3. Enter your DeepSeek API key
+1. 访问 DeepSeek 平台并[创建 API 密钥](https://platform.deepseek.com/api_keys)
+2. 打开设置视图（`agent: open settings`）并转到 DeepSeek 部分
+3. 输入您的 DeepSeek API 密钥
 
-The DeepSeek API key will be saved in your keychain.
+DeepSeek API 密钥将保存在您的钥匙串中。
 
-Zed will also use the `DEEPSEEK_API_KEY` environment variable if it's defined.
+如果定义了 `DEEPSEEK_API_KEY` 环境变量，Zed 也会使用它。
 
-#### Custom Models {#deepseek-custom-models}
+#### 自定义模型 {#deepseek-custom-models}
 
-The Zed agent comes pre-configured to use the latest version for common models (DeepSeek Chat, DeepSeek Reasoner).
-If you wish to use alternate models or customize the API endpoint, you can do so by adding the following to your Zed `settings.json`:
+Zed 代理预配置为使用常见模型的最新版本（DeepSeek Chat、DeepSeek Reasoner）。
+如果您希望使用替代模型或自定义 API 端点，可以通过将以下内容添加到您的 Zed `settings.json` 中来实现：
 
 ```json [settings]
 {
@@ -197,39 +197,39 @@ If you wish to use alternate models or customize the API endpoint, you can do so
 }
 ```
 
-Custom models will be listed in the model dropdown in the Agent Panel.
-You can also modify the `api_url` to use a custom endpoint if needed.
+自定义模型将列在代理面板的模型下拉菜单中。
+如果需要，您也可以修改 `api_url` 以使用自定义端点。
 
 ### GitHub Copilot Chat {#github-copilot-chat}
 
-You can use GitHub Copilot Chat with the Zed agent by choosing it via the model dropdown in the Agent Panel.
+您可以通过在代理面板的模型下拉菜单中选择 GitHub Copilot Chat 来将其与 Zed 代理一起使用。
 
-1. Open the settings view (`agent: open settings`) and go to the GitHub Copilot Chat section
-2. Click on `Sign in to use GitHub Copilot`, follow the steps shown in the modal.
+1. 打开设置视图（`agent: open settings`）并转到 GitHub Copilot Chat 部分
+2. 点击 `Sign in to use GitHub Copilot`，按照模态框中显示的步骤操作。
 
-Alternatively, you can provide an OAuth token via the `GH_COPILOT_TOKEN` environment variable.
+或者，您可以通过 `GH_COPILOT_TOKEN` 环境变量提供 OAuth 令牌。
 
-> **Note**: If you don't see specific models in the dropdown, you may need to enable them in your [GitHub Copilot settings](https://github.com/settings/copilot/features).
+> **注意**：如果您在下拉菜单中看不到特定模型，您可能需要在 [GitHub Copilot 设置](https://github.com/settings/copilot/features) 中启用它们。
 
-To use Copilot Enterprise with Zed (for both agent and completions), you must configure your enterprise endpoint as described in [Configuring GitHub Copilot Enterprise](./edit-prediction.md#github-copilot-enterprise).
+要将 Copilot Enterprise 与 Zed 一起使用（用于代理和补全），您必须按照 [配置 GitHub Copilot Enterprise](./edit-prediction.md#github-copilot-enterprise) 中所述配置您的企业端点。
 
 ### Google AI {#google-ai}
 
-You can use Gemini models with the Zed agent by choosing it via the model dropdown in the Agent Panel.
+您可以通过在代理面板的模型下拉菜单中选择 Google AI 来将 Gemini 模型与 Zed 代理一起使用。
 
-1. Go to the Google AI Studio site and [create an API key](https://aistudio.google.com/app/apikey).
-2. Open the settings view (`agent: open settings`) and go to the Google AI section
-3. Enter your Google AI API key and press enter.
+1. 访问 Google AI Studio 网站并[创建 API 密钥](https://aistudio.google.com/app/apikey)
+2. 打开设置视图（`agent: open settings`）并转到 Google AI 部分
+3. 输入您的 Google AI API 密钥并按回车键
 
-The Google AI API key will be saved in your keychain.
+Google AI API 密钥将保存在您的钥匙串中。
 
-Zed will also use the `GEMINI_API_KEY` environment variable if it's defined. See [Using Gemini API keys](https://ai.google.dev/gemini-api/docs/api-key) in the Gemini docs for more.
+如果定义了 `GEMINI_API_KEY` 环境变量，Zed 也会使用它。有关更多信息，请参阅 Gemini 文档中的[使用 Gemini API 密钥](https://ai.google.dev/gemini-api/docs/api-key)。
 
-#### Custom Models {#google-ai-custom-models}
+#### 自定义模型 {#google-ai-custom-models}
 
-By default, Zed will use `stable` versions of models, but you can use specific versions of models, including [experimental models](https://ai.google.dev/gemini-api/docs/models/experimental-models). You can configure a model to use [thinking mode](https://ai.google.dev/gemini-api/docs/thinking) (if it supports it) by adding a `mode` configuration to your model. This is useful for controlling reasoning token usage and response speed. If not specified, Gemini will automatically choose the thinking budget.
+默认情况下，Zed 将使用模型的 `stable` 版本，但您可以使用特定版本的模型，包括[实验性模型](https://ai.google.dev/gemini-api/docs/models/experimental-models)。您可以通过向模型添加 `mode` 配置来配置模型使用[思维模式](https://ai.google.dev/gemini-api/docs/thinking)（如果支持）。这对于控制推理令牌使用和响应速度很有用。如果未指定，Gemini 将自动选择思维预算。
 
-Here is an example of a custom Google AI model you could add to your Zed `settings.json`:
+以下是您可以添加到 Zed `settings.json` 中的自定义 Google AI 模型示例：
 
 ```json [settings]
 {
@@ -251,40 +251,40 @@ Here is an example of a custom Google AI model you could add to your Zed `settin
 }
 ```
 
-Custom models will be listed in the model dropdown in the Agent Panel.
+自定义模型将列在代理面板的模型下拉菜单中。
 
 ### LM Studio {#lmstudio}
 
-1. Download and install [the latest version of LM Studio](https://lmstudio.ai/download)
-2. In the app press `cmd/ctrl-shift-m` and download at least one model (e.g., qwen2.5-coder-7b). Alternatively, you can get models via the LM Studio CLI:
+1. 下载并安装[最新版本的 LM Studio](https://lmstudio.ai/download)
+2. 在应用程序中按 `cmd/ctrl-shift-m` 并下载至少一个模型（例如，qwen2.5-coder-7b）。或者，您可以通过 LM Studio CLI 获取模型：
 
    ```sh
    lms get qwen2.5-coder-7b
    ```
 
-3. Make sure the LM Studio API server is running by executing:
+3. 通过执行以下命令确保 LM Studio API 服务器正在运行：
 
    ```sh
    lms server start
    ```
 
-Tip: Set [LM Studio as a login item](https://lmstudio.ai/docs/advanced/headless#run-the-llm-service-on-machine-login) to automate running the LM Studio server.
+提示：将 [LM Studio 设置为登录项](https://lmstudio.ai/docs/advanced/headless#run-the-llm-service-on-machine-login) 以自动运行 LM Studio 服务器。
 
 ### Mistral {#mistral}
 
-1. Visit the Mistral platform and [create an API key](https://console.mistral.ai/api-keys/)
-2. Open the configuration view (`agent: open settings`) and navigate to the Mistral section
-3. Enter your Mistral API key
+1. 访问 Mistral 平台并[创建 API 密钥](https://console.mistral.ai/api-keys/)
+2. 打开配置视图（`agent: open settings`）并导航到 Mistral 部分
+3. 输入您的 Mistral API 密钥
 
-The Mistral API key will be saved in your keychain.
+Mistral API 密钥将保存在您的钥匙串中。
 
-Zed will also use the `MISTRAL_API_KEY` environment variable if it's defined.
+如果定义了 `MISTRAL_API_KEY` 环境变量，Zed 也会使用它。
 
-#### Custom Models {#mistral-custom-models}
+#### 自定义模型 {#mistral-custom-models}
 
-The Zed agent comes pre-configured with several Mistral models (codestral-latest, mistral-large-latest, mistral-medium-latest, mistral-small-latest, open-mistral-nemo, and open-codestral-mamba).
-All the default models support tool use.
-If you wish to use alternate models or customize their parameters, you can do so by adding the following to your Zed `settings.json`:
+Zed 代理预配置了几个 Mistral 模型（codestral-latest、mistral-large-latest、mistral-medium-latest、mistral-small-latest、open-mistral-nemo 和 open-codestral-mamba）。
+所有默认模型都支持工具使用。
+如果您希望使用替代模型或自定义其参数，可以通过将以下内容添加到您的 Zed `settings.json` 中来实现：
 
 ```json [settings]
 {
@@ -307,36 +307,36 @@ If you wish to use alternate models or customize their parameters, you can do so
 }
 ```
 
-Custom models will be listed in the model dropdown in the Agent Panel.
+自定义模型将列在代理面板的模型下拉菜单中。
 
 ### Ollama {#ollama}
 
-Download and install Ollama from [ollama.com/download](https://ollama.com/download) (Linux or macOS) and ensure it's running with `ollama --version`.
+从 [ollama.com/download](https://ollama.com/download) 下载并安装 Ollama（Linux 或 macOS），并使用 `ollama --version` 确保其正在运行。
 
-1. Download one of the [available models](https://ollama.com/models), for example, for `mistral`:
+1. 下载一个[可用模型](https://ollama.com/models)，例如，对于 `mistral`：
 
    ```sh
    ollama pull mistral
    ```
 
-2. Make sure that the Ollama server is running. You can start it either via running Ollama.app (macOS) or launching:
+2. 确保 Ollama 服务器正在运行。您可以通过运行 Ollama.app（macOS）或启动以下命令来启动它：
 
    ```sh
    ollama serve
    ```
 
-3. In the Agent Panel, select one of the Ollama models using the model dropdown.
+3. 在代理面板中，使用模型下拉菜单选择其中一个 Ollama 模型。
 
-#### Ollama Context Length {#ollama-context}
+#### Ollama 上下文长度 {#ollama-context}
 
-Zed has pre-configured maximum context lengths (`max_tokens`) to match the capabilities of common models.
-Zed API requests to Ollama include this as the `num_ctx` parameter, but the default values do not exceed `16384` so users with ~16GB of RAM are able to use most models out of the box.
+Zed 预配置了最大上下文长度（`max_tokens`）以匹配常见模型的能力。
+Zed 对 Ollama 的 API 请求将其作为 `num_ctx` 参数包含，但默认值不超过 `16384`，因此拥有约 16GB RAM 的用户能够开箱即用大多数模型。
 
-See [get_max_tokens in ollama.rs](https://github.com/zed-industries/zed/blob/main/crates/ollama/src/ollama.rs) for a complete set of defaults.
+有关完整的默认值，请参阅 [ollama.rs 中的 get_max_tokens](https://github.com/zed-industries/zed/blob/main/crates/ollama/src/ollama.rs)。
 
-> **Note**: Token counts displayed in the Agent Panel are only estimates and will differ from the model's native tokenizer.
+> **注意**：代理面板中显示的令牌计数仅为估计值，将与模型的本机分词器不同。
 
-Depending on your hardware or use-case you may wish to limit or increase the context length for a specific model via settings.json:
+根据您的硬件或使用情况，您可能希望通过 settings.json 限制或增加特定模型的上下文长度：
 
 ```json [settings]
 {
@@ -358,53 +358,53 @@ Depending on your hardware or use-case you may wish to limit or increase the con
 }
 ```
 
-If you specify a context length that is too large for your hardware, Ollama will log an error.
-You can watch these logs by running: `tail -f ~/.ollama/logs/ollama.log` (macOS) or `journalctl -u ollama -f` (Linux).
-Depending on the memory available on your machine, you may need to adjust the context length to a smaller value.
+如果您指定的上下文长度对您的硬件来说太大，Ollama 将记录错误。
+您可以通过运行以下命令查看这些日志：`tail -f ~/.ollama/logs/ollama.log`（macOS）或 `journalctl -u ollama -f`（Linux）。
+根据您机器上的可用内存，您可能需要将上下文长度调整为较小的值。
 
-You may also optionally specify a value for `keep_alive` for each available model.
-This can be an integer (seconds) or alternatively a string duration like "5m", "10m", "1h", "1d", etc.
-For example, `"keep_alive": "120s"` will allow the remote server to unload the model (freeing up GPU VRAM) after 120 seconds.
+您还可以选择为每个可用模型指定 `keep_alive` 的值。
+这可以是一个整数（秒），也可以是字符串形式的持续时间，如 "5m"、"10m"、"1h"、"1d" 等。
+例如，`"keep_alive": "120s"` 将允许远程服务器在 120 秒后卸载模型（释放 GPU VRAM）。
 
-The `supports_tools` option controls whether the model will use additional tools.
-If the model is tagged with `tools` in the Ollama catalog, this option should be supplied, and the built-in profiles `Ask` and `Write` can be used.
-If the model is not tagged with `tools` in the Ollama catalog, this option can still be supplied with the value `true`; however, be aware that only the `Minimal` built-in profile will work.
+`supports_tools` 选项控制模型是否将使用其他工具。
+如果模型在 Ollama 目录中标记为 `tools`，则应提供此选项，并且可以使用内置配置文件 `Ask` 和 `Write`。
+如果模型在 Ollama 目录中未标记为 `tools`，仍可以将此选项设置为 `true`；但是，请注意只有 `Minimal` 内置配置文件会起作用。
 
-The `supports_thinking` option controls whether the model will perform an explicit "thinking" (reasoning) pass before producing its final answer.
-If the model is tagged with `thinking` in the Ollama catalog, set this option and you can use it in Zed.
+`supports_thinking` 选项控制模型是否在执行最终答案之前执行显式的"思考"（推理）过程。
+如果模型在 Ollama 目录中标记为 `thinking`，请设置此选项，您可以在 Zed 中使用它。
 
-The `supports_images` option enables the model's vision capabilities, allowing it to process images included in the conversation context.
-If the model is tagged with `vision` in the Ollama catalog, set this option and you can use it in Zed.
+`supports_images` 选项启用模型的视觉功能，允许其处理对话上下文中包含的图像。
+如果模型在 Ollama 目录中标记为 `vision`，请设置此选项，您可以在 Zed 中使用它。
 
-#### Ollama Authentication
+#### Ollama 认证
 
-In addition to running Ollama on your own hardware, which generally does not require authentication, Zed also supports connecting to remote Ollama instances. API keys are required for authentication.
+除了在您自己的硬件上运行 Ollama（通常不需要认证）之外，Zed 还支持连接到远程 Ollama 实例。API 密钥需要用于认证。
 
-One such service is [Ollama Turbo])(https://ollama.com/turbo). To configure Zed to use Ollama turbo:
+其中一个服务是 [Ollama Turbo](https://ollama.com/turbo)。要将 Zed 配置为使用 Ollama Turbo：
 
-1. Sign in to your Ollama account and subscribe to Ollama Turbo
-2. Visit [ollama.com/settings/keys](https://ollama.com/settings/keys) and create an API key
-3. Open the settings view (`agent: open settings`) and go to the Ollama section
-4. Paste your API key and press enter.
-5. For the API URL enter `https://ollama.com`
+1. 登录您的 Ollama 账户并订阅 Ollama Turbo
+2. 访问 [ollama.com/settings/keys](https://ollama.com/settings/keys) 并创建 API 密钥
+3. 打开设置视图（`agent: open settings`）并转到 Ollama 部分
+4. 粘贴您的 API 密钥并按回车键
+5. 对于 API URL，输入 `https://ollama.com`
 
-Zed will also use the `OLLAMA_API_KEY` environment variables if defined.
+如果定义了 `OLLAMA_API_KEY` 环境变量，Zed 也会使用它。
 
 ### OpenAI {#openai}
 
-1. Visit the OpenAI platform and [create an API key](https://platform.openai.com/account/api-keys)
-2. Make sure that your OpenAI account has credits
-3. Open the settings view (`agent: open settings`) and go to the OpenAI section
-4. Enter your OpenAI API key
+1. 访问 OpenAI 平台并[创建 API 密钥](https://platform.openai.com/account/api-keys)
+2. 确保您的 OpenAI 账户有积分
+3. 打开设置视图（`agent: open settings`）并转到 OpenAI 部分
+4. 输入您的 OpenAI API 密钥
 
-The OpenAI API key will be saved in your keychain.
+OpenAI API 密钥将保存在您的钥匙串中。
 
-Zed will also use the `OPENAI_API_KEY` environment variable if it's defined.
+如果定义了 `OPENAI_API_KEY` 环境变量，Zed 也会使用它。
 
-#### Custom Models {#openai-custom-models}
+#### 自定义模型 {#openai-custom-models}
 
-The Zed agent comes pre-configured to use the latest version for common models (GPT-5, GPT-5 mini, o4-mini, GPT-4.1, and others).
-To use alternate models, perhaps a preview release, or if you wish to control the request parameters, you can do so by adding the following to your Zed `settings.json`:
+Zed 代理预配置为使用常见模型的最新版本（GPT-5、GPT-5 mini、o4-mini、GPT-4.1 等）。
+要使用替代模型（可能是预览版），或者如果您希望控制请求参数，可以通过将以下内容添加到您的 Zed `settings.json` 中来实现：
 
 ```json [settings]
 {
@@ -429,28 +429,28 @@ To use alternate models, perhaps a preview release, or if you wish to control th
 }
 ```
 
-You must provide the model's context window in the `max_tokens` parameter; this can be found in the [OpenAI model documentation](https://platform.openai.com/docs/models).
+您必须在 `max_tokens` 参数中提供模型的上下文窗口；这可以在 [OpenAI 模型文档](https://platform.openai.com/docs/models) 中找到。
 
-OpenAI `o1` models should set `max_completion_tokens` as well to avoid incurring high reasoning token costs.
-Custom models will be listed in the model dropdown in the Agent Panel.
+OpenAI `o1` 模型还应设置 `max_completion_tokens` 以避免产生高昂的推理令牌成本。
+自定义模型将列在代理面板的模型下拉菜单中。
 
-### OpenAI API Compatible {#openai-api-compatible}
+### OpenAI API 兼容 {#openai-api-compatible}
 
-Zed supports using [OpenAI compatible APIs](https://platform.openai.com/docs/api-reference/chat) by specifying a custom `api_url` and `available_models` for the OpenAI provider.
-This is useful for connecting to other hosted services (like Together AI, Anyscale, etc.) or local models.
+Zed 支持通过为 OpenAI 提供程序指定自定义 `api_url` 和 `available_models` 来使用 [OpenAI 兼容 API](https://platform.openai.com/docs/api-reference/chat)。
+这对于连接到其他托管服务（如 Together AI、Anyscale 等）或本地模型很有用。
 
-You can add a custom, OpenAI-compatible model either via the UI or by editing your `settings.json`.
+您可以通过 UI 或编辑 `settings.json` 来添加自定义的 OpenAI 兼容模型。
 
-To do it via the UI, go to the Agent Panel settings (`agent: open settings`) and look for the "Add Provider" button to the right of the "LLM Providers" section title.
-Then, fill up the input fields available in the modal.
+要通过 UI 执行此操作，请转到代理面板设置（`agent: open settings`）并查找 "LLM Providers" 部分标题右侧的 "Add Provider" 按钮。
+然后，填写模态框中可用的输入字段。
 
-To do it via your `settings.json`, add the following snippet under `language_models`:
+要通过 `settings.json` 执行此操作，请在 `language_models` 下添加以下代码片段：
 
 ```json [settings]
 {
   "language_models": {
     "openai_compatible": {
-      // Using Together AI as an example
+      // 使用 Together AI 作为示例
       "Together AI": {
         "api_url": "https://api.together.xyz/v1",
         "available_models": [
@@ -472,32 +472,32 @@ To do it via your `settings.json`, add the following snippet under `language_mod
 }
 ```
 
-By default, OpenAI-compatible models inherit the following capabilities:
+默认情况下，OpenAI 兼容模型继承以下功能：
 
-- `tools`: true (supports tool/function calling)
-- `images`: false (does not support image inputs)
-- `parallel_tool_calls`: false (does not support `parallel_tool_calls` parameter)
-- `prompt_cache_key`: false (does not support `prompt_cache_key` parameter)
+- `tools`: true（支持工具/函数调用）
+- `images`: false（不支持图像输入）
+- `parallel_tool_calls`: false（不支持 `parallel_tool_calls` 参数）
+- `prompt_cache_key`: false（不支持 `prompt_cache_key` 参数）
 
-Note that LLM API keys aren't stored in your settings file.
-So, ensure you have it set in your environment variables (`<PROVIDER_NAME>_API_KEY=<your api key>`) so your settings can pick it up. In the example above, it would be `TOGETHER_AI_API_KEY=<your api key>`.
+请注意，LLM API 密钥不会存储在您的设置文件中。
+因此，请确保您已在环境变量中设置了它（`<PROVIDER_NAME>_API_KEY=<your api key>`），以便您的设置可以获取它。在上面的示例中，它将是 `TOGETHER_AI_API_KEY=<your api key>`。
 
 ### OpenRouter {#openrouter}
 
-OpenRouter provides access to multiple AI models through a single API. It supports tool use for compatible models.
+OpenRouter 通过单个 API 提供对多个 AI 模型的访问。它支持兼容模型的工具使用。
 
-1. Visit [OpenRouter](https://openrouter.ai) and create an account
-2. Generate an API key from your [OpenRouter keys page](https://openrouter.ai/keys)
-3. Open the settings view (`agent: open settings`) and go to the OpenRouter section
-4. Enter your OpenRouter API key
+1. 访问 [OpenRouter](https://openrouter.ai) 并创建账户
+2. 从您的 [OpenRouter 密钥页面](https://openrouter.ai/keys) 生成 API 密钥
+3. 打开设置视图（`agent: open settings`）并转到 OpenRouter 部分
+4. 输入您的 OpenRouter API 密钥
 
-The OpenRouter API key will be saved in your keychain.
+OpenRouter API 密钥将保存在您的钥匙串中。
 
-Zed will also use the `OPENROUTER_API_KEY` environment variable if it's defined.
+如果定义了 `OPENROUTER_API_KEY` 环境变量，Zed 也会使用它。
 
-#### Custom Models {#openrouter-custom-models}
+#### 自定义模型 {#openrouter-custom-models}
 
-You can add custom models to the OpenRouter provider by adding the following to your Zed `settings.json`:
+您可以通过将以下内容添加到您的 Zed `settings.json` 中，将自定义模型添加到 OpenRouter 提供程序：
 
 ```json [settings]
 {
@@ -523,37 +523,37 @@ You can add custom models to the OpenRouter provider by adding the following to 
 }
 ```
 
-The available configuration options for each model are:
+每个模型的可用配置选项包括：
 
-- `name` (required): The model identifier used by OpenRouter
-- `display_name` (optional): A human-readable name shown in the UI
-- `max_tokens` (required): The model's context window size
-- `max_output_tokens` (optional): Maximum tokens the model can generate
-- `max_completion_tokens` (optional): Maximum completion tokens
-- `supports_tools` (optional): Whether the model supports tool/function calling
-- `supports_images` (optional): Whether the model supports image inputs
-- `mode` (optional): Special mode configuration for thinking models
+- `name`（必需）：OpenRouter 使用的模型标识符
+- `display_name`（可选）：在 UI 中显示的人类可读名称
+- `max_tokens`（必需）：模型的上下文窗口大小
+- `max_output_tokens`（可选）：模型可以生成的最大令牌数
+- `max_completion_tokens`（可选）：最大完成令牌数
+- `supports_tools`（可选）：模型是否支持工具/函数调用
+- `supports_images`（可选）：模型是否支持图像输入
+- `mode`（可选）：思维模型的特殊模式配置
 
-You can find available models and their specifications on the [OpenRouter models page](https://openrouter.ai/models).
+您可以在 [OpenRouter 模型页面](https://openrouter.ai/models) 上找到可用的模型及其规格。
 
-Custom models will be listed in the model dropdown in the Agent Panel.
+自定义模型将列在代理面板的模型下拉菜单中。
 
-#### Provider Routing
+#### 提供程序路由
 
-You can optionally control how OpenRouter routes a given custom model request among underlying upstream providers via the `provider` object on each model entry.
+您可以选择通过每个模型条目上的 `provider` 对象来控制 OpenRouter 如何在底层上游提供程序之间路由给定的自定义模型请求。
 
-Supported fields (all optional):
+支持的字段（全部可选）：
 
-- `order`: Array of provider slugs to try first, in order (e.g. `["anthropic", "openai"]`)
-- `allow_fallbacks` (default: `true`): Whether fallback providers may be used if preferred ones are unavailable
-- `require_parameters` (default: `false`): Only use providers that support every parameter you supplied
-- `data_collection` (default: `allow`): `"allow"` or `"disallow"` (controls use of providers that may store data)
-- `only`: Whitelist of provider slugs allowed for this request
-- `ignore`: Provider slugs to skip
-- `quantizations`: Restrict to specific quantization variants (e.g. `["int4","int8"]`)
-- `sort`: Sort strategy for candidate providers (e.g. `"price"` or `"throughput"`)
+- `order`: 要首先尝试的提供程序 slug 数组，按顺序（例如 `["anthropic", "openai"]`）
+- `allow_fallbacks`（默认：`true`）：如果首选提供程序不可用，是否可以使用备用提供程序
+- `require_parameters`（默认：`false`）：仅使用支持您提供的每个参数的提供程序
+- `data_collection`（默认：`allow`）：`"allow"` 或 `"disallow"`（控制可能存储数据的提供程序的使用）
+- `only`: 此请求允许的提供程序 slug 白名单
+- `ignore`: 要跳过的提供程序 slug
+- `quantizations`: 限制为特定的量化变体（例如 `["int4","int8"]`）
+- `sort`: 候选提供程序的排序策略（例如 `"price"` 或 `"throughput"`）
 
-Example adding routing preferences to a model:
+向模型添加路由偏好的示例：
 
 ```json [settings]
 {
@@ -583,35 +583,35 @@ Example adding routing preferences to a model:
 }
 ```
 
-These routing controls let you fine‑tune cost, capability, and reliability trade‑offs without changing the model name you select in the UI.
+这些路由控制让您可以微调成本、功能和可靠性之间的权衡，而无需更改您在 UI 中选择的模型名称。
 
 ### Vercel v0 {#vercel-v0}
 
-[Vercel v0](https://vercel.com/docs/v0/api) is an expert model for generating full-stack apps, with framework-aware completions optimized for modern stacks like Next.js and Vercel.
-It supports text and image inputs and provides fast streaming responses.
+[Vercel v0](https://vercel.com/docs/v0/api) 是一个用于生成全栈应用程序的专家模型，具有针对现代堆栈（如 Next.js 和 Vercel）优化的框架感知补全功能。
+它支持文本和图像输入，并提供快速流式响应。
 
-The v0 models are [OpenAI-compatible models](/#openai-api-compatible), but Vercel is listed as first-class provider in the panel's settings view.
+v0 模型是 [OpenAI 兼容模型](/#openai-api-compatible)，但 Vercel 在面板的设置视图中被列为一流提供程序。
 
-To start using it with Zed, ensure you have first created a [v0 API key](https://v0.dev/chat/settings/keys).
-Once you have it, paste it directly into the Vercel provider section in the panel's settings view.
+要开始将其与 Zed 一起使用，请确保您首先创建了 [v0 API 密钥](https://v0.dev/chat/settings/keys)。
+一旦拥有它，请直接将其粘贴到面板设置视图中的 Vercel 提供程序部分。
 
-You should then find it as `v0-1.5-md` in the model dropdown in the Agent Panel.
+然后您应该在代理面板的模型下拉菜单中找到它作为 `v0-1.5-md`。
 
 ### xAI {#xai}
 
-Zed has first-class support for [xAI](https://x.ai/) models. You can use your own API key to access Grok models.
+Zed 对 [xAI](https://x.ai/) 模型提供一流支持。您可以使用自己的 API 密钥访问 Grok 模型。
 
-1. [Create an API key in the xAI Console](https://console.x.ai/team/default/api-keys)
-2. Open the settings view (`agent: open settings`) and go to the **xAI** section
-3. Enter your xAI API key
+1. [在 xAI 控制台中创建 API 密钥](https://console.x.ai/team/default/api-keys)
+2. 打开设置视图（`agent: open settings`）并转到 **xAI** 部分
+3. 输入您的 xAI API 密钥
 
-The xAI API key will be saved in your keychain. Zed will also use the `XAI_API_KEY` environment variable if it's defined.
+xAI API 密钥将保存在您的钥匙串中。如果定义了 `XAI_API_KEY` 环境变量，Zed 也会使用它。
 
-> **Note:** While the xAI API is OpenAI-compatible, Zed has first-class support for it as a dedicated provider. For the best experience, we recommend using the dedicated `x_ai` provider configuration instead of the [OpenAI API Compatible](#openai-api-compatible) method.
+> **注意：** 虽然 xAI API 是 OpenAI 兼容的，但 Zed 将其作为专用提供程序提供一流支持。为了获得最佳体验，我们建议使用专用的 `x_ai` 提供程序配置，而不是 [OpenAI API 兼容](#openai-api-compatible) 方法。
 
-#### Custom Models {#xai-custom-models}
+#### 自定义模型 {#xai-custom-models}
 
-The Zed agent comes pre-configured with common Grok models. If you wish to use alternate models or customize their parameters, you can do so by adding the following to your Zed `settings.json`:
+Zed 代理预配置了常见的 Grok 模型。如果您希望使用替代模型或自定义其参数，可以通过将以下内容添加到您的 Zed `settings.json` 中来实现：
 
 ```json [settings]
 {
@@ -638,10 +638,10 @@ The Zed agent comes pre-configured with common Grok models. If you wish to use a
 }
 ```
 
-## Custom Provider Endpoints {#custom-provider-endpoint}
+## 自定义提供程序端点 {#custom-provider-endpoint}
 
-You can use a custom API endpoint for different providers, as long as it's compatible with the provider's API structure.
-To do so, add the following to your `settings.json`:
+您可以为不同的提供程序使用自定义 API 端点，只要它与提供程序的 API 结构兼容。
+为此，请将以下内容添加到您的 `settings.json` 中：
 
 ```json [settings]
 {
@@ -653,6 +653,6 @@ To do so, add the following to your `settings.json`:
 }
 ```
 
-Currently, `some-provider` can be any of the following values: `anthropic`, `google`, `ollama`, `openai`.
+目前，`some-provider` 可以是以下任何值：`anthropic`、`google`、`ollama`、`openai`。
 
-This is the same infrastructure that powers models that are, for example, [OpenAI-compatible](#openai-api-compatible).
+这与为例如 [OpenAI 兼容](#openai-api-compatible) 模型提供动力的基础设施相同。

@@ -1,33 +1,33 @@
 # AI
 
-Learn how to get started using AI with Zed and all its capabilities.
+了解如何在 Zed 中开始使用 AI 及其所有功能。
 
-## Setting up AI in Zed
+## 在 Zed 中设置 AI
 
-- [Configuration](./configuration.md): Learn how to set up different language model providers like Anthropic, OpenAI, Ollama, Google AI, and more.
+- [配置](./configuration.md)：了解如何设置不同的语言模型提供商，如 Anthropic、OpenAI、Ollama、Google AI 等。
 
-- [External Agents](./external-agents.md): Learn how to plug in your favorite agent into Zed.
+- [外部代理](./external-agents.md)：了解如何将您喜欢的代理插入到 Zed 中。
 
-- [Subscription](./subscription.md): Learn about Zed's hosted models and other billing-related information.
+- [订阅](./subscription.md)：了解 Zed 的托管模型和其他计费相关信息。
 
-- [Privacy and Security](./privacy-and-security.md): Understand how Zed handles privacy and security with AI features.
+- [隐私和安全](./privacy-and-security.md)：了解 Zed 如何处理 AI 功能的隐私和安全。
 
-## Agentic Editing
+## 代理式编辑
 
-- [Agent Panel](./agent-panel.md): Create and manage interactions with LLM agents.
+- [代理面板](./agent-panel.md)：创建和管理与 LLM 代理的交互。
 
-- [Rules](./rules.md): How to define rules for AI interactions.
+- [规则](./rules.md)：如何为 AI 交互定义规则。
 
-- [Tools](./tools.md): Explore the tools that power Zed's built-in agent.
+- [工具](./tools.md)：探索为 Zed 内置代理提供动力的工具。
 
-- [Model Context Protocol](./mcp.md): Learn about how to configure and use MCP servers.
+- [模型上下文协议](./mcp.md)：了解如何配置和使用 MCP 服务器。
 
-- [Inline Assistant](./inline-assistant.md): Discover how to use AI to generate inline transformations directly within a file or terminal.
+- [内联助手](./inline-assistant.md)：发现如何使用 AI 在文件或终端内直接生成内联转换。
 
-## Edit Prediction
+## 编辑预测
 
-- [Edit Prediction](./edit-prediction.md): Learn about Zed's AI prediction feature that helps autocomplete your code.
+- [编辑预测](./edit-prediction.md)：了解 Zed 的 AI 预测功能，帮助自动完成您的代码。
 
-## Text Threads
+## 文本线程
 
-- [Text Threads](./text-threads.md): Learn about an editor-based interface for interacting with language models.
+- [文本线程](./text-threads.md)：了解用于与语言模型交互的基于编辑器的界面。

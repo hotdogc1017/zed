@@ -1,19 +1,19 @@
 # Go
 
-Go support is available natively in Zed.
+Zed 原生支持 Go。
 
-- Tree-sitter: [tree-sitter/tree-sitter-go](https://github.com/tree-sitter/tree-sitter-go)
-- Language Server: [golang/tools/tree/master/gopls](https://github.com/golang/tools/tree/master/gopls)
-- Debug Adapter: [delve](https://github.com/go-delve/delve)
+- Tree-sitter：[tree-sitter/tree-sitter-go](https://github.com/tree-sitter/tree-sitter-go)
+- 语言服务器：[golang/tools/tree/master/gopls](https://github.com/golang/tools/tree/master/gopls)
+- 调试适配器：[delve](https://github.com/go-delve/delve)
 
-## Setup
+## 安装
 
-We recommend installing gopls via go's package manager and not via Homebrew or your Linux distribution's package manager.
+我们推荐通过 Go 自带的包管理器安装 gopls，而不是使用 Homebrew 或 Linux 发行版的软件源。
 
-1. Make sure you have uninstalled any version of gopls you have installed via your package manager:
+1. 确保卸载所有通过包管理器安装的 gopls 版本：
 
 ```sh
-# MacOS homebrew
+# macOS（Homebrew）
 brew remove gopls
 # Ubuntu
 sudo apt-get remove gopls
@@ -22,24 +22,24 @@ sudo snap remove gopls
 sudo pacman -R gopls
 ```
 
-2. Install/Update `gopls` to the latest version using the go module tool:
+2. 使用 go module 工具安装/更新最新版本的 `gopls`：
 
 ```sh
 go install golang.org/x/tools/gopls@latest
 ```
 
-3. Ensure that `gopls` is in your path:
+3. 确保 `gopls` 已加入 PATH：
 
 ```sh
 which gopls
 gopls version
 ```
 
-If `gopls` is not found you will likely need to add `export PATH="$PATH:$HOME/go/bin"` to your `.zshrc` / `.bash_profile`
+若提示找不到 `gopls`，可以在 `.zshrc` 或 `.bash_profile` 中添加 `export PATH="$PATH:$HOME/go/bin"`。
 
-## Inlay Hints
+## 内联提示
 
-Zed sets the following initialization options for inlay hints:
+Zed 会为 gopls 设置以下初始化选项，以便在设置中启用内联提示时获取相关信息：
 
 ```json [settings]
 "hints": {
@@ -53,9 +53,7 @@ Zed sets the following initialization options for inlay hints:
 }
 ```
 
-to make the language server send back inlay hints when Zed has them enabled in the settings.
-
-Use
+如需覆盖这些设置，可在 `settings.json` 中加入：
 
 ```json [settings]
 "lsp": {
@@ -69,21 +67,19 @@ Use
 }
 ```
 
-to override these settings.
+更多详情可参考 [gopls 内联提示文档](https://github.com/golang/tools/blob/master/gopls/doc/inlayHints.md)。
 
-See [gopls inlayHints documentation](https://github.com/golang/tools/blob/master/gopls/doc/inlayHints.md) for more information.
+## 调试
 
-## Debugging
+Zed 支持使用 Delve 对 Go 测试与入口函数（`func main`）进行零配置调试。执行 {#action debugger::Start}（{#kb debugger::Start}）即可看到上下文相关的预设调试任务列表。
 
-Zed supports zero-configuration debugging of Go tests and entry points (`func main`) using Delve. Run {#action debugger::Start} ({#kb debugger::Start}) to see a contextual list of these preconfigured debug tasks.
+若需要更多控制，可以在 `.zed/debug.json` 中添加调试配置，示例如下。
 
-For more control, you can add debug configurations to `.zed/debug.json`. See below for examples.
+- [Delve 配置文档](https://github.com/go-delve/delve/blob/master/Documentation/api/dap/README.md#launch-and-attach-configurations)
 
-- [Delve configuration documentation](https://github.com/go-delve/delve/blob/master/Documentation/api/dap/README.md#launch-and-attach-configurations)
+### 调试 Go 包
 
-### Debug Go Packages
-
-To debug a specific package, you can do so by setting the Delve mode to "debug". In this case "program" should be set to the package name.
+若要调试特定包，可将 Delve 的模式设为 `debug`，此时 `program` 应设置为包名。
 
 ```json [debug]
 [
@@ -99,7 +95,7 @@ To debug a specific package, you can do so by setting the Delve mode to "debug".
     "adapter": "Delve",
     "request": "launch",
     "mode": "debug",
-    // For Delve, the program can be a package name
+    // 对于 Delve，program 可以是包名
     "program": "./cmd/server"
     // "args": [],
     // "buildFlags": [],
@@ -107,10 +103,9 @@ To debug a specific package, you can do so by setting the Delve mode to "debug".
 ]
 ```
 
-### Debug Go Tests
+### 调试 Go 测试
 
-To debug the tests for a package, set the Delve mode to "test".
-The "program" is still the package name, and you can use the "buildFlags" to do things like set tags, and the "args" to set args on the test binary. (See `go help testflags` for more information on doing that).
+要调试某个包的测试，将 Delve 模式设为 `test`。`program` 仍然是包名，可通过 `buildFlags` 指定标签等选项，通过 `args` 为测试二进制传参（详见 `go help testflags`）。
 
 ```json [debug]
 [
@@ -121,16 +116,15 @@ The "program" is still the package name, and you can use the "buildFlags" to do 
     "mode": "test",
     "program": ".",
     "buildFlags": ["-tags", "integration"]
-    // To filter down to just the test your cursor is in:
+    // 若只运行光标所在的测试：
     // "args": ["-test.run", "$ZED_SYMBOL"]
   }
 ]
 ```
 
-### Build and debug separately
+### 先构建再调试
 
-If you need to build your application with a specific command, you can use the "exec" mode of Delve. In this case "program" should point to an executable,
-and the "build" command should build that.
+如果需要使用特定命令构建应用，可以使用 Delve 的 `exec` 模式。在这种情况下，`program` 指向可执行文件，`build` 部分负责构建该文件。
 
 ```json [debug]
 [
@@ -158,9 +152,9 @@ and the "build" command should build that.
 ]
 ```
 
-### Attaching to an existing instance of Delve
+### 连接已运行的 Delve 实例
 
-You might find yourself needing to connect to an existing instance of Delve that's not necessarily running on your machine; in such case, you can use `tcp_arguments` to instrument Zed's connection to Delve.
+若需连接到正在运行（甚至不在本机）的 Delve，可通过 `tcp_connection` 配置让 Zed 接入该实例。
 
 ```json [debug]
 [
@@ -179,20 +173,19 @@ You might find yourself needing to connect to an existing instance of Delve that
 ]
 ```
 
-In such case Zed won't spawn a new instance of Delve, as it opts to use an existing one. The consequence of this is that _there will be no terminal_ in Zed; you have to interact with the Delve instance directly, as it handles stdin/stdout of the debuggee.
+此时 Zed 不会再启动新的 Delve 进程，而是直接使用已有实例。因此 Zed 中不会打开终端，需要直接与该 Delve 实例交互，它负责调试进程的标准输入输出。
 
 ## Go Mod
 
-- Tree-sitter: [camdencheek/tree-sitter-go-mod](https://github.com/camdencheek/tree-sitter-go-mod)
-- Language Server: N/A
+- Tree-sitter：[camdencheek/tree-sitter-go-mod](https://github.com/camdencheek/tree-sitter-go-mod)
+- 语言服务器：无
 
 ## Go Sum
 
-- Tree-sitter: [amaanq/tree-sitter-go-sum](https://github.com/amaanq/tree-sitter-go-sum)
-- Language Server: N/A
+- Tree-sitter：[amaanq/tree-sitter-go-sum](https://github.com/amaanq/tree-sitter-go-sum)
+- 语言服务器：无
 
 ## Go Work
 
-- Tree-sitter:
-  [tree-sitter-go-work](https://github.com/d1y/tree-sitter-go-work)
-- Language Server: N/A
+- Tree-sitter：[tree-sitter-go-work](https://github.com/d1y/tree-sitter-go-work)
+- 语言服务器：无

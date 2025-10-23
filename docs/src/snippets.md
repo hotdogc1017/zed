@@ -1,48 +1,46 @@
-# Snippets
+# 代码片段（Snippets）
 
-Use the {#action snippets::ConfigureSnippets} action to create a new snippets file or edit a existing snippets file for a specified [scope](#scopes).
+使用 {#action snippets::ConfigureSnippets} 命令，可以为指定的[作用域](#scopes)创建或编辑代码片段文件。
 
-The snippets are located in `~/.config/zed/snippets` directory to which you can navigate to with the {#action snippets::OpenFolder} action.
+所有片段文件位于 `~/.config/zed/snippets` 目录，可通过 {#action snippets::OpenFolder} 快捷打开。
 
-## Example configuration
+## 配置示例
 
 ```json [settings]
 {
-  // Each snippet must have a name and body, but the prefix and description are optional.
-  // The prefix is used to trigger the snippet, but when omitted then the name is used.
-  // Use placeholders like $1, $2 or ${1:defaultValue} to define tab stops.
-  // The $0 determines the final cursor position.
-  // Placeholders with the same value are linked.
+  // 每个片段必须包含 name 与 body，prefix、description 可选。
+  // prefix 是触发关键词；若省略则使用 name。
+  // 通过 $1、$2 或 ${1:defaultValue} 等占位符定义跳转点。
+  // $0 表示最终光标位置。
+  // 相同编号的占位符会相互联动。
   "Log to console": {
     "prefix": "log",
     "body": ["console.info(\"Hello, ${1:World}!\")", "$0"],
-    "description": "Logs to console"
+    "description": "输出日志"
   }
 }
 ```
 
-## Scopes
+## 作用域（Scopes）
 
-The scope is determined by the language name in lowercase e.g. `python.json` for Python, `shell script.json` for Shell Script, but there are some exceptions to this rule:
+片段文件名通常为语言名称的小写形式，如 Python 使用 `python.json`，Shell Script 使用 `shell script.json`。部分语言有例外：
 
-| Scope      | Filename        |
-| ---------- | --------------- |
-| Global     | snippets.json   |
-| JSX        | javascript.json |
-| Plain Text | plaintext.json  |
+| 作用域      | 文件名             |
+| ----------- | ------------------ |
+| 全局        | snippets.json      |
+| JSX         | javascript.json    |
+| 纯文本      | plaintext.json     |
 
-To create JSX snippets you have to use `javascript.json` snippets file, instead of `jsx.json`, but this does not apply to TSX and TypeScript which follow the above rule.
+若需为 JSX 创建片段，应写入 `javascript.json`，而非 `jsx.json`。TSX 与 TypeScript 则遵循常规命名规则。
 
-## Known Limitations
+## 已知限制
 
-- Only the first prefix is used when an list of prefixes is passed in.
-- Currently only the `json` snippet file format is supported, even though the `simple-completion-language-server` supports both `json` and `toml` file formats.
+- 若同时提供多个 `prefix`，仅第一个生效。
+- 目前仅支持 `json` 格式的片段文件，尽管 `simple-completion-language-server` 同时支持 `json` 与 `toml`。
 
-## See also
+## 其他说明
 
-The `feature_paths` option in `simple-completion-language-server` is disabled by default.
-
-If you want to enable it you can add the following to your `settings.json`:
+`simple-completion-language-server` 中的 `feature_paths` 选项默认关闭，可在 `settings.json` 中启用：
 
 ```json [settings]
 {
@@ -56,4 +54,4 @@ If you want to enable it you can add the following to your `settings.json`:
 }
 ```
 
-For more configuration information, see the [`simple-completion-language-server` instructions](https://github.com/zed-industries/simple-completion-language-server/tree/main).
+更多配置详见 [`simple-completion-language-server` 项目说明](https://github.com/zed-industries/simple-completion-language-server/tree/main)。

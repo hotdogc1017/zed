@@ -1,22 +1,22 @@
-# Inline Assistant
+# 内联助手
 
-## Usage Overview
+## 使用概述
 
-Use `ctrl-enter` to open the Inline Assistant nearly anywhere you can enter text: editors, text threads, the rules library, channel notes, and even within the terminal panel.
+使用 `ctrl-enter` 在几乎所有可以输入文本的地方打开内联助手：编辑器、文本线程、规则库、频道笔记，甚至在终端面板内。
 
-The Inline Assistant allows you to send the current selection (or the current line) to a language model and modify the selection with the language model's response.
+内联助手允许您将当前选择（或当前行）发送到语言模型，并使用语言模型的响应修改选择。
 
-You can also perform multiple generation requests in parallel by pressing `ctrl-enter` with multiple cursors, or by pressing the same binding with a selection that spans multiple excerpts in a multibuffer.
+您还可以通过使用多个光标按 `ctrl-enter`，或通过在多缓冲区中跨越多个摘录的选择按相同的绑定来并行执行多个生成请求。
 
-## Context
+## 上下文
 
-Give the Inline Assistant context the same way you can in [the Agent Panel](./agent-panel.md), allowing you to provide additional instructions or rules for code transformations with @-mentions.
+以与[代理面板](./agent-panel.md)中相同的方式为内联助手提供上下文，允许您通过 @-提及为代码转换提供额外的指令或规则。
 
-A useful pattern here is to create a thread in the Agent Panel, and then mention that thread with `@thread` in the Inline Assistant to include it as context.
+这里一个有用的模式是在代理面板中创建一个线程，然后在内联助手中使用 `@thread` 提及该线程以将其包含为上下文。
 
-## Prefilling Prompts
+## 预填充提示
 
-To create a custom keybinding that prefills a prompt, you can add the following format in your keymap:
+要创建预填充提示的自定义键绑定，您可以在键映射中添加以下格式：
 
 ```json [keymap]
 [

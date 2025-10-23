@@ -1,27 +1,27 @@
 # SQL
 
-SQL files are handled by the [SQL Extension](https://github.com/zed-extensions/sql).
+SQL 文件由 [SQL 扩展](https://github.com/zed-extensions/sql) 处理。
 
-- Tree-sitter: [nervenes/tree-sitter-sql](https://github.com/nervenes/tree-sitter-sql)
+- Tree-sitter：[nervenes/tree-sitter-sql](https://github.com/nervenes/tree-sitter-sql)
 
-### Formatting
+### 格式化
 
-Zed supports auto-formatting SQL using external tools like [`sql-formatter`](https://github.com/sql-formatter-org/sql-formatter).
+Zed 支持使用外部工具（如 [`sql-formatter`](https://github.com/sql-formatter-org/sql-formatter)）自动格式化 SQL。
 
-1. Install `sql-formatter`:
+1. 安装 `sql-formatter`：
 
 ```sh
 npm install -g sql-formatter
 ```
 
-2. Ensure `sql-formatter` is available in your path and check the version:
+2. 确认 `sql-formatter` 已在 PATH 中并检查版本：
 
 ```sh
 which sql-formatter
 sql-formatter --version
 ```
 
-3. Configure Zed to automatically format SQL with `sql-formatter`:
+3. 在 Zed 中配置使用 `sql-formatter` 格式化：
 
 ```json [settings]
   "languages": {
@@ -36,13 +36,13 @@ sql-formatter --version
   },
 ```
 
-Substitute your preferred [SQL Dialect] for `mysql` above (`duckdb`, `hive`, `mariadb`, `postgresql`, `redshift`, `snowflake`, `sqlite`, `spark`, etc).
+可根据需要将 `mysql` 替换为其他支持的方言（如 `duckdb`、`hive`、`mariadb`、`postgresql`、`redshift`、`snowflake`、`sqlite`、`spark` 等）。
 
-You can add this to Zed project settings (`.zed/settings.json`) or via your Zed user settings (`~/.config/zed/settings.json`).
+上述设置可放在项目设置（`.zed/settings.json`）或用户设置（`~/.config/zed/settings.json`）。
 
-### Advanced Formatting
+### 高级格式化
 
-Sql-formatter also allows more precise control by providing [sql-formatter configuration options](https://github.com/sql-formatter-org/sql-formatter#configuration-options). To provide these, create a `.sql-formatter.json` file in your project:
+`sql-formatter` 也支持[更多配置选项](https://github.com/sql-formatter-org/sql-formatter#configuration-options)。可在项目中创建 `.sql-formatter.json`：
 
 ```json [settings]
 {
@@ -53,7 +53,7 @@ Sql-formatter also allows more precise control by providing [sql-formatter confi
 }
 ```
 
-When using a `.sql-formatter.json` file you can use a more simplified set of Zed settings since the language need not be specified inline:
+使用 `.sql-formatter.json` 后，Zed 中的设置可以简化：
 
 ```json [settings]
   "languages": {

@@ -1,43 +1,43 @@
-# Vim Mode
+# Vim 模式
 
-Zed includes a Vim emulation layer known as "vim mode". On this page, you will learn how to turn Zed's vim mode on or off, what tools and commands Zed provides to help you navigate and edit your code, and generally how to make the most of vim mode in Zed.
+Zed 包含一个称为 "vim 模式" 的 Vim 模拟层。在本页中，你将学习如何打开或关闭 Zed 的 vim 模式，Zed 提供了哪些工具和命令来帮助你导航和编辑代码，以及如何在 Zed 中充分利用 vim 模式。
 
-You'll learn how to:
+你将学习如何：
 
-- Understand the core differences between Zed's vim mode and traditional Vim
-- Enable or disable vim mode
-- Make the most of Zed-specific features within vim mode
-- Customize vim mode key bindings
-- Configure vim mode settings
+- 理解 Zed 的 vim 模式与传统 Vim 之间的核心差异
+- 启用或禁用 vim 模式
+- 在 vim 模式中充分利用 Zed 特定功能
+- 自定义 vim 模式键绑定
+- 配置 vim 模式设置
 
-Whether you're new to vim mode or an experienced Vim user looking to optimize your Zed experience, this guide will help you harness the full power of modal editing in Zed.
+无论你是 vim 模式的新手还是经验丰富的 Vim 用户，希望优化你的 Zed 体验，本指南都将帮助你充分利用 Zed 中的模态编辑功能。
 
-## Zed's vim mode design
+## Zed 的 vim 模式设计
 
-Vim mode tries to offer a familiar experience to Vim users: it replicates the behavior of motions and commands precisely when it makes sense and uses Zed-specific functionality to provide an editing experience that "just works" without requiring configuration on your part.
+Vim 模式试图为 Vim 用户提供熟悉的体验：它在有意义时精确复制运动和命令的行为，并使用 Zed 特定功能来提供"开箱即用"的编辑体验，无需你进行配置。
 
-This includes support for semantic navigation, multiple cursors, or other features usually provided by plugins like surrounding text.
+这包括对语义导航、多光标或其他通常由插件（如环绕文本）提供的功能的支持。
 
-So, Zed's vim mode does not replicate Vim one-to-one, but it meshes Vim's modal design with Zed's modern features to provide a more fluid experience. It's also configurable, so you can add your own key bindings or override the defaults.
+因此，Zed 的 vim 模式不是一对一地复制 Vim，而是将 Vim 的模态设计与 Zed 的现代功能相结合，以提供更流畅的体验。它也是可配置的，因此你可以添加自己的键绑定或覆盖默认值。
 
-### Core differences
+### 核心差异
 
-There are four types of features in vim mode that use Zed's core functionality, leading to some differences in behavior:
+vim 模式中有四种类型的功能使用 Zed 的核心功能，导致行为上的一些差异：
 
-1. **Motions**: vim mode uses Zed's semantic parsing to tune the behavior of motions per language. For example, in Rust, jumping to matching bracket with `%` works with the pipe character `|`. In JavaScript, `w` considers `$` to be a word character.
-2. **Visual block selections**: vim mode uses Zed's multiple cursor to emulate visual block selections, making block selections a lot more flexible. For example, anything you insert after a block selection updates on every line in real-time, and you can add or remove cursors anytime.
-3. **Macros**: vim mode uses Zed's recording system for vim macros. So, you can capture and replay more complex actions, like autocompletion.
-4. **Search and replace**: vim mode uses Zed's search system, so, the syntax for regular expressions is slightly different compared to Vim. [Head to the Regex differences section](#regex-differences) for details.
+1. **运动**：vim 模式使用 Zed 的语义解析来调整每种语言的运动行为。例如，在 Rust 中，使用 `%` 跳转到匹配括号适用于管道字符 `|`。在 JavaScript 中，`w` 将 `$` 视为单词字符。
+2. **可视块选择**：vim 模式使用 Zed 的多光标来模拟可视块选择，使块选择更加灵活。例如，你在块选择后插入的任何内容都会实时更新到每一行，并且你可以随时添加或删除光标。
+3. **宏**：vim 模式使用 Zed 的录制系统来处理 vim 宏。因此，你可以捕获和重放更复杂的操作，如自动完成。
+4. **搜索和替换**：vim 模式使用 Zed 的搜索系统，因此正则表达式的语法与 Vim 略有不同。有关详细信息，请[前往正则表达式差异部分](#regex-differences)。
 
-> **Note:** The foundations of Zed's vim mode should already cover many use cases, and we're always looking to improve it. If you find missing features that you rely on in your workflow, please [file an issue on GitHub](https://github.com/zed-industries/zed/issues).
+> **注意：** Zed 的 vim 模式基础应该已经涵盖了许多用例，我们一直在努力改进它。如果你发现工作流中依赖的功能缺失，请[在 GitHub 上提交问题](https://github.com/zed-industries/zed/issues)。
 
-## Enabling and disabling vim mode
+## 启用和禁用 vim 模式
 
-When you first open Zed, you'll see a checkbox on the welcome screen that allows you to enable vim mode.
+当你第一次打开 Zed 时，你会在欢迎屏幕上看到一个复选框，允许你启用 vim 模式。
 
-If you missed this, you can toggle vim mode on or off anytime by opening the command palette and using the workspace command `toggle vim mode`.
+如果你错过了这个，你可以随时通过打开命令面板并使用工作区命令 `toggle vim mode` 来切换 vim 模式的开关。
 
-> **Note**: This command toggles the following property in your user settings:
+> **注意**：此命令在你的用户设置中切换以下属性：
 >
 > ```json [settings]
 > {
@@ -45,209 +45,204 @@ If you missed this, you can toggle vim mode on or off anytime by opening the com
 > }
 > ```
 
-## Zed-specific features
+## Zed 特定功能
 
-Zed is built on a modern foundation that (among other things) uses Tree-sitter and language servers to understand the content of the file you're editing and supports multiple cursors out of the box.
+Zed 建立在现代基础之上，它（除其他外）使用 Tree-sitter 和语言服务器来理解你正在编辑的文件内容，并开箱即用地支持多光标。
 
-Vim mode has several "core Zed" key bindings that will help you make the most of Zed's specific feature set.
+Vim 模式有几个"核心 Zed"键绑定，将帮助你充分利用 Zed 的特定功能集。
 
-### Language server
+### 语言服务器
 
-The following commands use the language server to help you navigate and refactor your code.
+以下命令使用语言服务器来帮助你导航和重构代码。
 
-| Command                                  | Default Shortcut |
+| 命令                                  | 默认快捷键 |
 | ---------------------------------------- | ---------------- |
-| Go to definition                         | `g d`            |
-| Go to declaration                        | `g D`            |
-| Go to type definition                    | `g y`            |
-| Go to implementation                     | `g I`            |
-| Rename (change definition)               | `c d`            |
-| Go to All references to the current word | `g A`            |
-| Find symbol in current file              | `g s`            |
-| Find symbol in entire project            | `g S`            |
-| Go to next diagnostic                    | `g ]` or `] d`   |
-| Go to previous diagnostic                | `g [` or `[ d`   |
-| Show inline error (hover)                | `g h`            |
-| Open the code actions menu               | `g .`            |
+| 转到定义                         | `g d`            |
+| 转到声明                        | `g D`            |
+| 转到类型定义                    | `g y`            |
+| 转到实现                     | `g I`            |
+| 重命名（更改定义）               | `c d`            |
+| 转到当前单词的所有引用 | `g A`            |
+| 在当前文件中查找符号              | `g s`            |
+| 在整个项目中查找符号            | `g S`            |
+| 转到下一个诊断                    | `g ]` 或 `] d`   |
+| 转到上一个诊断                | `g [` 或 `[ d`   |
+| 显示内联错误（悬停）                | `g h`            |
+| 打开代码操作菜单               | `g .`            |
 
 ### Git
 
-| Command                         | Default Shortcut |
+| 命令                         | 默认快捷键 |
 | ------------------------------- | ---------------- |
-| Go to next git change           | `] c`            |
-| Go to previous git change       | `[ c`            |
-| Expand diff hunk                | `d o`            |
-| Toggle staged                   | `d O`            |
-| Stage and next (in diff view)   | `d u`            |
-| Unstage and next (in diff view) | `d U`            |
-| Restore change                  | `d p`            |
+| 转到下一个 git 更改           | `] c`            |
+| 转到上一个 git 更改       | `[ c`            |
+| 展开差异代码块                | `d o`            |
+| 切换暂存                   | `d O`            |
+| 暂存并下一个（在差异视图中）   | `d u`            |
+| 取消暂存并下一个（在差异视图中） | `d U`            |
+| 恢复更改                  | `d p`            |
 
 ### Tree-sitter
 
-Tree-sitter is a powerful tool that Zed uses to understand the structure of your code. Zed provides motions that change the current cursor position, and text objects that can be used as the target of actions.
+Tree-sitter 是 Zed 用来理解代码结构的强大工具。Zed 提供改变当前光标位置的运动，以及可用作操作目标的文本对象。
 
-| Command                         | Default Shortcut            |
+| 命令                         | 默认快捷键            |
 | ------------------------------- | --------------------------- |
-| Go to next/previous method      | `] m` / `[ m`               |
-| Go to next/previous method end  | `] M` / `[ M`               |
-| Go to next/previous section     | `] ]` / `[ [`               |
-| Go to next/previous section end | `] [` / `[ ]`               |
-| Go to next/previous comment     | `] /`, `] *` / `[ /`, `[ *` |
-| Select a larger syntax node     | `[ x`                       |
-| Select a smaller syntax node    | `] x`                       |
+| 转到下一个/上一个方法      | `] m` / `[ m`               |
+| 转到下一个/上一个方法结束  | `] M` / `[ M`               |
+| 转到下一个/上一个部分     | `] ]` / `[ [`               |
+| 转到下一个/上一个部分结束 | `] [` / `[ ]`               |
+| 转到下一个/上一个注释     | `] /`, `] *` / `[ /`, `[ *` |
+| 选择更大的语法节点     | `[ x`                       |
+| 选择更小的语法节点    | `] x`                       |
 
-| Text Objects                                               | Default Shortcut |
+| 文本对象                                               | 默认快捷键 |
 | ---------------------------------------------------------- | ---------------- |
-| Around a class, definition, etc.                           | `a c`            |
-| Inside a class, definition, etc.                           | `i c`            |
-| Around a function, method etc.                             | `a f`            |
-| Inside a function, method, etc.                            | `i f`            |
-| A comment                                                  | `g c`            |
-| An argument, or list item, etc.                            | `i a`            |
-| An argument, or list item, etc. (including trailing comma) | `a a`            |
-| Around an HTML-like tag                                    | `a t`            |
-| Inside an HTML-like tag                                    | `i t`            |
-| The current indent level, and one line before and after    | `a I`            |
-| The current indent level, and one line before              | `a i`            |
-| The current indent level                                   | `i i`            |
+| 围绕类、定义等                           | `a c`            |
+| 在类、定义等内部                           | `i c`            |
+| 围绕函数、方法等                             | `a f`            |
+| 在函数、方法等内部                            | `i f`            |
+| 注释                                                  | `g c`            |
+| 参数或列表项等                            | `i a`            |
+| 参数或列表项等（包括尾随逗号） | `a a`            |
+| 围绕 HTML 类标签                                    | `a t`            |
+| 在 HTML 类标签内部                                    | `i t`            |
+| 当前缩进级别，以及前后一行    | `a I`            |
+| 当前缩进级别，以及前一行              | `a i`            |
+| 当前缩进级别                                   | `i i`            |
 
-Note that the definitions for the targets of the `[m` family of motions are the same as the
-boundaries defined by `af`. The targets of the `[[` are the same as those defined by `ac`, though
-if there are no classes, then functions are also used. Similarly `gc` is used to find `[ /`. `g c`
+请注意，`[m` 系列运动的目标定义与 `af` 定义的边界相同。`[[` 的目标与 `ac` 定义的目标相同，尽管如果没有类，则也会使用函数。类似地，`gc` 用于查找 `[ /`。
 
-The definition of functions, classes and comments is language dependent, and support can be added
-to extensions by adding a [`textobjects.scm`]. The definition of arguments and tags operates at
-the Tree-sitter level, but looks for certain patterns in the parse tree and is not currently configurable
-per language.
+函数、类和注释的定义是语言相关的，可以通过添加 [`textobjects.scm`] 来为扩展添加支持。参数和标签的定义在 Tree-sitter 级别操作，但在解析树中查找某些模式，目前不能按语言配置。
 
-### Multi cursor
+### 多光标
 
-These commands help you manage multiple cursors in Zed.
+这些命令帮助你在 Zed 中管理多个光标。
 
-| Command                                                      | Default Shortcut |
+| 命令                                                      | 默认快捷键 |
 | ------------------------------------------------------------ | ---------------- |
-| Add a cursor selecting the next copy of the current word     | `g l`            |
-| Add a cursor selecting the previous copy of the current word | `g L`            |
-| Skip latest word selection, and add next                     | `g >`            |
-| Skip latest word selection, and add previous                 | `g <`            |
-| Add a visual selection for every copy of the current word    | `g a`            |
+| 添加选择当前单词下一个副本的光标     | `g l`            |
+| 添加选择当前单词上一个副本的光标 | `g L`            |
+| 跳过最新的单词选择，并添加下一个                     | `g >`            |
+| 跳过最新的单词选择，并添加上一个                 | `g <`            |
+| 为当前单词的每个副本添加可视选择    | `g a`            |
 
-### Pane management
+### 窗格管理
 
-These commands open new panes or jump to specific panes.
+这些命令打开新窗格或跳转到特定窗格。
 
-| Command                                    | Default Shortcut   |
+| 命令                                    | 默认快捷键   |
 | ------------------------------------------ | ------------------ |
-| Open a project-wide search                 | `g /`              |
-| Open the current search excerpt            | `g <space>`        |
-| Open the current search excerpt in a split | `<ctrl-w> <space>` |
-| Go to definition in a split                | `<ctrl-w> g d`     |
-| Go to type definition in a split           | `<ctrl-w> g D`     |
+| 打开项目范围搜索                 | `g /`              |
+| 打开当前搜索摘录            | `g <space>`        |
+| 在拆分中打开当前搜索摘录 | `<ctrl-w> <space>` |
+| 在拆分中转到定义                | `<ctrl-w> g d`     |
+| 在拆分中转到类型定义           | `<ctrl-w> g D`     |
 
-### In insert mode
+### 在插入模式中
 
-The following commands help you bring up Zed's completion menu, request a suggestion from GitHub Copilot, or open the inline AI assistant without leaving insert mode.
+以下命令帮助你调出 Zed 的完成菜单、请求 GitHub Copilot 的建议或打开内联 AI 助手，而无需离开插入模式。
 
-| Command                                                                      | Default Shortcut |
+| 命令                                                                      | 默认快捷键 |
 | ---------------------------------------------------------------------------- | ---------------- |
-| Open the completion menu                                                     | `ctrl-x ctrl-o`  |
-| Request GitHub Copilot suggestion (requires GitHub Copilot to be configured) | `ctrl-x ctrl-c`  |
-| Open the inline AI assistant (requires a configured assistant)               | `ctrl-x ctrl-a`  |
-| Open the code actions menu                                                   | `ctrl-x ctrl-l`  |
-| Hides all suggestions                                                        | `ctrl-x ctrl-z`  |
+| 打开完成菜单                                                     | `ctrl-x ctrl-o`  |
+| 请求 GitHub Copilot 建议（需要配置 GitHub Copilot） | `ctrl-x ctrl-c`  |
+| 打开内联 AI 助手（需要配置助手）               | `ctrl-x ctrl-a`  |
+| 打开代码操作菜单                                                   | `ctrl-x ctrl-l`  |
+| 隐藏所有建议                                                        | `ctrl-x ctrl-z`  |
 
-### Supported plugins
+### 支持的插件
 
-Zed's vim mode includes some features that are usually provided by very popular plugins in the Vim ecosystem:
+Zed 的 vim 模式包含一些通常在 Vim 生态系统中由非常流行的插件提供的功能：
 
-- You can surround text objects with `ys` (yank surround), change surrounding with `cs`, and delete surrounding with `ds`.
-- You can comment and uncomment selections with `gc` in visual mode and `gcc` in normal mode.
-- The project panel supports many shortcuts modeled after the Vim plugin `netrw`: navigation with `hjkl`, open file with `o`, open file in a new tab with `t`, etc.
-- You can add key bindings to your keymap to navigate "camelCase" names. [Head down to the Optional key bindings](#optional-key-bindings) section to learn how.
-- You can use `gR` to do [ReplaceWithRegister](https://github.com/vim-scripts/ReplaceWithRegister).
-- You can use `cx` for [vim-exchange](https://github.com/tommcdo/vim-exchange) functionality. Note that it does not have a default binding in visual mode, but you can add one to your keymap (refer to the [optional key bindings](#optional-key-bindings) section).
-- You can navigate to indent depths relative to your cursor with the [indent wise](https://github.com/jeetsukumaran/vim-indentwise) plugin `[-`, `]-`, `[+`, `]+`, `[=`, `]=`.
-- You can select quoted text with AnyQuotes and bracketed text with AnyBrackets text objects. Zed also provides MiniQuotes and MiniBrackets which offer alternative selection behavior based on the [mini.ai](https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-ai.md) Neovim plugin. See the [Quote and Bracket text objects](#quote-and-bracket-text-objects) section below for details.
-- You can configure AnyQuotes, AnyBrackets, MiniQuotes, and MiniBrackets text objects for selecting quoted and bracketed text using different selection strategies. See the [Any Bracket Functionality](#any-bracket-functionality) section below for details.
+- 你可以用 `ys`（yank surround）环绕文本对象，用 `cs` 更改环绕，用 `ds` 删除环绕。
+- 你可以在可视模式中用 `gc` 注释和取消注释选择，在普通模式中用 `gcc`。
+- 项目面板支持许多模仿 Vim 插件 `netrw` 的快捷键：用 `hjkl` 导航，用 `o` 打开文件，用 `t` 在新标签中打开文件等。
+- 你可以向键映射添加键绑定来导航 "camelCase" 名称。[前往可选键绑定部分](#optional-key-bindings)了解如何操作。
+- 你可以使用 `gR` 执行 [ReplaceWithRegister](https://github.com/vim-scripts/ReplaceWithRegister)。
+- 你可以使用 `cx` 获得 [vim-exchange](https://github.com/tommcdo/vim-exchange) 功能。请注意，它在可视模式中没有默认绑定，但你可以向键映射添加一个（请参阅[可选键绑定](#optional-key-bindings)部分）。
+- 你可以使用 [indent wise](https://github.com/jeetsukumaran/vim-indentwise) 插件 `[-`、`]-`、`[+`、`]+`、`[=`、`]=` 导航到相对于光标的缩进深度。
+- 你可以使用 AnyQuotes 和 AnyBrackets 文本对象选择引号文本和括号文本。Zed 还提供 MiniQuotes 和 MiniBrackets，它们基于 [mini.ai](https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-ai.md) Neovim 插件提供替代选择行为。有关详细信息，请参阅下面的[引号和括号文本对象](#quote-and-bracket-text-objects)部分。
+- 你可以配置 AnyQuotes、AnyBrackets、MiniQuotes 和 MiniBrackets 文本对象，使用不同的选择策略选择引号和括号文本。有关详细信息，请参阅下面的[任意括号功能](#any-bracket-functionality)部分。
 
-### Any Bracket Functionality
+### 任意括号功能
 
-Zed offers two different strategies for selecting text surrounded by any quote, or any bracket. These text objects are **not enabled by default** and must be configured in your keymap to be used.
+Zed 提供两种不同的策略来选择被任何引号或任何括号包围的文本。这些文本对象**默认未启用**，必须在键映射中配置才能使用。
 
-#### Included Characters
+#### 包含的字符
 
-Each text object type works with specific characters:
+每种文本对象类型适用于特定字符：
 
-| Text Object              | Characters                                                                             |
+| 文本对象              | 字符                                                                             |
 | ------------------------ | -------------------------------------------------------------------------------------- |
-| AnyQuotes/MiniQuotes     | Single quote (`'`), Double quote (`"`), Backtick (`` ` ``)                             |
-| AnyBrackets/MiniBrackets | Parentheses (`()`), Square brackets (`[]`), Curly braces (`{}`), Angle brackets (`<>`) |
+| AnyQuotes/MiniQuotes     | 单引号 (`'`), 双引号 (`"`), 反引号 (`` ` ``)                             |
+| AnyBrackets/MiniBrackets | 圆括号 (`()`), 方括号 (`[]`), 花括号 (`{}`), 尖括号 (`<>`) |
 
-Both "Any" and "Mini" variants work with the same character sets, but differ in their selection strategy.
+"Any" 和 "Mini" 变体都适用于相同的字符集，但在选择策略上有所不同。
 
-#### AnyQuotes and AnyBrackets (Traditional Vim behavior)
+#### AnyQuotes 和 AnyBrackets（传统 Vim 行为）
 
-These text objects implement traditional Vim behavior:
+这些文本对象实现传统 Vim 行为：
 
-- **Selection priority**: Finds the innermost (closest) quotes or brackets first
-- **Fallback mechanism**: If none are found, falls back to the current line
-- **Character-based matching**: Focuses solely on open and close characters without considering syntax
-- **Vanilla Vim similarity**: AnyBrackets matches the behavior of commands like `ci<`, `ci(`, etc., in vanilla Vim, including potential edge cases (like considering `>` in `=>` as a closing delimiter)
+- **选择优先级**：首先找到最内层（最近）的引号或括号
+- **回退机制**：如果未找到，则回退到当前行
+- **基于字符的匹配**：仅关注开闭字符，不考虑语法
+- **与原始 Vim 相似**：AnyBrackets 匹配原始 Vim 中 `ci<`、`ci(` 等命令的行为，包括潜在的边缘情况（如将 `=>` 中的 `>` 视为结束分隔符）
 
-#### MiniQuotes and MiniBrackets (mini.ai behavior)
+#### MiniQuotes 和 MiniBrackets（mini.ai 行为）
 
-These text objects implement the behavior of the [mini.ai](https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-ai.md) Neovim plugin:
+这些文本对象实现 [mini.ai](https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-ai.md) Neovim 插件的行为：
 
-- **Selection priority**: Searches the current line first before expanding outward
-- **Tree-sitter integration**: Uses Tree-sitter queries for more context-aware selections
-- **Syntax-aware matching**: Can distinguish between actual brackets and similar characters in other contexts (like `>` in `=>`)
+- **选择优先级**：首先搜索当前行，然后向外扩展
+- **Tree-sitter 集成**：使用 Tree-sitter 查询进行更上下文感知的选择
+- **语法感知匹配**：可以区分实际括号和其他上下文中的类似字符（如 `=>` 中的 `>`）
 
-#### Choosing Between Approaches
+#### 选择方法
 
-- Use **AnyQuotes/AnyBrackets** if you:
+- 使用 **AnyQuotes/AnyBrackets** 如果你：
 
-  - Prefer traditional Vim behavior
-  - Want consistent character-based selection prioritizing innermost delimiters
-  - Need behavior that closely matches vanilla Vim's text objects
+  - 偏好传统 Vim 行为
+  - 想要一致的基于字符的选择，优先考虑最内层分隔符
+  - 需要与原始 Vim 的文本对象密切匹配的行为
 
-- Use **MiniQuotes/MiniBrackets** if you:
-  - Prefer the mini.ai plugin behavior
-  - Want more context-aware selections using Tree-sitter
-  - Prefer current-line priority when searching
+- 使用 **MiniQuotes/MiniBrackets** 如果你：
+  - 偏好 mini.ai 插件行为
+  - 想要使用 Tree-sitter 进行更上下文感知的选择
+  - 搜索时偏好当前行优先级
 
-#### Example Configuration
+#### 示例配置
 
-To use these text objects, you need to add bindings to your keymap. Here's an example configuration that makes them available when using text object operators (`i` and `a`) or change-surrounds (`cs`):
+要使用这些文本对象，你需要向键映射添加绑定。以下是一个示例配置，在使用文本对象操作符（`i` 和 `a`）或更改环绕（`cs`）时使它们可用：
 
 ```json [settings]
 {
   "context": "vim_operator == a || vim_operator == i || vim_operator == cs",
   "bindings": {
-    // Traditional Vim behavior
+    // 传统 Vim 行为
     "q": "vim::AnyQuotes",
     "b": "vim::AnyBrackets",
 
-    // mini.ai plugin behavior
+    // mini.ai 插件行为
     "Q": "vim::MiniQuotes",
     "B": "vim::MiniBrackets"
   }
 }
 ```
 
-With this configuration, you can use commands like:
+使用此配置，你可以使用以下命令：
 
-- `cib` - Change inside brackets using AnyBrackets behavior
-- `ciB` - Change inside brackets using MiniBrackets behavior
-- `ciq` - Change inside quotes using AnyQuotes behavior
-- `ciQ` - Change inside quotes using MiniQuotes behavior
+- `cib` - 使用 AnyBrackets 行为更改括号内部
+- `ciB` - 使用 MiniBrackets 行为更改括号内部
+- `ciq` - 使用 AnyQuotes 行为更改引号内部
+- `ciQ` - 使用 MiniQuotes 行为更改引号内部
 
-## Command palette
+## 命令面板
 
-Vim mode allows you to open Zed's command palette with `:`. You can then type to access any usual Zed command. Additionally, vim mode adds aliases for popular Vim commands to ensure your muscle memory transfers to Zed. For example, you can write `:w` or `:write` to save the file.
+Vim 模式允许你用 `:` 打开 Zed 的命令面板。然后你可以输入以访问任何常规的 Zed 命令。此外，vim 模式为流行的 Vim 命令添加了别名，以确保你的肌肉记忆转移到 Zed。例如，你可以写 `:w` 或 `:write` 来保存文件。
 
-Below, you'll find tables listing the commands you can use in the command palette. We put optional characters in square brackets to indicate that you can omit them.
+下面，你将找到可以在命令面板中使用的命令表。我们将可选字符放在方括号中，表示你可以省略它们。
 
-> **Note**: We don't emulate the full power of Vim's command line yet. In particular, commands currently do not support arguments. Please [file issues on GitHub](https://github.com/zed-industries/zed) as you find things that are missing from the command palette.
+> **注意**：我们尚未模拟 Vim 命令行的全部功能。特别是，命令目前不支持参数。当你发现命令面板中缺少内容时，请[在 GitHub 上提交问题](https://github.com/zed-industries/zed)。
 
 ### File and window management
 

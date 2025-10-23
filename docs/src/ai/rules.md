@@ -1,12 +1,12 @@
-# Using Rules {#using-rules}
+# 使用规则 {#using-rules}
 
-A rule is essentially a prompt that is inserted at the beginning of each interaction with the Agent.
-Currently, Zed supports `.rules` files at the directory's root and the Rules Library, which allows you to store multiple rules for on-demand usage.
+规则本质上是一个提示，在与代理的每次交互开始时插入。
+目前，Zed 支持目录根目录中的 `.rules` 文件和规则库，允许您存储多个规则以供按需使用。
 
-## `.rules` files
+## `.rules` 文件
 
-Zed supports including `.rules` files at the top level of worktrees, and they act as project-level instructions that are included in all of your interactions with the Agent Panel.
-Other names for this file are also supported for compatibility with other agents, but note that the first file which matches in this list will be used:
+Zed 支持在工作树的顶层包含 `.rules` 文件，它们充当项目级指令，包含在您与代理面板的所有交互中。
+为了与其他代理兼容，也支持此文件的其他名称，但请注意将使用此列表中匹配的第一个文件：
 
 - `.rules`
 - `.cursorrules`
@@ -18,58 +18,58 @@ Other names for this file are also supported for compatibility with other agents
 - `CLAUDE.md`
 - `GEMINI.md`
 
-## Rules Library {#rules-library}
+## 规则库 {#rules-library}
 
-The Rules Library is an interface for writing and managing rules. Like other text-driven UIs in Zed, it is a full editor with syntax highlighting, keyboard shortcuts, etc.
+规则库是一个用于编写和管理规则的界面。与 Zed 中的其他文本驱动 UI 一样，它是一个具有语法高亮、键盘快捷键等的完整编辑器。
 
-You can use the inline assistant right in the rules editor, allowing you to automate and rewrite rules.
+您可以直接在规则编辑器中使用内联助手，允许您自动化和重写规则。
 
-### Opening the Rules Library
+### 打开规则库
 
-1. Open the Agent Panel.
-2. Click on the Agent menu (`...`) in the top right corner.
-3. Select `Rules...` from the dropdown.
+1. 打开代理面板。
+2. 单击右上角的代理菜单（`...`）。
+3. 从下拉菜单中选择 `Rules...`。
 
-You can also use the `agent: open rules library` command while in the Agent Panel.
+您也可以在代理面板中使用 `agent: open rules library` 命令。
 
-### Managing Rules
+### 管理规则
 
-Once a rules file is selected, you can edit it directly in the built-in editor. Its title can be changed from the editor title bar as well.
+选择规则文件后，您可以直接在内置编辑器中编辑它。其标题也可以从编辑器标题栏更改。
 
-Rules can be duplicated, deleted, or added to the default rules using the buttons in the rules editor.
+可以使用规则编辑器中的按钮复制、删除规则或将规则添加到默认规则。
 
-### Creating Rules {#creating-rules}
+### 创建规则 {#creating-rules}
 
-To create a rule file, simply open the `Rules Library` and click the `+` button. Rules files are stored locally and can be accessed from the library at any time.
+要创建规则文件，只需打开 `Rules Library` 并单击 `+` 按钮。规则文件存储在本地，可以随时从库中访问。
 
-Having a series of rules files specifically tailored to prompt engineering can also help you write consistent and effective rules.
+拥有一系列专门针对提示工程定制的规则文件也可以帮助您编写一致且有效的规则。
 
-Here are a couple of helpful resources for writing better rules:
+以下是编写更好规则的一些有用资源：
 
 - [Anthropic: Prompt Engineering](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview)
 - [OpenAI: Prompt Engineering](https://platform.openai.com/docs/guides/prompt-engineering)
 
-### Editing the Default Rules {#default-rules}
+### 编辑默认规则 {#default-rules}
 
-Zed allows you to customize the default rules used when interacting with LLMs.
-Or to be more precise, it uses a series of rules that are combined to form the default rules.
+Zed 允许您自定义与 LLM 交互时使用的默认规则。
+或者更准确地说，它使用一系列组合形成默认规则的规则。
 
-Default rules are included in the context of every new thread automatically.
-You can also manually add other rules (that are not flagged as default) as context using the `@rule` command.
+默认规则会自动包含在每个新线程的上下文中。
+您还可以使用 `@rule` 命令手动将其他规则（未标记为默认的规则）添加为上下文。
 
-## Migrating from Prompt Library
+## 从提示库迁移
 
-Previously, the Rules Library was called the "Prompt Library".
-The new rules system replaces the Prompt Library except in a few specific cases, which are outlined below.
+以前，规则库被称为"提示库"。
+新的规则系统取代了提示库，除了少数特定情况，如下所述。
 
-### Slash Commands in Rules
+### 规则中的斜杠命令
 
-Previously, it was possible to use slash commands (now @-mentions) in custom prompts (now rules).
-There is currently no support for using @-mentions in rules files, however, slash commands are supported in rules files when used with text threads.
-See the documentation for using [slash commands in rules](./text-threads.md#slash-commands-in-rules) for more information.
+以前，可以在自定义提示（现在是规则）中使用斜杠命令（现在是 @-提及）。
+目前不支持在规则文件中使用 @-提及，但是当与文本线程一起使用时，规则文件中支持斜杠命令。
+有关更多信息，请参阅使用[规则中的斜杠命令](./text-threads.md#slash-commands-in-rules) 的文档。
 
-### Prompt templates
+### 提示模板
 
-Zed maintains backwards compatibility with its original template system, which allows you to customize prompts used throughout the application, including the inline assistant.
-While the Rules Library is now the primary way to manage prompts, you can still use these legacy templates to override default prompts.
-For more details, see the [Rules Templates](./text-threads.md#rule-templates) section under [Text Threads](./text-threads.md).
+Zed 保持与其原始模板系统的向后兼容性，允许您自定义整个应用程序中使用的提示，包括内联助手。
+虽然规则库现在是管理提示的主要方式，但您仍然可以使用这些遗留模板来覆盖默认提示。
+有关更多详细信息，请参阅 [文本线程](./text-threads.md) 下的 [规则模板](./text-threads.md#rule-templates) 部分。

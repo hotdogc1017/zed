@@ -1,20 +1,20 @@
-# Getting Started
+# 入门指南
 
-Welcome to Zed! We are excited to have you. Here is a jumping-off point to getting started.
+欢迎使用 Zed！我们非常高兴与你见面。本页旨在帮助你快速上手。
 
-## Download Zed
+## 下载 Zed
 
 ### macOS
 
-Get the latest stable builds via [the download page](https://zed.dev/download). If you want to download our preview build, you can find it on its [releases page](https://zed.dev/releases/preview). After the first manual installation, Zed will periodically check for install updates.
+你可以在 [下载页面](https://zed.dev/download) 获取最新稳定版。如需体验预览版，请前往 [预览发布页](https://zed.dev/releases/preview)。首次手动安装后，Zed 会定期检查更新。
 
-You can also install Zed stable via Homebrew:
+也可以通过 Homebrew 安装稳定版：
 
 ```sh
 brew install --cask zed
 ```
 
-As well as Zed preview:
+或安装预览版：
 
 ```sh
 brew install --cask zed@preview
@@ -22,71 +22,56 @@ brew install --cask zed@preview
 
 ### Windows
 
-Get the latest stable builds via [the download page](https://zed.dev/download). If you want to download our preview build, you can find it on its [releases page](https://zed.dev/releases/preview). After the first manual installation, Zed will periodically check for install updates.
+前往 [下载页面](https://zed.dev/download) 获取最新稳定版。若想体验预览功能，可在 [预览发布页](https://zed.dev/releases/preview) 下载。首次手动安装完成后，Zed 会定期提示更新。
 
 ### Linux
 
-For most Linux users, the easiest way to install Zed is through our installation script:
+对多数 Linux 用户来说，使用官方脚本是最快速的安装方式：
 
 ```sh
 curl -f https://zed.dev/install.sh | sh
 ```
 
-If you'd like to help us test our new features, you can also install our preview build:
+如果你愿意帮助我们测试新功能，也可以安装预览版：
 
 ```sh
 curl -f https://zed.dev/install.sh | ZED_CHANNEL=preview sh
 ```
 
-This script supports `x86_64` and `AArch64`, as well as common Linux distributions: Ubuntu, Arch, Debian, RedHat, CentOS, Fedora, and more.
+该脚本支持 `x86_64` 与 `AArch64` 架构，并适配常见发行版（Ubuntu、Arch、Debian、RedHat、CentOS、Fedora 等）。
 
-If Zed is installed using this installation script, it can be uninstalled at any time by running the shell command `zed --uninstall`. The shell will then prompt you whether you'd like to keep your preferences or delete them. After making a choice, you should see a message that Zed was successfully uninstalled.
+通过脚本安装的 Zed 可以随时卸载：执行 `zed --uninstall`，Shell 会提示是否保留个性化设置或一并删除。选择完毕后会看到“Zed 已成功卸载”的提示。
 
-If this script is insufficient for your use case, you run into problems running Zed, or there are errors in uninstalling Zed, please see our [Linux-specific documentation](./linux.md).
+若脚本不适用于你的场景、运行 Zed 时遇到问题，或卸载出现错误，请参考[针对 Linux 的说明](./linux.md)。
 
-## Command Palette
+## 命令面板
 
-The Command Palette is the main way to access pretty much any functionality that's available in Zed. Its keybinding is the first one you should make yourself familiar with. To open it, hit: {#kb command_palette::Toggle}.
+命令面板是访问 Zed 功能的主要方式，你应该首先熟悉它的快捷键。使用 {#kb command_palette::Toggle} 打开命令面板。
 
-![The opened Command Palette](https://zed.dev/img/features/command-palette.jpg)
+![命令面板](https://zed.dev/img/features/command-palette.jpg)
 
-Try it! Open the Command Palette and type in `new file`. You should see the list of commands being filtered down to `workspace: new file`. Hit return and you end up with a new buffer.
+试试看：打开命令面板并输入 `new file`，列表会被过滤到 `workspace: new file`，回车即可创建新缓冲区。
 
-Any time you see instructions that include commands of the form `zed: ...` or `editor: ...` and so on that means you need to execute them in the Command Palette.
+凡是说明中出现 `zed: ...`、`editor: ...` 等形式的命令，均表示需要在命令面板中执行。
 
 ## CLI
 
-Zed has a CLI, on Linux this should come with the distribution's Zed package (binary name can vary from distribution to distribution, `zed` will be used later for brevity).
-For macOS, the CLI comes in the same package with the editor binary, and could be installed into the system with the `cli: install` Zed command which will create a symlink to the `/usr/local/bin/zed`.
-It can also be built from source out of the `cli` crate in this repository.
+Zed 提供命令行工具：
 
-Use `zed --help` to see the full list of capabilities.
-General highlights:
+- 在 Linux 上通常随发行版的软件包一起安装（可执行文件名称可能因发行版而异，以下统一用 `zed` 表示）。
+- 在 macOS 上，CLI 与编辑器程序位于同一包内，可通过 `cli: install` 命令将其安装到系统中（会在 `/usr/local/bin/zed` 创建符号链接）。
+- 也可以直接在源码仓库的 `cli` crate 中自行构建。
 
-- Opening another empty Zed window: `zed`
+使用 `zed --help` 查看完整能力，常见示例如下：
 
-- Opening a file or directory in Zed: `zed /path/to/entry` (use `-n` to open in the new window)
+- 打开一个空白 Zed 窗口：`zed`
+- 在 Zed 中打开文件或目录：`zed /path/to/entry`（使用 `-n` 在新窗口打开）
+- 从标准输入读取内容：`ps axf | zed -`
+- 在前台启动并输出日志：`zed --foreground`
+- 卸载 Zed 及相关文件：`zed --uninstall`
 
-- Reading from stdin: `ps axf | zed -`
+## 自定义 Zed
 
-- Starting Zed with logs in the terminal: `zed --foreground`
+需要调整字体、格式化、按语言设置等内容时，可通过 {#kb zed::OpenSettings} 打开个人设置文件。
 
-- Uninstalling Zed and all its related files: `zed --uninstall`
-
-## Configure Zed
-
-To open your custom settings to set things like fonts, formatting settings, per-language settings, and more, use the {#kb zed::OpenSettings} keybinding.
-
-To see all available settings, open the Command Palette with {#kb command_palette::Toggle} and search for `zed: open default settings`.
-You can also check them all out in the [Configuring Zed](./configuring-zed.md) documentation.
-
-## Configure AI in Zed
-
-Zed smoothly integrates LLMs in multiple ways across the editor.
-Visit [the AI overview page](./ai/overview.md) to learn how to quickly get started with LLMs on Zed.
-
-## Set up your key bindings
-
-To edit your custom keymap and add or remap bindings, you can either use {#kb zed::OpenKeymap} to spawn the Zed Keymap Editor ({#action zed::OpenKeymap}) or you can directly open your Zed Keymap json (`~/.config/zed/keymap.json`) with {#action zed::OpenKeymap}.
-
-To access the default key binding set, open the Command Palette with {#kb command_palette::Toggle} and search for "zed: open default keymap". See [Key Bindings](./key-bindings.md) for more info.
+想查看所有可用选项，可打开命令面板（{#kb command_palette::Toggle}）并搜索 `zed: open default settings`。

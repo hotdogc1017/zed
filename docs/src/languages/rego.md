@@ -1,38 +1,37 @@
 # Rego
 
-Rego language support in Zed is provided by the community-maintained [Rego extension](https://github.com/StyraInc/zed-rego).
+Zed 对 Rego 的语言支持由社区维护的 [Rego 扩展](https://github.com/StyraInc/zed-rego) 提供。
 
-- Tree-sitter: [FallenAngel97/tree-sitter-rego](https://github.com/FallenAngel97/tree-sitter-rego)
-- Language Server: [StyraInc/regal](https://github.com/StyraInc/regal)
+- Tree-sitter：[FallenAngel97/tree-sitter-rego](https://github.com/FallenAngel97/tree-sitter-rego)
+- 语言服务器：[StyraInc/regal](https://github.com/StyraInc/regal)
 
-## Installation
+## 安装
 
-The extensions is largely based on the [Regal](https://docs.styra.com/regal/language-server) language server which should be installed to make use of the extension. Read the [getting started](https://docs.styra.com/regal#getting-started) instructions for more information.
+该扩展主要基于 [Regal](https://docs.styra.com/regal/language-server) 语言服务器，请先安装后再使用扩展。详细步骤请参阅 [快速上手指南](https://docs.styra.com/regal#getting-started)。
 
-## Configuration
+## 配置
 
-The extension's behavior is configured in the `.regal/config.yaml` file. The following is an example configuration which disables the `todo-comment` rule, customizes the `line-length` rule, and ignores test files for the `opa-fmt` rule:
+扩展的行为可通过 `.regal/config.yaml` 配置文件控制。以下示例关闭了 `todo-comment` 规则、自定义了 `line-length` 规则，并在 `opa-fmt` 规则中忽略测试文件：
 
 ```yaml
 rules:
   style:
     todo-comment:
-      # don't report on todo comments
+      # 不对 TODO 注释报错
       level: ignore
     line-length:
-      # custom rule configuration
+      # 自定义规则配置
       max-line-length: 100
-      # warn on too long lines, but don't fail
+      # 行过长时仅警告，不视为失败
       level: warning
     opa-fmt:
-      # not needed as error is the default, but
-      # being explicit won't hurt
+      # 默认就是 error，显式声明更直观
       level: error
-      # files can be ignored for any individual rule
-      # in this example, test files are ignored
+      # 可以为任意规则忽略特定文件
+      # 此处示例忽略测试文件
       ignore:
         files:
           - "*_test.rego"
 ```
 
-Read Regal's [configuration documentation](https://docs.styra.com/regal#configuration) for more information.
+更多信息请查阅 Regal 的[配置文档](https://docs.styra.com/regal#configuration)。
