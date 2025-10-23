@@ -1,0 +1,3 @@
+[build]
+  command = "curl -sSL https://github.com/rust-lang/mdBook/releases/latest/download/mdbook-v0.4.40-x86_64-unknown-linux-gnu.tar.gz | tar -xz -C /usr/local/bin && mdbook build docs"
+  publish = "docs/book"
