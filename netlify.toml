@@ -1,12 +1,9 @@
 [build]
-  publish = "docs/book"
   command = """
-  curl -L https://github.com/rust-lang/mdBook/releases/download/v0.4.40/mdbook-v0.4.40-x86_64-unknown-linux-gnu.tar.gz -o mdbook.tar.gz
-  tar -xzf mdbook.tar.gz
-  chmod +x mdbook
-  mv mdbook /usr/local/bin/
+  mkdir -p $HOME/bin
+  curl -sSL https://github.com/rust-lang/mdBook/releases/latest/download/mdbook-v0.4.40-x86_64-unknown-linux-gnu.tar.gz \
+    | tar -xz -C $HOME/bin
+  export PATH=$HOME/bin:$PATH
   mdbook build docs
   """
-
-[build.environment]
-  RUST_LOG = "info"
+  publish = "docs/book"
